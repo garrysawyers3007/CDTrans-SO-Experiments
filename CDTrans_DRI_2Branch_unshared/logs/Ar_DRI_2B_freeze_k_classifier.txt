@@ -1,0 +1,1248 @@
+2022-05-20 13:44:09,060 reid_baseline INFO: Saving model in the path :../logs/uda/deit_base/office-home/Art2Clipart_DRI_2B_freeze_k_classifier
+2022-05-20 13:44:09,060 reid_baseline INFO: Namespace(config_file='configs/uda.yml', opts=['MODEL.DEVICE_ID', "('0')", 'OUTPUT_DIR', '../logs/uda/deit_base/office-home/Art2Clipart_DRI_2B_freeze_k_classifier', 'DATASETS.ROOT_TRAIN_DIR', '../data/OfficeHomeDataset/Art.txt', 'DATASETS.ROOT_TRAIN_DIR2', '../data/OfficeHomeDataset/Clipart.txt', 'DATASETS.ROOT_TEST_DIR', '../data/OfficeHomeDataset/Clipart.txt', 'DATASETS.NAMES', 'OfficeHome', 'DATASETS.NAMES2', 'OfficeHome', 'MODEL.Transformer_TYPE', 'uda_vit_base_patch16_224_TransReID'], local_rank=0, patch_size=8, dom_cls=False, layer_num=1, dom_weight=0.0, SO_path='../logs/pretrain/deit_base/office-home/Art_2Clipart/transformer_best_model.pth', W_p_path='../logs/pretrain/deit_base/office-home/Art_2_ClipartSO_Dom_Cls/transformer_best_model.pth')
+2022-05-20 13:44:09,060 reid_baseline INFO: Loaded configuration file configs/uda.yml
+2022-05-20 13:44:09,061 reid_baseline INFO: 
+MODEL:
+  PRETRAIN_CHOICE: 'imagenet'
+  PRETRAIN_PATH: '../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth'
+  METRIC_LOSS_TYPE: 'triplet'
+  IF_LABELSMOOTH: 'on'
+  IF_WITH_CENTER: 'no'
+  NAME: 'transformer'
+  NO_MARGIN: True
+  DEVICE_ID: ('0')
+  Transformer_TYPE: 'uda_vit_base_patch16_224_TransReID' #uda_vit_small_patch16_224_TransReID
+  STRIDE_SIZE: [16, 16]
+  BLOCK_PATTERN: '3_branches'
+  TASK_TYPE: 'classify_DA'
+  UDA_STAGE: 'UDA'
+#  CAMERA_EMBEDDING: True
+#  VIEWPOINT_EMBEDDING: True
+
+INPUT:
+  SIZE_TRAIN: [256, 256]
+  SIZE_TEST: [256, 256]
+  SIZE_CROP: [224, 224]
+  PROB: 0.5 # random horizontal flip
+  RE_PROB: 0.0 # random erasing
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+
+DATASETS:
+  NAMES: ('OURAPI')
+  ROOT_TRAIN_DIR: ('./datasets/reid_datasets/Corrected_Market1501')
+  NAMES2: ('OURAPI')
+  ROOT_TRAIN_DIR2: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+  ROOT_TEST_DIR: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+
+DATALOADER:
+  SAMPLER: 'softmax'
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 4
+
+SOLVER:
+  OPTIMIZER_NAME: 'SGD'
+  MAX_EPOCHS: 40
+  BASE_LR: 0.008
+  IMS_PER_BATCH: 16
+  STEPS: [40, 80]
+  GAMMA: 0.
+  WARMUP_FACTOR: 0.01
+  WARMUP_EPOCHS: 10
+  WARMUP_METHOD: 'linear'
+  LARGE_FC_LR: False
+  CHECKPOINT_PERIOD: 10
+  LOG_PERIOD: 100
+  EVAL_PERIOD: 1
+  WEIGHT_DECAY:  1e-4
+  WEIGHT_DECAY_BIAS: 1e-4
+  BIAS_LR_FACTOR: 2
+
+TEST:
+  EVAL: True
+  IMS_PER_BATCH: 64
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+
+  WEIGHT: '../logs/trans4DA/transformer_120.pth'
+  NECK_FEAT: 'after'
+  FEAT_NORM: 'yes'
+
+OUTPUT_DIR: '../logs/trans4DA'
+
+
+
+2022-05-20 13:44:09,061 reid_baseline INFO: Running with config:
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 4
+  SAMPLER: softmax
+DATASETS:
+  NAMES: OfficeHome
+  NAMES2: OfficeHome
+  PLUS_NUM_ID: 100
+  QUERY_MINING: False
+  ROOT_TEST_DIR: ../data/OfficeHomeDataset/Clipart.txt
+  ROOT_TRAIN_DIR: ../data/OfficeHomeDataset/Art.txt
+  ROOT_TRAIN_DIR2: ../data/OfficeHomeDataset/Clipart.txt
+INPUT:
+  AA_PROB: 0.0
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+  PROB: 0.5
+  RE_PROB: 0.0
+  SIZE_CROP: [224, 224]
+  SIZE_TEST: [256, 256]
+  SIZE_TRAIN: [256, 256]
+MODEL:
+  AIE_COE: 1.5
+  BLOCK_PATTERN: 3_branches
+  CAMERA_EMBEDDING: False
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 0
+  DEVIDE_LENGTH: 4
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  FC_SETTING: TransReID
+  FROZEN: -1
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IF_LABELSMOOTH: on
+  IF_WITH_CENTER: no
+  LAST_STRIDE: 1
+  LOCAL_F: False
+  METRIC_LOSS_TYPE: triplet
+  NAME: transformer
+  NECK: bnneck
+  NO_MARGIN: True
+  NO_SHUFFLE: False
+  PATCH_SHUFFLE: 2
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH: ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+  PROB: 0.0
+  RECIP_LOSS: 
+  STRIDE_SIZE: [16, 16]
+  TASK_TYPE: classify_DA
+  THRESH: 0.23
+  TRIPLET_LOSS_WEIGHT: 1.0
+  Transformer_TYPE: uda_vit_base_patch16_224_TransReID
+  UDA_STAGE: UDA
+  VIEWPOINT_EMBEDDING: False
+  YIWEI_NUM: 5
+  lameda: 0.5
+OUTPUT_DIR: ../logs/uda/deit_base/office-home/Art2Clipart_DRI_2B_freeze_k_classifier
+SOLVER:
+  BASE_LR: 0.008
+  BIAS_LR_FACTOR: 2
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 10
+  CLUSTER_MARGIN: 0.3
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 1
+  GAMMA: 0.0
+  IMS_PER_BATCH: 16
+  LARGE_FC_LR: False
+  LOG_PERIOD: 100
+  MARGIN: 0.3
+  MAX_EPOCHS: 40
+  MOMENTUM: 0.9
+  OPTIMIZER_NAME: SGD
+  RANGE_ALPHA: 0
+  RANGE_BETA: 1
+  RANGE_K: 2
+  RANGE_LOSS_WEIGHT: 1
+  RANGE_MARGIN: 0.3
+  SEED: 1234
+  STEPS: (40, 80)
+  WARMUP_EPOCHS: 10
+  WARMUP_FACTOR: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WITH_PSEUDO_LABEL_FILTER: False
+TEST:
+  DIST_MAT: dist_mat.npy
+  EVAL: True
+  FEAT_NORM: yes
+  FLIP_FEATS: off
+  IMS_PER_BATCH: 64
+  NECK_FEAT: after
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+  WEIGHT: ../logs/trans4DA/transformer_120.pth
+=> Office-Home loaded
+Dataset statistics:
+train Art and valid is Clipart
+  ----------------------------------------
+  subset   | # ids | # images | # cameras
+  ----------------------------------------
+  train   |    65 |     2427 |         1
+  valid   |    65 |     4365 |         1
+  ----------------------------------------
+=> Office-Home loaded
+Dataset statistics:
+train Clipart and valid is Clipart
+  ----------------------------------------
+  subset   | # ids | # images | # cameras
+  ----------------------------------------
+  train   |    65 |     4365 |         1
+  valid   |    65 |     4365 |         1
+  ----------------------------------------
+using Transformer_type: uda_vit_base_patch16_224_TransReID as a backbone
+using stride: [16, 16], and part number is num_y14 * num_x14
+using drop_path_rate is : 0.1
+using aie_xishu is : 1.5
+using 3branches blocks
+distill need to choose right cls token in the pth
+Resized position embedding: %s to %s torch.Size([1, 197, 768]) torch.Size([1, 197, 768])
+Position embedding resize to height:14 width: 14
+Loading pretrained ImageNet model......from ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+===========building uda transformer===========
+label smooth on, numclasses: 65
+2022-05-20 13:44:21,910 reid_baseline.train INFO: start training
+2022-05-20 13:45:53,556 reid_baseline.train INFO: Epoch[1] Iteration[100/147] Loss1: 1.412, Loss2: 1.879, Loss3: 2.727,  Acc: 0.402, Acc2: 0.710, Acc2_pse: 0.710, Base Lr: 8.72e-04
+2022-05-20 13:46:29,990 reid_baseline.train INFO: Epoch 1 done. Time per batch: 0.869[s] Speed: 18.4[samples/s]
+2022-05-20 13:48:51,391 reid_baseline.train INFO: normal accuracy 0.5951890034364261 1.5376871824264526 
+2022-05-20 13:48:52,330 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 1
+2022-05-20 13:48:52,330 reid_baseline.train INFO: Accuracy: 59.5%, best Accuracy: 59.5%, min Mean_entropy: 2e+00
+2022-05-20 13:50:15,704 reid_baseline.train INFO: Epoch[2] Iteration[100/147] Loss1: 1.421, Loss2: 1.813, Loss3: 2.679,  Acc: 0.387, Acc2: 0.726, Acc2_pse: 0.726, Base Lr: 1.66e-03
+2022-05-20 13:50:52,216 reid_baseline.train INFO: Epoch 2 done. Time per batch: 0.827[s] Speed: 19.4[samples/s]
+2022-05-20 13:53:09,553 reid_baseline.train INFO: normal accuracy 0.5993127147766323 1.5330928564071655 
+2022-05-20 13:53:11,339 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 2
+2022-05-20 13:53:11,339 reid_baseline.train INFO: Accuracy: 59.9%, best Accuracy: 59.9%, min Mean_entropy: 2e+00
+2022-05-20 13:54:33,225 reid_baseline.train INFO: Epoch[3] Iteration[100/147] Loss1: 1.467, Loss2: 1.792, Loss3: 2.645,  Acc: 0.350, Acc2: 0.740, Acc2_pse: 0.740, Base Lr: 2.46e-03
+2022-05-20 13:55:11,751 reid_baseline.train INFO: Epoch 3 done. Time per batch: 0.830[s] Speed: 19.3[samples/s]
+2022-05-20 13:57:30,497 reid_baseline.train INFO: normal accuracy 0.6050400916380297 1.4852122068405151 
+2022-05-20 13:57:31,593 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 3
+2022-05-20 13:57:31,594 reid_baseline.train INFO: Accuracy: 60.5%, best Accuracy: 60.5%, min Mean_entropy: 1e+00
+2022-05-20 13:58:54,115 reid_baseline.train INFO: Epoch[4] Iteration[100/147] Loss1: 1.475, Loss2: 1.733, Loss3: 2.570,  Acc: 0.345, Acc2: 0.752, Acc2_pse: 0.752, Base Lr: 3.25e-03
+2022-05-20 13:59:28,630 reid_baseline.train INFO: Epoch 4 done. Time per batch: 0.806[s] Speed: 19.8[samples/s]
+2022-05-20 14:01:45,954 reid_baseline.train INFO: normal accuracy 0.6093928980526919 1.5093528032302856 
+2022-05-20 14:01:45,954 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 4
+2022-05-20 14:01:45,955 reid_baseline.train INFO: Accuracy: 60.9%, best Accuracy: 60.5%, min Mean_entropy: 1e+00
+2022-05-20 14:03:04,929 reid_baseline.train INFO: Epoch[5] Iteration[100/147] Loss1: 1.507, Loss2: 1.722, Loss3: 2.564,  Acc: 0.320, Acc2: 0.743, Acc2_pse: 0.743, Base Lr: 4.04e-03
+2022-05-20 14:03:40,146 reid_baseline.train INFO: Epoch 5 done. Time per batch: 0.782[s] Speed: 20.5[samples/s]
+2022-05-20 14:06:01,632 reid_baseline.train INFO: normal accuracy 0.5997709049255441 1.4407657384872437 
+2022-05-20 14:06:02,679 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 5
+2022-05-20 14:06:02,679 reid_baseline.train INFO: Accuracy: 60.0%, best Accuracy: 60.0%, min Mean_entropy: 1e+00
+2022-05-20 14:07:21,817 reid_baseline.train INFO: Epoch[6] Iteration[100/147] Loss1: 1.517, Loss2: 1.748, Loss3: 2.555,  Acc: 0.311, Acc2: 0.744, Acc2_pse: 0.744, Base Lr: 4.83e-03
+2022-05-20 14:07:56,109 reid_baseline.train INFO: Epoch 6 done. Time per batch: 0.797[s] Speed: 20.1[samples/s]
+2022-05-20 14:10:09,469 reid_baseline.train INFO: normal accuracy 0.6016036655211913 1.4702774286270142 
+2022-05-20 14:10:09,470 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 6
+2022-05-20 14:10:09,470 reid_baseline.train INFO: Accuracy: 60.2%, best Accuracy: 60.0%, min Mean_entropy: 1e+00
+2022-05-20 14:11:29,432 reid_baseline.train INFO: Epoch[7] Iteration[100/147] Loss1: 1.521, Loss2: 1.676, Loss3: 2.490,  Acc: 0.302, Acc2: 0.764, Acc2_pse: 0.764, Base Lr: 5.62e-03
+2022-05-20 14:12:07,440 reid_baseline.train INFO: Epoch 7 done. Time per batch: 0.825[s] Speed: 19.4[samples/s]
+2022-05-20 14:14:35,111 reid_baseline.train INFO: normal accuracy 0.6103092783505155 1.4320728778839111 
+2022-05-20 14:14:36,207 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 7
+2022-05-20 14:14:36,207 reid_baseline.train INFO: Accuracy: 61.0%, best Accuracy: 61.0%, min Mean_entropy: 1e+00
+2022-05-20 14:15:59,963 reid_baseline.train INFO: Epoch[8] Iteration[100/147] Loss1: 1.550, Loss2: 1.672, Loss3: 2.456,  Acc: 0.293, Acc2: 0.763, Acc2_pse: 0.763, Base Lr: 6.42e-03
+2022-05-20 14:16:33,472 reid_baseline.train INFO: Epoch 8 done. Time per batch: 0.814[s] Speed: 19.7[samples/s]
+2022-05-20 14:18:56,432 reid_baseline.train INFO: normal accuracy 0.6077892325315005 1.4326554536819458 
+2022-05-20 14:18:56,432 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 8
+2022-05-20 14:18:56,432 reid_baseline.train INFO: Accuracy: 60.8%, best Accuracy: 61.0%, min Mean_entropy: 1e+00
+2022-05-20 14:20:13,663 reid_baseline.train INFO: Epoch[9] Iteration[100/147] Loss1: 1.560, Loss2: 1.632, Loss3: 2.424,  Acc: 0.297, Acc2: 0.771, Acc2_pse: 0.771, Base Lr: 7.21e-03
+2022-05-20 14:20:48,465 reid_baseline.train INFO: Epoch 9 done. Time per batch: 0.766[s] Speed: 20.9[samples/s]
+2022-05-20 14:23:17,666 reid_baseline.train INFO: normal accuracy 0.6036655211912944 1.3897852897644043 
+2022-05-20 14:23:18,737 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 9
+2022-05-20 14:23:18,737 reid_baseline.train INFO: Accuracy: 60.4%, best Accuracy: 60.4%, min Mean_entropy: 1e+00
+2022-05-20 14:24:44,132 reid_baseline.train INFO: Epoch[10] Iteration[100/147] Loss1: 1.598, Loss2: 1.574, Loss3: 2.326,  Acc: 0.263, Acc2: 0.788, Acc2_pse: 0.788, Base Lr: 6.83e-03
+2022-05-20 14:25:15,383 reid_baseline.train INFO: Epoch 10 done. Time per batch: 0.815[s] Speed: 19.6[samples/s]
+2022-05-20 14:27:33,024 reid_baseline.train INFO: normal accuracy 0.5983963344788087 1.3425768613815308 
+2022-05-20 14:27:34,088 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 10
+2022-05-20 14:27:34,088 reid_baseline.train INFO: Accuracy: 59.8%, best Accuracy: 59.8%, min Mean_entropy: 1e+00
+2022-05-20 14:28:55,046 reid_baseline.train INFO: Epoch[11] Iteration[100/147] Loss1: 1.569, Loss2: 1.550, Loss3: 2.354,  Acc: 0.283, Acc2: 0.801, Acc2_pse: 0.801, Base Lr: 6.60e-03
+2022-05-20 14:29:27,088 reid_baseline.train INFO: Epoch 11 done. Time per batch: 0.779[s] Speed: 20.5[samples/s]
+2022-05-20 14:32:01,014 reid_baseline.train INFO: normal accuracy 0.6032073310423826 1.321471095085144 
+2022-05-20 14:32:02,092 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 11
+2022-05-20 14:32:02,092 reid_baseline.train INFO: Accuracy: 60.3%, best Accuracy: 60.3%, min Mean_entropy: 1e+00
+2022-05-20 14:33:30,040 reid_baseline.train INFO: Epoch[12] Iteration[100/147] Loss1: 1.583, Loss2: 1.524, Loss3: 2.258,  Acc: 0.266, Acc2: 0.779, Acc2_pse: 0.779, Base Lr: 6.35e-03
+2022-05-20 14:34:07,742 reid_baseline.train INFO: Epoch 12 done. Time per batch: 0.872[s] Speed: 18.3[samples/s]
+2022-05-20 14:36:40,275 reid_baseline.train INFO: normal accuracy 0.6139747995418099 1.307576298713684 
+2022-05-20 14:36:42,018 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 12
+2022-05-20 14:36:42,021 reid_baseline.train INFO: Accuracy: 61.4%, best Accuracy: 61.4%, min Mean_entropy: 1e+00
+2022-05-20 14:38:11,787 reid_baseline.train INFO: Epoch[13] Iteration[100/147] Loss1: 1.594, Loss2: 1.497, Loss3: 2.185,  Acc: 0.252, Acc2: 0.793, Acc2_pse: 0.793, Base Lr: 6.09e-03
+2022-05-20 14:38:50,155 reid_baseline.train INFO: Epoch 13 done. Time per batch: 0.889[s] Speed: 18.0[samples/s]
+2022-05-20 14:41:37,095 reid_baseline.train INFO: normal accuracy 0.6071019473081328 1.2103078365325928 
+2022-05-20 14:41:38,551 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 13
+2022-05-20 14:41:38,552 reid_baseline.train INFO: Accuracy: 60.7%, best Accuracy: 60.7%, min Mean_entropy: 1e+00
+2022-05-20 14:43:12,705 reid_baseline.train INFO: Epoch[14] Iteration[100/147] Loss1: 1.583, Loss2: 1.454, Loss3: 2.206,  Acc: 0.277, Acc2: 0.814, Acc2_pse: 0.814, Base Lr: 5.82e-03
+2022-05-20 14:43:51,580 reid_baseline.train INFO: Epoch 14 done. Time per batch: 0.923[s] Speed: 17.3[samples/s]
+2022-05-20 14:46:37,111 reid_baseline.train INFO: normal accuracy 0.6148911798396335 1.2691327333450317 
+2022-05-20 14:46:37,113 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 14
+2022-05-20 14:46:37,114 reid_baseline.train INFO: Accuracy: 61.5%, best Accuracy: 60.7%, min Mean_entropy: 1e+00
+2022-05-20 14:48:12,987 reid_baseline.train INFO: Epoch[15] Iteration[100/147] Loss1: 1.588, Loss2: 1.441, Loss3: 2.172,  Acc: 0.265, Acc2: 0.816, Acc2_pse: 0.816, Base Lr: 5.54e-03
+2022-05-20 14:48:53,041 reid_baseline.train INFO: Epoch 15 done. Time per batch: 0.950[s] Speed: 16.8[samples/s]
+2022-05-20 14:51:50,206 reid_baseline.train INFO: normal accuracy 0.6107674684994273 1.231332540512085 
+2022-05-20 14:51:50,206 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 15
+2022-05-20 14:51:50,207 reid_baseline.train INFO: Accuracy: 61.1%, best Accuracy: 60.7%, min Mean_entropy: 1e+00
+2022-05-20 14:53:37,455 reid_baseline.train INFO: Epoch[16] Iteration[100/147] Loss1: 1.587, Loss2: 1.432, Loss3: 2.135,  Acc: 0.266, Acc2: 0.829, Acc2_pse: 0.829, Base Lr: 5.24e-03
+2022-05-20 14:54:22,982 reid_baseline.train INFO: Epoch 16 done. Time per batch: 1.060[s] Speed: 15.1[samples/s]
+2022-05-20 14:57:24,746 reid_baseline.train INFO: normal accuracy 0.618327605956472 1.2291803359985352 
+2022-05-20 14:57:24,748 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 16
+2022-05-20 14:57:24,749 reid_baseline.train INFO: Accuracy: 61.8%, best Accuracy: 60.7%, min Mean_entropy: 1e+00
+2022-05-20 14:59:10,016 reid_baseline.train INFO: Epoch[17] Iteration[100/147] Loss1: 1.629, Loss2: 1.422, Loss3: 2.165,  Acc: 0.230, Acc2: 0.823, Acc2_pse: 0.823, Base Lr: 4.94e-03
+2022-05-20 14:59:55,393 reid_baseline.train INFO: Epoch 17 done. Time per batch: 1.039[s] Speed: 15.4[samples/s]
+2022-05-20 15:02:59,331 reid_baseline.train INFO: normal accuracy 0.6201603665521191 1.207993984222412 
+2022-05-20 15:03:01,102 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 17
+2022-05-20 15:03:01,103 reid_baseline.train INFO: Accuracy: 62.0%, best Accuracy: 62.0%, min Mean_entropy: 1e+00
+2022-05-20 15:04:57,025 reid_baseline.train INFO: Epoch[18] Iteration[100/147] Loss1: 1.602, Loss2: 1.360, Loss3: 2.092,  Acc: 0.272, Acc2: 0.842, Acc2_pse: 0.842, Base Lr: 4.63e-03
+2022-05-20 15:05:43,601 reid_baseline.train INFO: Epoch 18 done. Time per batch: 1.110[s] Speed: 14.4[samples/s]
+2022-05-20 15:08:50,934 reid_baseline.train INFO: normal accuracy 0.6116838487972509 1.1989814043045044 
+2022-05-20 15:08:53,970 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 18
+2022-05-20 15:08:53,972 reid_baseline.train INFO: Accuracy: 61.2%, best Accuracy: 61.2%, min Mean_entropy: 1e+00
+2022-05-20 15:10:37,917 reid_baseline.train INFO: Epoch[19] Iteration[100/147] Loss1: 1.592, Loss2: 1.365, Loss3: 2.096,  Acc: 0.257, Acc2: 0.845, Acc2_pse: 0.845, Base Lr: 4.32e-03
+2022-05-20 15:11:22,238 reid_baseline.train INFO: Epoch 19 done. Time per batch: 1.034[s] Speed: 15.5[samples/s]
+2022-05-20 15:14:21,649 reid_baseline.train INFO: normal accuracy 0.6219931271477663 1.1101012229919434 
+2022-05-20 15:14:22,715 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 19
+2022-05-20 15:14:22,715 reid_baseline.train INFO: Accuracy: 62.2%, best Accuracy: 62.2%, min Mean_entropy: 1e+00
+2022-05-20 15:16:11,016 reid_baseline.train INFO: Epoch[20] Iteration[100/147] Loss1: 1.615, Loss2: 1.337, Loss3: 2.054,  Acc: 0.247, Acc2: 0.859, Acc2_pse: 0.859, Base Lr: 4.01e-03
+2022-05-20 15:16:52,644 reid_baseline.train INFO: Epoch 20 done. Time per batch: 1.048[s] Speed: 15.3[samples/s]
+2022-05-20 15:19:40,916 reid_baseline.train INFO: normal accuracy 0.6258877434135166 1.1272242069244385 
+2022-05-20 15:19:40,916 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 20
+2022-05-20 15:19:40,916 reid_baseline.train INFO: Accuracy: 62.6%, best Accuracy: 62.2%, min Mean_entropy: 1e+00
+2022-05-20 15:21:17,369 reid_baseline.train INFO: Epoch[21] Iteration[100/147] Loss1: 1.614, Loss2: 1.370, Loss3: 2.072,  Acc: 0.243, Acc2: 0.838, Acc2_pse: 0.838, Base Lr: 3.69e-03
+2022-05-20 15:22:03,423 reid_baseline.train INFO: Epoch 21 done. Time per batch: 0.976[s] Speed: 16.4[samples/s]
+2022-05-20 15:24:39,971 reid_baseline.train INFO: normal accuracy 0.6185567010309279 1.1499236822128296 
+2022-05-20 15:24:39,972 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 21
+2022-05-20 15:24:39,972 reid_baseline.train INFO: Accuracy: 61.9%, best Accuracy: 62.2%, min Mean_entropy: 1e+00
+2022-05-20 15:26:13,733 reid_baseline.train INFO: Epoch[22] Iteration[100/147] Loss1: 1.631, Loss2: 1.344, Loss3: 2.046,  Acc: 0.244, Acc2: 0.849, Acc2_pse: 0.849, Base Lr: 3.38e-03
+2022-05-20 15:26:51,200 reid_baseline.train INFO: Epoch 22 done. Time per batch: 0.911[s] Speed: 17.6[samples/s]
+2022-05-20 15:29:26,356 reid_baseline.train INFO: normal accuracy 0.6176403207331043 1.1503082513809204 
+2022-05-20 15:29:26,359 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 22
+2022-05-20 15:29:26,359 reid_baseline.train INFO: Accuracy: 61.8%, best Accuracy: 62.2%, min Mean_entropy: 1e+00
+2022-05-20 15:30:56,089 reid_baseline.train INFO: Epoch[23] Iteration[100/147] Loss1: 1.631, Loss2: 1.301, Loss3: 2.012,  Acc: 0.236, Acc2: 0.868, Acc2_pse: 0.868, Base Lr: 3.08e-03
+2022-05-20 15:31:30,688 reid_baseline.train INFO: Epoch 23 done. Time per batch: 0.863[s] Speed: 18.5[samples/s]
+2022-05-20 15:33:52,515 reid_baseline.train INFO: normal accuracy 0.616036655211913 1.1473475694656372 
+2022-05-20 15:33:52,517 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 23
+2022-05-20 15:33:52,518 reid_baseline.train INFO: Accuracy: 61.6%, best Accuracy: 62.2%, min Mean_entropy: 1e+00
+2022-05-20 15:35:17,870 reid_baseline.train INFO: Epoch[24] Iteration[100/147] Loss1: 1.612, Loss2: 1.304, Loss3: 2.020,  Acc: 0.253, Acc2: 0.862, Acc2_pse: 0.862, Base Lr: 2.77e-03
+2022-05-20 15:35:54,819 reid_baseline.train INFO: Epoch 24 done. Time per batch: 0.855[s] Speed: 18.7[samples/s]
+2022-05-20 15:38:17,371 reid_baseline.train INFO: normal accuracy 0.6077892325315005 1.098644733428955 
+2022-05-20 15:38:18,406 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 24
+2022-05-20 15:38:18,406 reid_baseline.train INFO: Accuracy: 60.8%, best Accuracy: 60.8%, min Mean_entropy: 1e+00
+2022-05-20 15:39:40,660 reid_baseline.train INFO: Epoch[25] Iteration[100/147] Loss1: 1.626, Loss2: 1.315, Loss3: 2.020,  Acc: 0.239, Acc2: 0.872, Acc2_pse: 0.872, Base Lr: 2.48e-03
+2022-05-20 15:40:14,933 reid_baseline.train INFO: Epoch 25 done. Time per batch: 0.803[s] Speed: 19.9[samples/s]
+2022-05-20 15:42:29,999 reid_baseline.train INFO: normal accuracy 0.6126002290950745 1.0912226438522339 
+2022-05-20 15:42:31,173 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 25
+2022-05-20 15:42:31,174 reid_baseline.train INFO: Accuracy: 61.3%, best Accuracy: 61.3%, min Mean_entropy: 1e+00
+2022-05-20 15:43:52,776 reid_baseline.train INFO: Epoch[26] Iteration[100/147] Loss1: 1.628, Loss2: 1.285, Loss3: 2.008,  Acc: 0.245, Acc2: 0.871, Acc2_pse: 0.871, Base Lr: 2.20e-03
+2022-05-20 15:44:26,112 reid_baseline.train INFO: Epoch 26 done. Time per batch: 0.798[s] Speed: 20.0[samples/s]
+2022-05-20 15:46:47,005 reid_baseline.train INFO: normal accuracy 0.6091638029782359 1.166378140449524 
+2022-05-20 15:46:47,005 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 26
+2022-05-20 15:46:47,005 reid_baseline.train INFO: Accuracy: 60.9%, best Accuracy: 61.3%, min Mean_entropy: 1e+00
+2022-05-20 15:48:11,118 reid_baseline.train INFO: Epoch[27] Iteration[100/147] Loss1: 1.658, Loss2: 1.268, Loss3: 1.948,  Acc: 0.221, Acc2: 0.872, Acc2_pse: 0.872, Base Lr: 1.92e-03
+2022-05-20 15:48:42,752 reid_baseline.train INFO: Epoch 27 done. Time per batch: 0.804[s] Speed: 19.9[samples/s]
+2022-05-20 15:51:02,855 reid_baseline.train INFO: normal accuracy 0.6061855670103092 1.1701610088348389 
+2022-05-20 15:51:02,858 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 27
+2022-05-20 15:51:02,858 reid_baseline.train INFO: Accuracy: 60.6%, best Accuracy: 61.3%, min Mean_entropy: 1e+00
+2022-05-20 15:52:29,077 reid_baseline.train INFO: Epoch[28] Iteration[100/147] Loss1: 1.638, Loss2: 1.263, Loss3: 1.956,  Acc: 0.240, Acc2: 0.873, Acc2_pse: 0.873, Base Lr: 1.66e-03
+2022-05-20 15:53:02,604 reid_baseline.train INFO: Epoch 28 done. Time per batch: 0.837[s] Speed: 19.1[samples/s]
+2022-05-20 15:55:33,455 reid_baseline.train INFO: normal accuracy 0.6075601374570446 1.0921354293823242 
+2022-05-20 15:55:33,455 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 28
+2022-05-20 15:55:33,455 reid_baseline.train INFO: Accuracy: 60.8%, best Accuracy: 61.3%, min Mean_entropy: 1e+00
+2022-05-20 15:56:52,304 reid_baseline.train INFO: Epoch[29] Iteration[100/147] Loss1: 1.643, Loss2: 1.233, Loss3: 1.948,  Acc: 0.247, Acc2: 0.884, Acc2_pse: 0.884, Base Lr: 1.42e-03
+2022-05-20 15:57:25,135 reid_baseline.train INFO: Epoch 29 done. Time per batch: 0.781[s] Speed: 20.5[samples/s]
+2022-05-20 15:59:39,445 reid_baseline.train INFO: normal accuracy 0.6087056128293241 1.0700896978378296 
+2022-05-20 15:59:40,488 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 29
+2022-05-20 15:59:40,489 reid_baseline.train INFO: Accuracy: 60.9%, best Accuracy: 60.9%, min Mean_entropy: 1e+00
+2022-05-20 16:00:57,081 reid_baseline.train INFO: Epoch[30] Iteration[100/147] Loss1: 1.641, Loss2: 1.260, Loss3: 1.941,  Acc: 0.233, Acc2: 0.880, Acc2_pse: 0.880, Base Lr: 1.19e-03
+2022-05-20 16:01:32,403 reid_baseline.train INFO: Epoch 30 done. Time per batch: 0.770[s] Speed: 20.8[samples/s]
+2022-05-20 16:04:02,649 reid_baseline.train INFO: normal accuracy 0.606643757159221 1.0888177156448364 
+2022-05-20 16:04:02,650 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 30
+2022-05-20 16:04:02,650 reid_baseline.train INFO: Accuracy: 60.7%, best Accuracy: 60.9%, min Mean_entropy: 1e+00
+2022-05-20 16:05:30,559 reid_baseline.train INFO: Epoch[31] Iteration[100/147] Loss1: 1.660, Loss2: 1.260, Loss3: 1.944,  Acc: 0.218, Acc2: 0.879, Acc2_pse: 0.879, Base Lr: 9.72e-04
+2022-05-20 16:06:05,748 reid_baseline.train INFO: Epoch 31 done. Time per batch: 0.846[s] Speed: 18.9[samples/s]
+2022-05-20 16:08:20,151 reid_baseline.train INFO: normal accuracy 0.6080183276059564 1.0592671632766724 
+2022-05-20 16:08:21,208 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 31
+2022-05-20 16:08:21,208 reid_baseline.train INFO: Accuracy: 60.8%, best Accuracy: 60.8%, min Mean_entropy: 1e+00
+2022-05-20 16:09:40,546 reid_baseline.train INFO: Epoch[32] Iteration[100/147] Loss1: 1.636, Loss2: 1.255, Loss3: 1.957,  Acc: 0.218, Acc2: 0.880, Acc2_pse: 0.880, Base Lr: 7.78e-04
+2022-05-20 16:10:18,619 reid_baseline.train INFO: Epoch 32 done. Time per batch: 0.808[s] Speed: 19.8[samples/s]
+2022-05-20 16:12:45,346 reid_baseline.train INFO: normal accuracy 0.6105383734249714 1.1000033617019653 
+2022-05-20 16:12:45,349 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 32
+2022-05-20 16:12:45,349 reid_baseline.train INFO: Accuracy: 61.1%, best Accuracy: 60.8%, min Mean_entropy: 1e+00
+2022-05-20 16:14:07,846 reid_baseline.train INFO: Epoch[33] Iteration[100/147] Loss1: 1.617, Loss2: 1.239, Loss3: 1.925,  Acc: 0.247, Acc2: 0.881, Acc2_pse: 0.881, Base Lr: 6.04e-04
+2022-05-20 16:14:43,210 reid_baseline.train INFO: Epoch 33 done. Time per batch: 0.824[s] Speed: 19.4[samples/s]
+2022-05-20 16:16:59,605 reid_baseline.train INFO: normal accuracy 0.6139747995418099 1.1110615730285645 
+2022-05-20 16:16:59,606 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 33
+2022-05-20 16:16:59,606 reid_baseline.train INFO: Accuracy: 61.4%, best Accuracy: 60.8%, min Mean_entropy: 1e+00
+2022-05-20 16:18:16,639 reid_baseline.train INFO: Epoch[34] Iteration[100/147] Loss1: 1.629, Loss2: 1.234, Loss3: 1.917,  Acc: 0.252, Acc2: 0.876, Acc2_pse: 0.876, Base Lr: 4.51e-04
+2022-05-20 16:18:51,875 reid_baseline.train INFO: Epoch 34 done. Time per batch: 0.785[s] Speed: 20.4[samples/s]
+2022-05-20 16:21:16,005 reid_baseline.train INFO: normal accuracy 0.6116838487972509 1.1036003828048706 
+2022-05-20 16:21:16,006 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 34
+2022-05-20 16:21:16,006 reid_baseline.train INFO: Accuracy: 61.2%, best Accuracy: 60.8%, min Mean_entropy: 1e+00
+2022-05-20 16:22:41,107 reid_baseline.train INFO: Epoch[35] Iteration[100/147] Loss1: 1.644, Loss2: 1.235, Loss3: 1.926,  Acc: 0.230, Acc2: 0.883, Acc2_pse: 0.883, Base Lr: 3.20e-04
+2022-05-20 16:23:13,037 reid_baseline.train INFO: Epoch 35 done. Time per batch: 0.813[s] Speed: 19.7[samples/s]
+2022-05-20 16:25:28,176 reid_baseline.train INFO: normal accuracy 0.6135166093928981 1.0522297620773315 
+2022-05-20 16:25:29,191 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 35
+2022-05-20 16:25:29,191 reid_baseline.train INFO: Accuracy: 61.4%, best Accuracy: 61.4%, min Mean_entropy: 1e+00
+2022-05-20 16:26:44,915 reid_baseline.train INFO: Epoch[36] Iteration[100/147] Loss1: 1.618, Loss2: 1.233, Loss3: 1.884,  Acc: 0.237, Acc2: 0.881, Acc2_pse: 0.881, Base Lr: 2.11e-04
+2022-05-20 16:27:15,934 reid_baseline.train INFO: Epoch 36 done. Time per batch: 0.756[s] Speed: 21.2[samples/s]
+2022-05-20 16:29:41,012 reid_baseline.train INFO: normal accuracy 0.611454753722795 1.1318564414978027 
+2022-05-20 16:29:41,013 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 36
+2022-05-20 16:29:41,013 reid_baseline.train INFO: Accuracy: 61.1%, best Accuracy: 61.4%, min Mean_entropy: 1e+00
+2022-05-20 16:30:58,659 reid_baseline.train INFO: Epoch[37] Iteration[100/147] Loss1: 1.636, Loss2: 1.251, Loss3: 1.978,  Acc: 0.221, Acc2: 0.879, Acc2_pse: 0.879, Base Lr: 1.26e-04
+2022-05-20 16:31:32,075 reid_baseline.train INFO: Epoch 37 done. Time per batch: 0.782[s] Speed: 20.5[samples/s]
+2022-05-20 16:33:45,717 reid_baseline.train INFO: normal accuracy 0.6135166093928981 1.1220169067382812 
+2022-05-20 16:33:45,719 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 37
+2022-05-20 16:33:45,719 reid_baseline.train INFO: Accuracy: 61.4%, best Accuracy: 61.4%, min Mean_entropy: 1e+00
+2022-05-20 16:35:00,255 reid_baseline.train INFO: Epoch[38] Iteration[100/147] Loss1: 1.633, Loss2: 1.204, Loss3: 1.896,  Acc: 0.225, Acc2: 0.898, Acc2_pse: 0.898, Base Lr: 6.51e-05
+2022-05-20 16:35:34,433 reid_baseline.train INFO: Epoch 38 done. Time per batch: 0.748[s] Speed: 21.4[samples/s]
+2022-05-20 16:37:50,433 reid_baseline.train INFO: normal accuracy 0.6096219931271478 1.1338233947753906 
+2022-05-20 16:37:50,433 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 38
+2022-05-20 16:37:50,434 reid_baseline.train INFO: Accuracy: 61.0%, best Accuracy: 61.4%, min Mean_entropy: 1e+00
+2022-05-20 16:39:09,651 reid_baseline.train INFO: Epoch[39] Iteration[100/147] Loss1: 1.638, Loss2: 1.244, Loss3: 1.914,  Acc: 0.220, Acc2: 0.879, Acc2_pse: 0.879, Base Lr: 2.83e-05
+2022-05-20 16:39:42,840 reid_baseline.train INFO: Epoch 39 done. Time per batch: 0.775[s] Speed: 20.6[samples/s]
+2022-05-20 16:41:59,812 reid_baseline.train INFO: normal accuracy 0.6109965635738832 1.046470046043396 
+2022-05-20 16:42:00,907 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 39
+2022-05-20 16:42:00,907 reid_baseline.train INFO: Accuracy: 61.1%, best Accuracy: 61.1%, min Mean_entropy: 1e+00
+2022-05-20 16:43:18,792 reid_baseline.train INFO: Epoch[40] Iteration[100/147] Loss1: 1.646, Loss2: 1.243, Loss3: 1.907,  Acc: 0.233, Acc2: 0.881, Acc2_pse: 0.881, Base Lr: 1.60e-05
+2022-05-20 16:43:49,562 reid_baseline.train INFO: Epoch 40 done. Time per batch: 0.749[s] Speed: 21.4[samples/s]
+2022-05-20 16:46:01,680 reid_baseline.train INFO: normal accuracy 0.6084765177548682 1.0711052417755127 
+2022-05-20 16:46:01,680 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 40
+2022-05-20 16:46:01,680 reid_baseline.train INFO: Accuracy: 60.8%, best Accuracy: 61.1%, min Mean_entropy: 1e+00
+best model preformance is 0.6109965635738832
+Loading pretrained model for finetuning from ../logs/uda/deit_base/office-home/Art2Clipart_DRI_2B_freeze_k_classifier/transformer_best_model.pth
+2022-05-20 16:48:16,231 reid_baseline.train INFO: normal accuracy 0.6109965635738832 1.046470046043396 
+2022-05-20 16:48:16,232 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Best model
+2022-05-20 16:48:16,232 reid_baseline.train INFO: Accuracy: 61.1%
+2022-05-20 16:50:14,685 reid_baseline.train INFO: normal accuracy 0.9777503090234858 0.21685978770256042 
+2022-05-20 16:50:14,685 reid_baseline.train INFO: Classify Domain Adapatation Source Results - Best model
+2022-05-20 16:50:14,685 reid_baseline.train INFO: Accuracy: 97.8%
+2022-05-20 16:50:20,674 reid_baseline INFO: Saving model in the path :../logs/uda/deit_base/office-home/Art2Product_DRI_2B_freeze_k_classifier
+2022-05-20 16:50:20,674 reid_baseline INFO: Namespace(config_file='configs/uda.yml', opts=['MODEL.DEVICE_ID', "('0')", 'OUTPUT_DIR', '../logs/uda/deit_base/office-home/Art2Product_DRI_2B_freeze_k_classifier', 'DATASETS.ROOT_TRAIN_DIR', '../data/OfficeHomeDataset/Art.txt', 'DATASETS.ROOT_TRAIN_DIR2', '../data/OfficeHomeDataset/Product.txt', 'DATASETS.ROOT_TEST_DIR', '../data/OfficeHomeDataset/Product.txt', 'DATASETS.NAMES', 'OfficeHome', 'DATASETS.NAMES2', 'OfficeHome', 'MODEL.Transformer_TYPE', 'uda_vit_base_patch16_224_TransReID'], local_rank=0, patch_size=8, dom_cls=False, layer_num=1, dom_weight=0.0, SO_path='../logs/pretrain/deit_base/office-home/Art_2Product/transformer_best_model.pth', W_p_path='../logs/pretrain/deit_base/office-home/Art_2_ProductSO_Dom_Cls/transformer_best_model.pth')
+2022-05-20 16:50:20,674 reid_baseline INFO: Loaded configuration file configs/uda.yml
+2022-05-20 16:50:20,674 reid_baseline INFO: 
+MODEL:
+  PRETRAIN_CHOICE: 'imagenet'
+  PRETRAIN_PATH: '../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth'
+  METRIC_LOSS_TYPE: 'triplet'
+  IF_LABELSMOOTH: 'on'
+  IF_WITH_CENTER: 'no'
+  NAME: 'transformer'
+  NO_MARGIN: True
+  DEVICE_ID: ('0')
+  Transformer_TYPE: 'uda_vit_base_patch16_224_TransReID' #uda_vit_small_patch16_224_TransReID
+  STRIDE_SIZE: [16, 16]
+  BLOCK_PATTERN: '3_branches'
+  TASK_TYPE: 'classify_DA'
+  UDA_STAGE: 'UDA'
+#  CAMERA_EMBEDDING: True
+#  VIEWPOINT_EMBEDDING: True
+
+INPUT:
+  SIZE_TRAIN: [256, 256]
+  SIZE_TEST: [256, 256]
+  SIZE_CROP: [224, 224]
+  PROB: 0.5 # random horizontal flip
+  RE_PROB: 0.0 # random erasing
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+
+DATASETS:
+  NAMES: ('OURAPI')
+  ROOT_TRAIN_DIR: ('./datasets/reid_datasets/Corrected_Market1501')
+  NAMES2: ('OURAPI')
+  ROOT_TRAIN_DIR2: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+  ROOT_TEST_DIR: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+
+DATALOADER:
+  SAMPLER: 'softmax'
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 4
+
+SOLVER:
+  OPTIMIZER_NAME: 'SGD'
+  MAX_EPOCHS: 40
+  BASE_LR: 0.008
+  IMS_PER_BATCH: 16
+  STEPS: [40, 80]
+  GAMMA: 0.
+  WARMUP_FACTOR: 0.01
+  WARMUP_EPOCHS: 10
+  WARMUP_METHOD: 'linear'
+  LARGE_FC_LR: False
+  CHECKPOINT_PERIOD: 10
+  LOG_PERIOD: 100
+  EVAL_PERIOD: 1
+  WEIGHT_DECAY:  1e-4
+  WEIGHT_DECAY_BIAS: 1e-4
+  BIAS_LR_FACTOR: 2
+
+TEST:
+  EVAL: True
+  IMS_PER_BATCH: 64
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+
+  WEIGHT: '../logs/trans4DA/transformer_120.pth'
+  NECK_FEAT: 'after'
+  FEAT_NORM: 'yes'
+
+OUTPUT_DIR: '../logs/trans4DA'
+
+
+
+2022-05-20 16:50:20,675 reid_baseline INFO: Running with config:
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 4
+  SAMPLER: softmax
+DATASETS:
+  NAMES: OfficeHome
+  NAMES2: OfficeHome
+  PLUS_NUM_ID: 100
+  QUERY_MINING: False
+  ROOT_TEST_DIR: ../data/OfficeHomeDataset/Product.txt
+  ROOT_TRAIN_DIR: ../data/OfficeHomeDataset/Art.txt
+  ROOT_TRAIN_DIR2: ../data/OfficeHomeDataset/Product.txt
+INPUT:
+  AA_PROB: 0.0
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+  PROB: 0.5
+  RE_PROB: 0.0
+  SIZE_CROP: [224, 224]
+  SIZE_TEST: [256, 256]
+  SIZE_TRAIN: [256, 256]
+MODEL:
+  AIE_COE: 1.5
+  BLOCK_PATTERN: 3_branches
+  CAMERA_EMBEDDING: False
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 0
+  DEVIDE_LENGTH: 4
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  FC_SETTING: TransReID
+  FROZEN: -1
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IF_LABELSMOOTH: on
+  IF_WITH_CENTER: no
+  LAST_STRIDE: 1
+  LOCAL_F: False
+  METRIC_LOSS_TYPE: triplet
+  NAME: transformer
+  NECK: bnneck
+  NO_MARGIN: True
+  NO_SHUFFLE: False
+  PATCH_SHUFFLE: 2
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH: ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+  PROB: 0.0
+  RECIP_LOSS: 
+  STRIDE_SIZE: [16, 16]
+  TASK_TYPE: classify_DA
+  THRESH: 0.23
+  TRIPLET_LOSS_WEIGHT: 1.0
+  Transformer_TYPE: uda_vit_base_patch16_224_TransReID
+  UDA_STAGE: UDA
+  VIEWPOINT_EMBEDDING: False
+  YIWEI_NUM: 5
+  lameda: 0.5
+OUTPUT_DIR: ../logs/uda/deit_base/office-home/Art2Product_DRI_2B_freeze_k_classifier
+SOLVER:
+  BASE_LR: 0.008
+  BIAS_LR_FACTOR: 2
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 10
+  CLUSTER_MARGIN: 0.3
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 1
+  GAMMA: 0.0
+  IMS_PER_BATCH: 16
+  LARGE_FC_LR: False
+  LOG_PERIOD: 100
+  MARGIN: 0.3
+  MAX_EPOCHS: 40
+  MOMENTUM: 0.9
+  OPTIMIZER_NAME: SGD
+  RANGE_ALPHA: 0
+  RANGE_BETA: 1
+  RANGE_K: 2
+  RANGE_LOSS_WEIGHT: 1
+  RANGE_MARGIN: 0.3
+  SEED: 1234
+  STEPS: (40, 80)
+  WARMUP_EPOCHS: 10
+  WARMUP_FACTOR: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WITH_PSEUDO_LABEL_FILTER: False
+TEST:
+  DIST_MAT: dist_mat.npy
+  EVAL: True
+  FEAT_NORM: yes
+  FLIP_FEATS: off
+  IMS_PER_BATCH: 64
+  NECK_FEAT: after
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+  WEIGHT: ../logs/trans4DA/transformer_120.pth
+=> Office-Home loaded
+Dataset statistics:
+train Art and valid is Product
+  ----------------------------------------
+  subset   | # ids | # images | # cameras
+  ----------------------------------------
+  train   |    65 |     2427 |         1
+  valid   |    65 |     4439 |         1
+  ----------------------------------------
+=> Office-Home loaded
+Dataset statistics:
+train Product and valid is Product
+  ----------------------------------------
+  subset   | # ids | # images | # cameras
+  ----------------------------------------
+  train   |    65 |     4439 |         1
+  valid   |    65 |     4439 |         1
+  ----------------------------------------
+using Transformer_type: uda_vit_base_patch16_224_TransReID as a backbone
+using stride: [16, 16], and part number is num_y14 * num_x14
+using drop_path_rate is : 0.1
+using aie_xishu is : 1.5
+using 3branches blocks
+distill need to choose right cls token in the pth
+Resized position embedding: %s to %s torch.Size([1, 197, 768]) torch.Size([1, 197, 768])
+Position embedding resize to height:14 width: 14
+Loading pretrained ImageNet model......from ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+===========building uda transformer===========
+label smooth on, numclasses: 65
+2022-05-20 16:50:35,861 reid_baseline.train INFO: start training
+2022-05-20 16:51:56,626 reid_baseline.train INFO: Epoch[1] Iteration[100/147] Loss1: 1.418, Loss2: 1.879, Loss3: 2.727,  Acc: 0.391, Acc2: 0.710, Acc2_pse: 0.710, Base Lr: 8.72e-04
+2022-05-20 16:52:30,581 reid_baseline.train INFO: Epoch 1 done. Time per batch: 0.780[s] Speed: 20.5[samples/s]
+2022-05-20 16:54:45,161 reid_baseline.train INFO: normal accuracy 0.7708943455733274 1.200282096862793 
+2022-05-20 16:54:46,182 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 1
+2022-05-20 16:54:46,183 reid_baseline.train INFO: Accuracy: 77.1%, best Accuracy: 77.1%, min Mean_entropy: 1e+00
+2022-05-20 16:56:03,980 reid_baseline.train INFO: Epoch[2] Iteration[100/147] Loss1: 1.430, Loss2: 1.813, Loss3: 2.679,  Acc: 0.398, Acc2: 0.726, Acc2_pse: 0.726, Base Lr: 1.66e-03
+2022-05-20 16:56:35,585 reid_baseline.train INFO: Epoch 2 done. Time per batch: 0.754[s] Speed: 21.2[samples/s]
+2022-05-20 16:58:48,615 reid_baseline.train INFO: normal accuracy 0.7724712773147105 1.2073312997817993 
+2022-05-20 16:58:48,615 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 2
+2022-05-20 16:58:48,615 reid_baseline.train INFO: Accuracy: 77.2%, best Accuracy: 77.1%, min Mean_entropy: 1e+00
+2022-05-20 17:00:03,157 reid_baseline.train INFO: Epoch[3] Iteration[100/147] Loss1: 1.472, Loss2: 1.792, Loss3: 2.645,  Acc: 0.336, Acc2: 0.739, Acc2_pse: 0.739, Base Lr: 2.46e-03
+2022-05-20 17:00:36,806 reid_baseline.train INFO: Epoch 3 done. Time per batch: 0.746[s] Speed: 21.4[samples/s]
+2022-05-20 17:02:50,229 reid_baseline.train INFO: normal accuracy 0.770218517684163 1.1652185916900635 
+2022-05-20 17:02:51,421 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 3
+2022-05-20 17:02:51,421 reid_baseline.train INFO: Accuracy: 77.0%, best Accuracy: 77.0%, min Mean_entropy: 1e+00
+2022-05-20 17:04:09,077 reid_baseline.train INFO: Epoch[4] Iteration[100/147] Loss1: 1.468, Loss2: 1.733, Loss3: 2.570,  Acc: 0.352, Acc2: 0.752, Acc2_pse: 0.752, Base Lr: 3.25e-03
+2022-05-20 17:04:44,112 reid_baseline.train INFO: Epoch 4 done. Time per batch: 0.776[s] Speed: 20.6[samples/s]
+2022-05-20 17:07:01,182 reid_baseline.train INFO: normal accuracy 0.7695426897949988 1.2029722929000854 
+2022-05-20 17:07:01,182 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 4
+2022-05-20 17:07:01,182 reid_baseline.train INFO: Accuracy: 77.0%, best Accuracy: 77.0%, min Mean_entropy: 1e+00
+2022-05-20 17:08:17,547 reid_baseline.train INFO: Epoch[5] Iteration[100/147] Loss1: 1.506, Loss2: 1.722, Loss3: 2.564,  Acc: 0.318, Acc2: 0.744, Acc2_pse: 0.744, Base Lr: 4.04e-03
+2022-05-20 17:08:51,149 reid_baseline.train INFO: Epoch 5 done. Time per batch: 0.752[s] Speed: 21.3[samples/s]
+2022-05-20 17:11:07,764 reid_baseline.train INFO: normal accuracy 0.7630096868664114 1.1351189613342285 
+2022-05-20 17:11:08,852 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 5
+2022-05-20 17:11:08,852 reid_baseline.train INFO: Accuracy: 76.3%, best Accuracy: 76.3%, min Mean_entropy: 1e+00
+2022-05-20 17:12:26,466 reid_baseline.train INFO: Epoch[6] Iteration[100/147] Loss1: 1.516, Loss2: 1.748, Loss3: 2.555,  Acc: 0.304, Acc2: 0.744, Acc2_pse: 0.744, Base Lr: 4.83e-03
+2022-05-20 17:12:57,901 reid_baseline.train INFO: Epoch 6 done. Time per batch: 0.768[s] Speed: 20.8[samples/s]
+2022-05-20 17:15:11,905 reid_baseline.train INFO: normal accuracy 0.7654877224600135 1.176063060760498 
+2022-05-20 17:15:11,907 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 6
+2022-05-20 17:15:11,907 reid_baseline.train INFO: Accuracy: 76.5%, best Accuracy: 76.3%, min Mean_entropy: 1e+00
+2022-05-20 17:16:27,194 reid_baseline.train INFO: Epoch[7] Iteration[100/147] Loss1: 1.512, Loss2: 1.676, Loss3: 2.490,  Acc: 0.301, Acc2: 0.764, Acc2_pse: 0.764, Base Lr: 5.62e-03
+2022-05-20 17:17:01,668 reid_baseline.train INFO: Epoch 7 done. Time per batch: 0.767[s] Speed: 20.9[samples/s]
+2022-05-20 17:19:17,307 reid_baseline.train INFO: normal accuracy 0.7654877224600135 1.1540504693984985 
+2022-05-20 17:19:17,307 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 7
+2022-05-20 17:19:17,307 reid_baseline.train INFO: Accuracy: 76.5%, best Accuracy: 76.3%, min Mean_entropy: 1e+00
+2022-05-20 17:20:35,452 reid_baseline.train INFO: Epoch[8] Iteration[100/147] Loss1: 1.545, Loss2: 1.672, Loss3: 2.456,  Acc: 0.280, Acc2: 0.764, Acc2_pse: 0.764, Base Lr: 6.42e-03
+2022-05-20 17:21:06,166 reid_baseline.train INFO: Epoch 8 done. Time per batch: 0.756[s] Speed: 21.2[samples/s]
+2022-05-20 17:23:22,561 reid_baseline.train INFO: normal accuracy 0.7657129984230683 1.175374984741211 
+2022-05-20 17:23:22,562 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 8
+2022-05-20 17:23:22,562 reid_baseline.train INFO: Accuracy: 76.6%, best Accuracy: 76.3%, min Mean_entropy: 1e+00
+2022-05-20 17:24:36,171 reid_baseline.train INFO: Epoch[9] Iteration[100/147] Loss1: 1.540, Loss2: 1.632, Loss3: 2.424,  Acc: 0.299, Acc2: 0.772, Acc2_pse: 0.772, Base Lr: 7.21e-03
+2022-05-20 17:25:08,230 reid_baseline.train INFO: Epoch 9 done. Time per batch: 0.723[s] Speed: 22.1[samples/s]
+2022-05-20 17:27:22,528 reid_baseline.train INFO: normal accuracy 0.7555755800856049 1.1373274326324463 
+2022-05-20 17:27:22,529 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 9
+2022-05-20 17:27:22,529 reid_baseline.train INFO: Accuracy: 75.6%, best Accuracy: 76.3%, min Mean_entropy: 1e+00
+2022-05-20 17:28:41,649 reid_baseline.train INFO: Epoch[10] Iteration[100/147] Loss1: 1.579, Loss2: 1.574, Loss3: 2.326,  Acc: 0.263, Acc2: 0.788, Acc2_pse: 0.788, Base Lr: 6.83e-03
+2022-05-20 17:29:11,905 reid_baseline.train INFO: Epoch 10 done. Time per batch: 0.765[s] Speed: 20.9[samples/s]
+2022-05-20 17:31:27,607 reid_baseline.train INFO: normal accuracy 0.7594052714575354 1.1096875667572021 
+2022-05-20 17:31:28,644 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 10
+2022-05-20 17:31:28,644 reid_baseline.train INFO: Accuracy: 75.9%, best Accuracy: 75.9%, min Mean_entropy: 1e+00
+2022-05-20 17:32:44,881 reid_baseline.train INFO: Epoch[11] Iteration[100/147] Loss1: 1.562, Loss2: 1.549, Loss3: 2.354,  Acc: 0.275, Acc2: 0.801, Acc2_pse: 0.801, Base Lr: 6.60e-03
+2022-05-20 17:33:16,926 reid_baseline.train INFO: Epoch 11 done. Time per batch: 0.747[s] Speed: 21.4[samples/s]
+2022-05-20 17:35:35,167 reid_baseline.train INFO: normal accuracy 0.7567019599008786 1.085767388343811 
+2022-05-20 17:35:36,298 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 11
+2022-05-20 17:35:36,298 reid_baseline.train INFO: Accuracy: 75.7%, best Accuracy: 75.7%, min Mean_entropy: 1e+00
+2022-05-20 17:36:55,271 reid_baseline.train INFO: Epoch[12] Iteration[100/147] Loss1: 1.561, Loss2: 1.524, Loss3: 2.258,  Acc: 0.271, Acc2: 0.780, Acc2_pse: 0.780, Base Lr: 6.35e-03
+2022-05-20 17:37:28,174 reid_baseline.train INFO: Epoch 12 done. Time per batch: 0.776[s] Speed: 20.6[samples/s]
+2022-05-20 17:39:47,952 reid_baseline.train INFO: normal accuracy 0.7605316512728092 1.0937254428863525 
+2022-05-20 17:39:47,954 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 12
+2022-05-20 17:39:47,955 reid_baseline.train INFO: Accuracy: 76.1%, best Accuracy: 75.7%, min Mean_entropy: 1e+00
+2022-05-20 17:41:06,001 reid_baseline.train INFO: Epoch[13] Iteration[100/147] Loss1: 1.592, Loss2: 1.497, Loss3: 2.185,  Acc: 0.247, Acc2: 0.793, Acc2_pse: 0.793, Base Lr: 6.09e-03
+2022-05-20 17:41:37,107 reid_baseline.train INFO: Epoch 13 done. Time per batch: 0.757[s] Speed: 21.1[samples/s]
+2022-05-20 17:43:47,877 reid_baseline.train INFO: normal accuracy 0.7634602387925208 0.9661920666694641 
+2022-05-20 17:43:48,983 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 13
+2022-05-20 17:43:48,983 reid_baseline.train INFO: Accuracy: 76.3%, best Accuracy: 76.3%, min Mean_entropy: 1e+00
+2022-05-20 17:45:06,329 reid_baseline.train INFO: Epoch[14] Iteration[100/147] Loss1: 1.569, Loss2: 1.454, Loss3: 2.206,  Acc: 0.262, Acc2: 0.815, Acc2_pse: 0.815, Base Lr: 5.82e-03
+2022-05-20 17:45:38,095 reid_baseline.train INFO: Epoch 14 done. Time per batch: 0.757[s] Speed: 21.1[samples/s]
+2022-05-20 17:47:51,562 reid_baseline.train INFO: normal accuracy 0.7618833070511376 1.0448989868164062 
+2022-05-20 17:47:51,564 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 14
+2022-05-20 17:47:51,565 reid_baseline.train INFO: Accuracy: 76.2%, best Accuracy: 76.3%, min Mean_entropy: 1e+00
+2022-05-20 17:49:06,445 reid_baseline.train INFO: Epoch[15] Iteration[100/147] Loss1: 1.565, Loss2: 1.441, Loss3: 2.173,  Acc: 0.272, Acc2: 0.816, Acc2_pse: 0.816, Base Lr: 5.54e-03
+2022-05-20 17:49:39,221 reid_baseline.train INFO: Epoch 15 done. Time per batch: 0.753[s] Speed: 21.3[samples/s]
+2022-05-20 17:51:53,475 reid_baseline.train INFO: normal accuracy 0.7603063753097544 1.0259082317352295 
+2022-05-20 17:51:53,476 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 15
+2022-05-20 17:51:53,476 reid_baseline.train INFO: Accuracy: 76.0%, best Accuracy: 76.3%, min Mean_entropy: 1e+00
+2022-05-20 17:53:08,318 reid_baseline.train INFO: Epoch[16] Iteration[100/147] Loss1: 1.568, Loss2: 1.432, Loss3: 2.135,  Acc: 0.250, Acc2: 0.829, Acc2_pse: 0.829, Base Lr: 5.24e-03
+2022-05-20 17:53:42,306 reid_baseline.train INFO: Epoch 16 done. Time per batch: 0.755[s] Speed: 21.2[samples/s]
+2022-05-20 17:55:59,419 reid_baseline.train INFO: normal accuracy 0.7618833070511376 0.9983336329460144 
+2022-05-20 17:55:59,420 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 16
+2022-05-20 17:55:59,420 reid_baseline.train INFO: Accuracy: 76.2%, best Accuracy: 76.3%, min Mean_entropy: 1e+00
+2022-05-20 17:57:12,630 reid_baseline.train INFO: Epoch[17] Iteration[100/147] Loss1: 1.606, Loss2: 1.422, Loss3: 2.165,  Acc: 0.244, Acc2: 0.823, Acc2_pse: 0.823, Base Lr: 4.94e-03
+2022-05-20 17:57:46,585 reid_baseline.train INFO: Epoch 17 done. Time per batch: 0.739[s] Speed: 21.7[samples/s]
+2022-05-20 18:00:02,808 reid_baseline.train INFO: normal accuracy 0.7603063753097544 0.9847010374069214 
+2022-05-20 18:00:02,809 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 17
+2022-05-20 18:00:02,809 reid_baseline.train INFO: Accuracy: 76.0%, best Accuracy: 76.3%, min Mean_entropy: 1e+00
+2022-05-20 18:01:19,615 reid_baseline.train INFO: Epoch[18] Iteration[100/147] Loss1: 1.595, Loss2: 1.360, Loss3: 2.092,  Acc: 0.257, Acc2: 0.845, Acc2_pse: 0.845, Base Lr: 4.63e-03
+2022-05-20 18:01:49,975 reid_baseline.train INFO: Epoch 18 done. Time per batch: 0.733[s] Speed: 21.8[samples/s]
+2022-05-20 18:04:08,962 reid_baseline.train INFO: normal accuracy 0.7630096868664114 0.9782266616821289 
+2022-05-20 18:04:08,962 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 18
+2022-05-20 18:04:08,962 reid_baseline.train INFO: Accuracy: 76.3%, best Accuracy: 76.3%, min Mean_entropy: 1e+00
+2022-05-20 18:05:26,142 reid_baseline.train INFO: Epoch[19] Iteration[100/147] Loss1: 1.589, Loss2: 1.365, Loss3: 2.096,  Acc: 0.254, Acc2: 0.845, Acc2_pse: 0.845, Base Lr: 4.32e-03
+2022-05-20 18:05:58,060 reid_baseline.train INFO: Epoch 19 done. Time per batch: 0.762[s] Speed: 21.0[samples/s]
+2022-05-20 18:08:19,377 reid_baseline.train INFO: normal accuracy 0.758053615679207 0.9215314388275146 
+2022-05-20 18:08:20,410 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 19
+2022-05-20 18:08:20,410 reid_baseline.train INFO: Accuracy: 75.8%, best Accuracy: 75.8%, min Mean_entropy: 0.9
+2022-05-20 18:09:39,737 reid_baseline.train INFO: Epoch[20] Iteration[100/147] Loss1: 1.606, Loss2: 1.337, Loss3: 2.054,  Acc: 0.239, Acc2: 0.859, Acc2_pse: 0.859, Base Lr: 4.01e-03
+2022-05-20 18:10:10,730 reid_baseline.train INFO: Epoch 20 done. Time per batch: 0.771[s] Speed: 20.7[samples/s]
+2022-05-20 18:12:28,140 reid_baseline.train INFO: normal accuracy 0.7661635503491777 0.9308642148971558 
+2022-05-20 18:12:28,143 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 20
+2022-05-20 18:12:28,143 reid_baseline.train INFO: Accuracy: 76.6%, best Accuracy: 75.8%, min Mean_entropy: 0.9
+2022-05-20 18:13:49,091 reid_baseline.train INFO: Epoch[21] Iteration[100/147] Loss1: 1.599, Loss2: 1.370, Loss3: 2.072,  Acc: 0.240, Acc2: 0.838, Acc2_pse: 0.838, Base Lr: 3.69e-03
+2022-05-20 18:14:26,777 reid_baseline.train INFO: Epoch 21 done. Time per batch: 0.810[s] Speed: 19.7[samples/s]
+2022-05-20 18:16:45,197 reid_baseline.train INFO: normal accuracy 0.7614327551250282 0.9415568113327026 
+2022-05-20 18:16:45,198 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 21
+2022-05-20 18:16:45,198 reid_baseline.train INFO: Accuracy: 76.1%, best Accuracy: 75.8%, min Mean_entropy: 0.9
+2022-05-20 18:18:02,057 reid_baseline.train INFO: Epoch[22] Iteration[100/147] Loss1: 1.625, Loss2: 1.344, Loss3: 2.046,  Acc: 0.249, Acc2: 0.849, Acc2_pse: 0.849, Base Lr: 3.38e-03
+2022-05-20 18:18:34,539 reid_baseline.train INFO: Epoch 22 done. Time per batch: 0.759[s] Speed: 21.1[samples/s]
+2022-05-20 18:20:55,106 reid_baseline.train INFO: normal accuracy 0.7621085830141924 0.9502817392349243 
+2022-05-20 18:20:55,109 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 22
+2022-05-20 18:20:55,109 reid_baseline.train INFO: Accuracy: 76.2%, best Accuracy: 75.8%, min Mean_entropy: 0.9
+2022-05-20 18:22:13,739 reid_baseline.train INFO: Epoch[23] Iteration[100/147] Loss1: 1.628, Loss2: 1.301, Loss3: 2.011,  Acc: 0.227, Acc2: 0.868, Acc2_pse: 0.868, Base Lr: 3.08e-03
+2022-05-20 18:22:46,934 reid_baseline.train INFO: Epoch 23 done. Time per batch: 0.775[s] Speed: 20.6[samples/s]
+2022-05-20 18:25:03,860 reid_baseline.train INFO: normal accuracy 0.7618833070511376 0.948633074760437 
+2022-05-20 18:25:03,863 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 23
+2022-05-20 18:25:03,863 reid_baseline.train INFO: Accuracy: 76.2%, best Accuracy: 75.8%, min Mean_entropy: 0.9
+2022-05-20 18:26:20,567 reid_baseline.train INFO: Epoch[24] Iteration[100/147] Loss1: 1.604, Loss2: 1.304, Loss3: 2.020,  Acc: 0.238, Acc2: 0.862, Acc2_pse: 0.862, Base Lr: 2.77e-03
+2022-05-20 18:26:53,613 reid_baseline.train INFO: Epoch 24 done. Time per batch: 0.766[s] Speed: 20.9[samples/s]
+2022-05-20 18:29:14,435 reid_baseline.train INFO: normal accuracy 0.7621085830141924 0.8930661678314209 
+2022-05-20 18:29:15,446 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 24
+2022-05-20 18:29:15,447 reid_baseline.train INFO: Accuracy: 76.2%, best Accuracy: 76.2%, min Mean_entropy: 0.9
+2022-05-20 18:30:32,231 reid_baseline.train INFO: Epoch[25] Iteration[100/147] Loss1: 1.617, Loss2: 1.314, Loss3: 2.021,  Acc: 0.228, Acc2: 0.872, Acc2_pse: 0.872, Base Lr: 2.48e-03
+2022-05-20 18:31:05,933 reid_baseline.train INFO: Epoch 25 done. Time per batch: 0.760[s] Speed: 21.0[samples/s]
+2022-05-20 18:33:20,186 reid_baseline.train INFO: normal accuracy 0.7675152061275062 0.8835313320159912 
+2022-05-20 18:33:21,263 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 25
+2022-05-20 18:33:21,263 reid_baseline.train INFO: Accuracy: 76.8%, best Accuracy: 76.8%, min Mean_entropy: 0.9
+2022-05-20 18:34:36,801 reid_baseline.train INFO: Epoch[26] Iteration[100/147] Loss1: 1.608, Loss2: 1.285, Loss3: 2.008,  Acc: 0.254, Acc2: 0.871, Acc2_pse: 0.871, Base Lr: 2.20e-03
+2022-05-20 18:35:10,462 reid_baseline.train INFO: Epoch 26 done. Time per batch: 0.758[s] Speed: 21.1[samples/s]
+2022-05-20 18:37:27,633 reid_baseline.train INFO: normal accuracy 0.7639107907186303 0.9417012333869934 
+2022-05-20 18:37:27,634 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 26
+2022-05-20 18:37:27,634 reid_baseline.train INFO: Accuracy: 76.4%, best Accuracy: 76.8%, min Mean_entropy: 0.9
+2022-05-20 18:38:44,431 reid_baseline.train INFO: Epoch[27] Iteration[100/147] Loss1: 1.632, Loss2: 1.268, Loss3: 1.948,  Acc: 0.238, Acc2: 0.871, Acc2_pse: 0.871, Base Lr: 1.92e-03
+2022-05-20 18:39:17,184 reid_baseline.train INFO: Epoch 27 done. Time per batch: 0.760[s] Speed: 21.0[samples/s]
+2022-05-20 18:41:37,850 reid_baseline.train INFO: normal accuracy 0.7648118945708493 0.968777060508728 
+2022-05-20 18:41:37,850 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 27
+2022-05-20 18:41:37,850 reid_baseline.train INFO: Accuracy: 76.5%, best Accuracy: 76.8%, min Mean_entropy: 0.9
+2022-05-20 18:42:54,244 reid_baseline.train INFO: Epoch[28] Iteration[100/147] Loss1: 1.621, Loss2: 1.262, Loss3: 1.955,  Acc: 0.233, Acc2: 0.874, Acc2_pse: 0.874, Base Lr: 1.66e-03
+2022-05-20 18:43:21,446 reid_baseline.train INFO: Epoch 28 done. Time per batch: 0.724[s] Speed: 22.1[samples/s]
+2022-05-20 18:45:32,253 reid_baseline.train INFO: normal accuracy 0.7605316512728092 0.8885725140571594 
+2022-05-20 18:45:32,255 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 28
+2022-05-20 18:45:32,255 reid_baseline.train INFO: Accuracy: 76.1%, best Accuracy: 76.8%, min Mean_entropy: 0.9
+2022-05-20 18:46:41,903 reid_baseline.train INFO: Epoch[29] Iteration[100/147] Loss1: 1.627, Loss2: 1.233, Loss3: 1.948,  Acc: 0.236, Acc2: 0.884, Acc2_pse: 0.884, Base Lr: 1.42e-03
+2022-05-20 18:47:10,423 reid_baseline.train INFO: Epoch 29 done. Time per batch: 0.686[s] Speed: 23.3[samples/s]
+2022-05-20 18:49:18,817 reid_baseline.train INFO: normal accuracy 0.7614327551250282 0.8662160634994507 
+2022-05-20 18:49:19,864 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 29
+2022-05-20 18:49:19,864 reid_baseline.train INFO: Accuracy: 76.1%, best Accuracy: 76.1%, min Mean_entropy: 0.9
+2022-05-20 18:50:31,472 reid_baseline.train INFO: Epoch[30] Iteration[100/147] Loss1: 1.628, Loss2: 1.260, Loss3: 1.941,  Acc: 0.236, Acc2: 0.880, Acc2_pse: 0.880, Base Lr: 1.19e-03
+2022-05-20 18:51:00,182 reid_baseline.train INFO: Epoch 30 done. Time per batch: 0.692[s] Speed: 23.1[samples/s]
+2022-05-20 18:53:14,369 reid_baseline.train INFO: normal accuracy 0.7600810993466998 0.8895807862281799 
+2022-05-20 18:53:14,371 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 30
+2022-05-20 18:53:14,371 reid_baseline.train INFO: Accuracy: 76.0%, best Accuracy: 76.1%, min Mean_entropy: 0.9
+2022-05-20 18:54:26,706 reid_baseline.train INFO: Epoch[31] Iteration[100/147] Loss1: 1.633, Loss2: 1.260, Loss3: 1.944,  Acc: 0.240, Acc2: 0.879, Acc2_pse: 0.879, Base Lr: 9.72e-04
+2022-05-20 18:54:55,538 reid_baseline.train INFO: Epoch 31 done. Time per batch: 0.697[s] Speed: 23.0[samples/s]
+2022-05-20 18:57:00,318 reid_baseline.train INFO: normal accuracy 0.7630096868664114 0.8556368947029114 
+2022-05-20 18:57:01,400 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 31
+2022-05-20 18:57:01,401 reid_baseline.train INFO: Accuracy: 76.3%, best Accuracy: 76.3%, min Mean_entropy: 0.9
+2022-05-20 18:58:12,162 reid_baseline.train INFO: Epoch[32] Iteration[100/147] Loss1: 1.629, Loss2: 1.255, Loss3: 1.957,  Acc: 0.220, Acc2: 0.880, Acc2_pse: 0.880, Base Lr: 7.78e-04
+2022-05-20 18:58:44,339 reid_baseline.train INFO: Epoch 32 done. Time per batch: 0.710[s] Speed: 22.5[samples/s]
+2022-05-20 19:00:52,408 reid_baseline.train INFO: normal accuracy 0.7641360666816851 0.8926181793212891 
+2022-05-20 19:00:52,408 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 32
+2022-05-20 19:00:52,408 reid_baseline.train INFO: Accuracy: 76.4%, best Accuracy: 76.3%, min Mean_entropy: 0.9
+2022-05-20 19:02:04,426 reid_baseline.train INFO: Epoch[33] Iteration[100/147] Loss1: 1.602, Loss2: 1.239, Loss3: 1.925,  Acc: 0.254, Acc2: 0.881, Acc2_pse: 0.881, Base Lr: 6.04e-04
+2022-05-20 19:02:34,324 reid_baseline.train INFO: Epoch 33 done. Time per batch: 0.712[s] Speed: 22.5[samples/s]
+2022-05-20 19:04:40,793 reid_baseline.train INFO: normal accuracy 0.7652624464969587 0.9067251682281494 
+2022-05-20 19:04:40,793 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 33
+2022-05-20 19:04:40,793 reid_baseline.train INFO: Accuracy: 76.5%, best Accuracy: 76.3%, min Mean_entropy: 0.9
+2022-05-20 19:05:50,989 reid_baseline.train INFO: Epoch[34] Iteration[100/147] Loss1: 1.618, Loss2: 1.234, Loss3: 1.917,  Acc: 0.249, Acc2: 0.876, Acc2_pse: 0.876, Base Lr: 4.51e-04
+2022-05-20 19:06:23,200 reid_baseline.train INFO: Epoch 34 done. Time per batch: 0.715[s] Speed: 22.4[samples/s]
+2022-05-20 19:08:33,230 reid_baseline.train INFO: normal accuracy 0.760756927235864 0.9030797481536865 
+2022-05-20 19:08:33,233 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 34
+2022-05-20 19:08:33,233 reid_baseline.train INFO: Accuracy: 76.1%, best Accuracy: 76.3%, min Mean_entropy: 0.9
+2022-05-20 19:09:46,072 reid_baseline.train INFO: Epoch[35] Iteration[100/147] Loss1: 1.629, Loss2: 1.235, Loss3: 1.926,  Acc: 0.231, Acc2: 0.884, Acc2_pse: 0.884, Base Lr: 3.20e-04
+2022-05-20 19:10:15,273 reid_baseline.train INFO: Epoch 35 done. Time per batch: 0.707[s] Speed: 22.6[samples/s]
+2022-05-20 19:12:22,998 reid_baseline.train INFO: normal accuracy 0.7634602387925208 0.8479909300804138 
+2022-05-20 19:12:23,967 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 35
+2022-05-20 19:12:23,967 reid_baseline.train INFO: Accuracy: 76.3%, best Accuracy: 76.3%, min Mean_entropy: 0.8
+2022-05-20 19:13:32,929 reid_baseline.train INFO: Epoch[36] Iteration[100/147] Loss1: 1.606, Loss2: 1.233, Loss3: 1.884,  Acc: 0.251, Acc2: 0.881, Acc2_pse: 0.881, Base Lr: 2.11e-04
+2022-05-20 19:14:02,639 reid_baseline.train INFO: Epoch 36 done. Time per batch: 0.699[s] Speed: 22.9[samples/s]
+2022-05-20 19:16:15,010 reid_baseline.train INFO: normal accuracy 0.7621085830141924 0.9424620866775513 
+2022-05-20 19:16:15,010 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 36
+2022-05-20 19:16:15,011 reid_baseline.train INFO: Accuracy: 76.2%, best Accuracy: 76.3%, min Mean_entropy: 0.8
+2022-05-20 19:17:22,729 reid_baseline.train INFO: Epoch[37] Iteration[100/147] Loss1: 1.621, Loss2: 1.252, Loss3: 1.978,  Acc: 0.229, Acc2: 0.879, Acc2_pse: 0.879, Base Lr: 1.26e-04
+2022-05-20 19:17:53,829 reid_baseline.train INFO: Epoch 37 done. Time per batch: 0.696[s] Speed: 23.0[samples/s]
+2022-05-20 19:19:58,173 reid_baseline.train INFO: normal accuracy 0.7625591349403019 0.9263295531272888 
+2022-05-20 19:19:58,173 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 37
+2022-05-20 19:19:58,174 reid_baseline.train INFO: Accuracy: 76.3%, best Accuracy: 76.3%, min Mean_entropy: 0.8
+2022-05-20 19:21:07,423 reid_baseline.train INFO: Epoch[38] Iteration[100/147] Loss1: 1.618, Loss2: 1.204, Loss3: 1.896,  Acc: 0.258, Acc2: 0.898, Acc2_pse: 0.898, Base Lr: 6.51e-05
+2022-05-20 19:21:38,012 reid_baseline.train INFO: Epoch 38 done. Time per batch: 0.688[s] Speed: 23.3[samples/s]
+2022-05-20 19:23:44,051 reid_baseline.train INFO: normal accuracy 0.7639107907186303 0.9357185363769531 
+2022-05-20 19:23:44,052 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 38
+2022-05-20 19:23:44,052 reid_baseline.train INFO: Accuracy: 76.4%, best Accuracy: 76.3%, min Mean_entropy: 0.8
+2022-05-20 19:24:55,244 reid_baseline.train INFO: Epoch[39] Iteration[100/147] Loss1: 1.620, Loss2: 1.244, Loss3: 1.914,  Acc: 0.234, Acc2: 0.877, Acc2_pse: 0.877, Base Lr: 2.83e-05
+2022-05-20 19:25:24,550 reid_baseline.train INFO: Epoch 39 done. Time per batch: 0.693[s] Speed: 23.1[samples/s]
+2022-05-20 19:27:35,652 reid_baseline.train INFO: normal accuracy 0.7616580310880829 0.8464090824127197 
+2022-05-20 19:27:36,691 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 39
+2022-05-20 19:27:36,691 reid_baseline.train INFO: Accuracy: 76.2%, best Accuracy: 76.2%, min Mean_entropy: 0.8
+2022-05-20 19:28:47,256 reid_baseline.train INFO: Epoch[40] Iteration[100/147] Loss1: 1.632, Loss2: 1.243, Loss3: 1.907,  Acc: 0.240, Acc2: 0.880, Acc2_pse: 0.880, Base Lr: 1.60e-05
+2022-05-20 19:29:15,988 reid_baseline.train INFO: Epoch 40 done. Time per batch: 0.685[s] Speed: 23.4[samples/s]
+2022-05-20 19:31:21,996 reid_baseline.train INFO: normal accuracy 0.7594052714575354 0.8747536540031433 
+2022-05-20 19:31:21,996 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 40
+2022-05-20 19:31:21,996 reid_baseline.train INFO: Accuracy: 75.9%, best Accuracy: 76.2%, min Mean_entropy: 0.8
+best model preformance is 0.7616580310880829
+Loading pretrained model for finetuning from ../logs/uda/deit_base/office-home/Art2Product_DRI_2B_freeze_k_classifier/transformer_best_model.pth
+2022-05-20 19:33:29,409 reid_baseline.train INFO: normal accuracy 0.7616580310880829 0.8464090824127197 
+2022-05-20 19:33:29,410 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Best model
+2022-05-20 19:33:29,410 reid_baseline.train INFO: Accuracy: 76.2%
+2022-05-20 19:35:20,106 reid_baseline.train INFO: normal accuracy 0.9777503090234858 0.21688438951969147 
+2022-05-20 19:35:20,106 reid_baseline.train INFO: Classify Domain Adapatation Source Results - Best model
+2022-05-20 19:35:20,106 reid_baseline.train INFO: Accuracy: 97.8%
+2022-05-20 19:35:25,968 reid_baseline INFO: Saving model in the path :../logs/uda/deit_base/office-home/Art2Real_World_DRI_2B_freeze_k_classifier
+2022-05-20 19:35:25,969 reid_baseline INFO: Namespace(config_file='configs/uda.yml', opts=['MODEL.DEVICE_ID', "('0')", 'OUTPUT_DIR', '../logs/uda/deit_base/office-home/Art2Real_World_DRI_2B_freeze_k_classifier', 'DATASETS.ROOT_TRAIN_DIR', '../data/OfficeHomeDataset/Art.txt', 'DATASETS.ROOT_TRAIN_DIR2', '../data/OfficeHomeDataset/Real_World.txt', 'DATASETS.ROOT_TEST_DIR', '../data/OfficeHomeDataset/Real_World.txt', 'DATASETS.NAMES', 'OfficeHome', 'DATASETS.NAMES2', 'OfficeHome', 'MODEL.Transformer_TYPE', 'uda_vit_base_patch16_224_TransReID'], local_rank=0, patch_size=8, dom_cls=False, layer_num=1, dom_weight=0.0, SO_path='../logs/pretrain/deit_base/office-home/Art_2Real_World/transformer_best_model.pth', W_p_path='../logs/pretrain/deit_base/office-home/Art_2_Real_WorldSO_Dom_Cls/transformer_best_model.pth')
+2022-05-20 19:35:25,969 reid_baseline INFO: Loaded configuration file configs/uda.yml
+2022-05-20 19:35:25,969 reid_baseline INFO: 
+MODEL:
+  PRETRAIN_CHOICE: 'imagenet'
+  PRETRAIN_PATH: '../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth'
+  METRIC_LOSS_TYPE: 'triplet'
+  IF_LABELSMOOTH: 'on'
+  IF_WITH_CENTER: 'no'
+  NAME: 'transformer'
+  NO_MARGIN: True
+  DEVICE_ID: ('0')
+  Transformer_TYPE: 'uda_vit_base_patch16_224_TransReID' #uda_vit_small_patch16_224_TransReID
+  STRIDE_SIZE: [16, 16]
+  BLOCK_PATTERN: '3_branches'
+  TASK_TYPE: 'classify_DA'
+  UDA_STAGE: 'UDA'
+#  CAMERA_EMBEDDING: True
+#  VIEWPOINT_EMBEDDING: True
+
+INPUT:
+  SIZE_TRAIN: [256, 256]
+  SIZE_TEST: [256, 256]
+  SIZE_CROP: [224, 224]
+  PROB: 0.5 # random horizontal flip
+  RE_PROB: 0.0 # random erasing
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+
+DATASETS:
+  NAMES: ('OURAPI')
+  ROOT_TRAIN_DIR: ('./datasets/reid_datasets/Corrected_Market1501')
+  NAMES2: ('OURAPI')
+  ROOT_TRAIN_DIR2: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+  ROOT_TEST_DIR: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+
+DATALOADER:
+  SAMPLER: 'softmax'
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 4
+
+SOLVER:
+  OPTIMIZER_NAME: 'SGD'
+  MAX_EPOCHS: 40
+  BASE_LR: 0.008
+  IMS_PER_BATCH: 16
+  STEPS: [40, 80]
+  GAMMA: 0.
+  WARMUP_FACTOR: 0.01
+  WARMUP_EPOCHS: 10
+  WARMUP_METHOD: 'linear'
+  LARGE_FC_LR: False
+  CHECKPOINT_PERIOD: 10
+  LOG_PERIOD: 100
+  EVAL_PERIOD: 1
+  WEIGHT_DECAY:  1e-4
+  WEIGHT_DECAY_BIAS: 1e-4
+  BIAS_LR_FACTOR: 2
+
+TEST:
+  EVAL: True
+  IMS_PER_BATCH: 64
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+
+  WEIGHT: '../logs/trans4DA/transformer_120.pth'
+  NECK_FEAT: 'after'
+  FEAT_NORM: 'yes'
+
+OUTPUT_DIR: '../logs/trans4DA'
+
+
+
+2022-05-20 19:35:25,969 reid_baseline INFO: Running with config:
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 4
+  SAMPLER: softmax
+DATASETS:
+  NAMES: OfficeHome
+  NAMES2: OfficeHome
+  PLUS_NUM_ID: 100
+  QUERY_MINING: False
+  ROOT_TEST_DIR: ../data/OfficeHomeDataset/Real_World.txt
+  ROOT_TRAIN_DIR: ../data/OfficeHomeDataset/Art.txt
+  ROOT_TRAIN_DIR2: ../data/OfficeHomeDataset/Real_World.txt
+INPUT:
+  AA_PROB: 0.0
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+  PROB: 0.5
+  RE_PROB: 0.0
+  SIZE_CROP: [224, 224]
+  SIZE_TEST: [256, 256]
+  SIZE_TRAIN: [256, 256]
+MODEL:
+  AIE_COE: 1.5
+  BLOCK_PATTERN: 3_branches
+  CAMERA_EMBEDDING: False
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 0
+  DEVIDE_LENGTH: 4
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  FC_SETTING: TransReID
+  FROZEN: -1
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IF_LABELSMOOTH: on
+  IF_WITH_CENTER: no
+  LAST_STRIDE: 1
+  LOCAL_F: False
+  METRIC_LOSS_TYPE: triplet
+  NAME: transformer
+  NECK: bnneck
+  NO_MARGIN: True
+  NO_SHUFFLE: False
+  PATCH_SHUFFLE: 2
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH: ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+  PROB: 0.0
+  RECIP_LOSS: 
+  STRIDE_SIZE: [16, 16]
+  TASK_TYPE: classify_DA
+  THRESH: 0.23
+  TRIPLET_LOSS_WEIGHT: 1.0
+  Transformer_TYPE: uda_vit_base_patch16_224_TransReID
+  UDA_STAGE: UDA
+  VIEWPOINT_EMBEDDING: False
+  YIWEI_NUM: 5
+  lameda: 0.5
+OUTPUT_DIR: ../logs/uda/deit_base/office-home/Art2Real_World_DRI_2B_freeze_k_classifier
+SOLVER:
+  BASE_LR: 0.008
+  BIAS_LR_FACTOR: 2
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 10
+  CLUSTER_MARGIN: 0.3
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 1
+  GAMMA: 0.0
+  IMS_PER_BATCH: 16
+  LARGE_FC_LR: False
+  LOG_PERIOD: 100
+  MARGIN: 0.3
+  MAX_EPOCHS: 40
+  MOMENTUM: 0.9
+  OPTIMIZER_NAME: SGD
+  RANGE_ALPHA: 0
+  RANGE_BETA: 1
+  RANGE_K: 2
+  RANGE_LOSS_WEIGHT: 1
+  RANGE_MARGIN: 0.3
+  SEED: 1234
+  STEPS: (40, 80)
+  WARMUP_EPOCHS: 10
+  WARMUP_FACTOR: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WITH_PSEUDO_LABEL_FILTER: False
+TEST:
+  DIST_MAT: dist_mat.npy
+  EVAL: True
+  FEAT_NORM: yes
+  FLIP_FEATS: off
+  IMS_PER_BATCH: 64
+  NECK_FEAT: after
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+  WEIGHT: ../logs/trans4DA/transformer_120.pth
+=> Office-Home loaded
+Dataset statistics:
+train Art and valid is Real_World
+  ----------------------------------------
+  subset   | # ids | # images | # cameras
+  ----------------------------------------
+  train   |    65 |     2427 |         1
+  valid   |    65 |     4357 |         1
+  ----------------------------------------
+=> Office-Home loaded
+Dataset statistics:
+train Real_World and valid is Real_World
+  ----------------------------------------
+  subset   | # ids | # images | # cameras
+  ----------------------------------------
+  train   |    65 |     4357 |         1
+  valid   |    65 |     4357 |         1
+  ----------------------------------------
+using Transformer_type: uda_vit_base_patch16_224_TransReID as a backbone
+using stride: [16, 16], and part number is num_y14 * num_x14
+using drop_path_rate is : 0.1
+using aie_xishu is : 1.5
+using 3branches blocks
+distill need to choose right cls token in the pth
+Resized position embedding: %s to %s torch.Size([1, 197, 768]) torch.Size([1, 197, 768])
+Position embedding resize to height:14 width: 14
+Loading pretrained ImageNet model......from ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+===========building uda transformer===========
+label smooth on, numclasses: 65
+2022-05-20 19:35:42,021 reid_baseline.train INFO: start training
+2022-05-20 19:37:00,978 reid_baseline.train INFO: Epoch[1] Iteration[100/147] Loss1: 1.405, Loss2: 1.879, Loss3: 2.727,  Acc: 0.430, Acc2: 0.710, Acc2_pse: 0.710, Base Lr: 8.72e-04
+2022-05-20 19:37:30,877 reid_baseline.train INFO: Epoch 1 done. Time per batch: 0.739[s] Speed: 21.6[samples/s]
+2022-05-20 19:43:19,854 reid_baseline.train INFO: normal accuracy 0.82419095708056 0.9981436729431152 
+2022-05-20 19:43:20,784 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 1
+2022-05-20 19:43:20,785 reid_baseline.train INFO: Accuracy: 82.4%, best Accuracy: 82.4%, min Mean_entropy: 1e+00
+2022-05-20 19:44:34,269 reid_baseline.train INFO: Epoch[2] Iteration[100/147] Loss1: 1.409, Loss2: 1.813, Loss3: 2.679,  Acc: 0.402, Acc2: 0.726, Acc2_pse: 0.726, Base Lr: 1.66e-03
+2022-05-20 19:45:04,411 reid_baseline.train INFO: Epoch 2 done. Time per batch: 0.714[s] Speed: 22.4[samples/s]
+2022-05-20 19:50:49,065 reid_baseline.train INFO: normal accuracy 0.8170759697039247 1.0021361112594604 
+2022-05-20 19:50:49,066 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 2
+2022-05-20 19:50:49,066 reid_baseline.train INFO: Accuracy: 81.7%, best Accuracy: 82.4%, min Mean_entropy: 1e+00
+2022-05-20 19:51:59,651 reid_baseline.train INFO: Epoch[3] Iteration[100/147] Loss1: 1.467, Loss2: 1.792, Loss3: 2.645,  Acc: 0.340, Acc2: 0.740, Acc2_pse: 0.740, Base Lr: 2.46e-03
+2022-05-20 19:52:31,672 reid_baseline.train INFO: Epoch 3 done. Time per batch: 0.707[s] Speed: 22.6[samples/s]
+2022-05-20 19:58:20,301 reid_baseline.train INFO: normal accuracy 0.8175350011475786 0.9543735384941101 
+2022-05-20 19:58:21,313 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 3
+2022-05-20 19:58:21,313 reid_baseline.train INFO: Accuracy: 81.8%, best Accuracy: 81.8%, min Mean_entropy: 1e+00
+2022-05-20 19:59:32,436 reid_baseline.train INFO: Epoch[4] Iteration[100/147] Loss1: 1.462, Loss2: 1.733, Loss3: 2.570,  Acc: 0.364, Acc2: 0.752, Acc2_pse: 0.752, Base Lr: 3.25e-03
+2022-05-20 20:00:00,149 reid_baseline.train INFO: Epoch 4 done. Time per batch: 0.681[s] Speed: 23.5[samples/s]
+2022-05-20 20:05:50,223 reid_baseline.train INFO: normal accuracy 0.8207482212531558 0.9807753562927246 
+2022-05-20 20:05:50,226 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 4
+2022-05-20 20:05:50,226 reid_baseline.train INFO: Accuracy: 82.1%, best Accuracy: 81.8%, min Mean_entropy: 1e+00
+2022-05-20 20:07:00,996 reid_baseline.train INFO: Epoch[5] Iteration[100/147] Loss1: 1.492, Loss2: 1.722, Loss3: 2.564,  Acc: 0.322, Acc2: 0.744, Acc2_pse: 0.744, Base Lr: 4.04e-03
+2022-05-20 20:07:33,631 reid_baseline.train INFO: Epoch 5 done. Time per batch: 0.707[s] Speed: 22.6[samples/s]
+2022-05-20 20:13:56,409 reid_baseline.train INFO: normal accuracy 0.8179940325912325 0.9221170544624329 
+2022-05-20 20:13:57,466 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 5
+2022-05-20 20:13:57,467 reid_baseline.train INFO: Accuracy: 81.8%, best Accuracy: 81.8%, min Mean_entropy: 0.9
+2022-05-20 20:15:16,755 reid_baseline.train INFO: Epoch[6] Iteration[100/147] Loss1: 1.502, Loss2: 1.748, Loss3: 2.555,  Acc: 0.314, Acc2: 0.744, Acc2_pse: 0.744, Base Lr: 4.83e-03
+2022-05-20 20:15:47,208 reid_baseline.train INFO: Epoch 6 done. Time per batch: 0.772[s] Speed: 20.7[samples/s]
+2022-05-20 20:22:08,640 reid_baseline.train INFO: normal accuracy 0.8196006426440211 0.9515405893325806 
+2022-05-20 20:22:08,640 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 6
+2022-05-20 20:22:08,640 reid_baseline.train INFO: Accuracy: 82.0%, best Accuracy: 81.8%, min Mean_entropy: 0.9
+2022-05-20 20:23:27,683 reid_baseline.train INFO: Epoch[7] Iteration[100/147] Loss1: 1.493, Loss2: 1.676, Loss3: 2.490,  Acc: 0.331, Acc2: 0.764, Acc2_pse: 0.764, Base Lr: 5.62e-03
+2022-05-20 20:24:01,938 reid_baseline.train INFO: Epoch 7 done. Time per batch: 0.791[s] Speed: 20.2[samples/s]
+2022-05-20 20:30:18,655 reid_baseline.train INFO: normal accuracy 0.8150103282074822 0.9410388469696045 
+2022-05-20 20:30:18,655 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 7
+2022-05-20 20:30:18,655 reid_baseline.train INFO: Accuracy: 81.5%, best Accuracy: 81.8%, min Mean_entropy: 0.9
+2022-05-20 20:31:36,191 reid_baseline.train INFO: Epoch[8] Iteration[100/147] Loss1: 1.549, Loss2: 1.672, Loss3: 2.456,  Acc: 0.289, Acc2: 0.764, Acc2_pse: 0.764, Base Lr: 6.42e-03
+2022-05-20 20:32:06,193 reid_baseline.train INFO: Epoch 8 done. Time per batch: 0.745[s] Speed: 21.5[samples/s]
+2022-05-20 20:38:22,988 reid_baseline.train INFO: normal accuracy 0.8122561395455589 0.9499157071113586 
+2022-05-20 20:38:22,988 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 8
+2022-05-20 20:38:22,989 reid_baseline.train INFO: Accuracy: 81.2%, best Accuracy: 81.8%, min Mean_entropy: 0.9
+2022-05-20 20:39:36,279 reid_baseline.train INFO: Epoch[9] Iteration[100/147] Loss1: 1.541, Loss2: 1.632, Loss3: 2.424,  Acc: 0.297, Acc2: 0.771, Acc2_pse: 0.771, Base Lr: 7.21e-03
+2022-05-20 20:40:09,077 reid_baseline.train INFO: Epoch 9 done. Time per batch: 0.725[s] Speed: 22.1[samples/s]
+2022-05-20 20:46:37,997 reid_baseline.train INFO: normal accuracy 0.8138627495983475 0.9115762710571289 
+2022-05-20 20:46:39,039 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 9
+2022-05-20 20:46:39,039 reid_baseline.train INFO: Accuracy: 81.4%, best Accuracy: 81.4%, min Mean_entropy: 0.9
+2022-05-20 20:47:56,690 reid_baseline.train INFO: Epoch[10] Iteration[100/147] Loss1: 1.574, Loss2: 1.574, Loss3: 2.326,  Acc: 0.273, Acc2: 0.787, Acc2_pse: 0.787, Base Lr: 6.83e-03
+2022-05-20 20:48:26,105 reid_baseline.train INFO: Epoch 10 done. Time per batch: 0.747[s] Speed: 21.4[samples/s]
+2022-05-20 20:54:30,752 reid_baseline.train INFO: normal accuracy 0.8104200137709433 0.8932192921638489 
+2022-05-20 20:54:31,786 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 10
+2022-05-20 20:54:31,786 reid_baseline.train INFO: Accuracy: 81.0%, best Accuracy: 81.0%, min Mean_entropy: 0.9
+2022-05-20 20:55:47,189 reid_baseline.train INFO: Epoch[11] Iteration[100/147] Loss1: 1.533, Loss2: 1.550, Loss3: 2.354,  Acc: 0.318, Acc2: 0.801, Acc2_pse: 0.801, Base Lr: 6.60e-03
+2022-05-20 20:56:19,015 reid_baseline.train INFO: Epoch 11 done. Time per batch: 0.739[s] Speed: 21.6[samples/s]
+2022-05-20 21:02:41,712 reid_baseline.train INFO: normal accuracy 0.8138627495983475 0.8683149814605713 
+2022-05-20 21:02:42,719 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 11
+2022-05-20 21:02:42,719 reid_baseline.train INFO: Accuracy: 81.4%, best Accuracy: 81.4%, min Mean_entropy: 0.9
+2022-05-20 21:03:59,326 reid_baseline.train INFO: Epoch[12] Iteration[100/147] Loss1: 1.561, Loss2: 1.524, Loss3: 2.258,  Acc: 0.290, Acc2: 0.781, Acc2_pse: 0.781, Base Lr: 6.35e-03
+2022-05-20 21:04:30,732 reid_baseline.train INFO: Epoch 12 done. Time per batch: 0.749[s] Speed: 21.4[samples/s]
+2022-05-20 21:10:47,825 reid_baseline.train INFO: normal accuracy 0.8161579068166169 0.884101152420044 
+2022-05-20 21:10:47,827 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 12
+2022-05-20 21:10:47,827 reid_baseline.train INFO: Accuracy: 81.6%, best Accuracy: 81.4%, min Mean_entropy: 0.9
+2022-05-20 21:12:03,909 reid_baseline.train INFO: Epoch[13] Iteration[100/147] Loss1: 1.576, Loss2: 1.497, Loss3: 2.185,  Acc: 0.278, Acc2: 0.793, Acc2_pse: 0.793, Base Lr: 6.09e-03
+2022-05-20 21:12:34,553 reid_baseline.train INFO: Epoch 13 done. Time per batch: 0.741[s] Speed: 21.6[samples/s]
+2022-05-20 21:18:48,399 reid_baseline.train INFO: normal accuracy 0.8168464539820978 0.768750011920929 
+2022-05-20 21:18:49,507 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 13
+2022-05-20 21:18:49,507 reid_baseline.train INFO: Accuracy: 81.7%, best Accuracy: 81.7%, min Mean_entropy: 0.8
+2022-05-20 21:20:06,966 reid_baseline.train INFO: Epoch[14] Iteration[100/147] Loss1: 1.567, Loss2: 1.454, Loss3: 2.206,  Acc: 0.283, Acc2: 0.816, Acc2_pse: 0.816, Base Lr: 5.82e-03
+2022-05-20 21:20:35,638 reid_baseline.train INFO: Epoch 14 done. Time per batch: 0.736[s] Speed: 21.7[samples/s]
+2022-05-20 21:26:48,271 reid_baseline.train INFO: normal accuracy 0.8090429194399816 0.8467048406600952 
+2022-05-20 21:26:48,273 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 14
+2022-05-20 21:26:48,273 reid_baseline.train INFO: Accuracy: 80.9%, best Accuracy: 81.7%, min Mean_entropy: 0.8
+2022-05-20 21:28:05,105 reid_baseline.train INFO: Epoch[15] Iteration[100/147] Loss1: 1.573, Loss2: 1.441, Loss3: 2.173,  Acc: 0.278, Acc2: 0.816, Acc2_pse: 0.816, Base Lr: 5.54e-03
+2022-05-20 21:28:37,009 reid_baseline.train INFO: Epoch 15 done. Time per batch: 0.760[s] Speed: 21.0[samples/s]
+2022-05-20 21:34:58,881 reid_baseline.train INFO: normal accuracy 0.8106495294927702 0.8064737319946289 
+2022-05-20 21:34:58,882 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 15
+2022-05-20 21:34:58,882 reid_baseline.train INFO: Accuracy: 81.1%, best Accuracy: 81.7%, min Mean_entropy: 0.8
+2022-05-20 21:36:24,345 reid_baseline.train INFO: Epoch[16] Iteration[100/147] Loss1: 1.575, Loss2: 1.432, Loss3: 2.135,  Acc: 0.270, Acc2: 0.829, Acc2_pse: 0.829, Base Lr: 5.24e-03
+2022-05-20 21:37:01,627 reid_baseline.train INFO: Epoch 16 done. Time per batch: 0.851[s] Speed: 18.8[samples/s]
+2022-05-20 21:43:49,131 reid_baseline.train INFO: normal accuracy 0.8145512967638283 0.7953526377677917 
+2022-05-20 21:43:49,132 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 16
+2022-05-20 21:43:49,132 reid_baseline.train INFO: Accuracy: 81.5%, best Accuracy: 81.7%, min Mean_entropy: 0.8
+2022-05-20 21:45:11,567 reid_baseline.train INFO: Epoch[17] Iteration[100/147] Loss1: 1.616, Loss2: 1.422, Loss3: 2.165,  Acc: 0.237, Acc2: 0.823, Acc2_pse: 0.823, Base Lr: 4.94e-03
+2022-05-20 21:45:49,269 reid_baseline.train INFO: Epoch 17 done. Time per batch: 0.828[s] Speed: 19.3[samples/s]
+2022-05-20 21:52:59,905 reid_baseline.train INFO: normal accuracy 0.8122561395455589 0.7879831790924072 
+2022-05-20 21:52:59,906 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 17
+2022-05-20 21:52:59,906 reid_baseline.train INFO: Accuracy: 81.2%, best Accuracy: 81.7%, min Mean_entropy: 0.8
+2022-05-20 21:54:23,680 reid_baseline.train INFO: Epoch[18] Iteration[100/147] Loss1: 1.580, Loss2: 1.359, Loss3: 2.092,  Acc: 0.274, Acc2: 0.844, Acc2_pse: 0.844, Base Lr: 4.63e-03
+2022-05-20 21:54:59,005 reid_baseline.train INFO: Epoch 18 done. Time per batch: 0.816[s] Speed: 19.6[samples/s]
+2022-05-20 22:02:19,805 reid_baseline.train INFO: normal accuracy 0.8177645168694055 0.7840555906295776 
+2022-05-20 22:02:19,805 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 18
+2022-05-20 22:02:19,805 reid_baseline.train INFO: Accuracy: 81.8%, best Accuracy: 81.7%, min Mean_entropy: 0.8
+2022-05-20 22:03:44,656 reid_baseline.train INFO: Epoch[19] Iteration[100/147] Loss1: 1.581, Loss2: 1.365, Loss3: 2.096,  Acc: 0.279, Acc2: 0.846, Acc2_pse: 0.846, Base Lr: 4.32e-03
+2022-05-20 22:04:20,895 reid_baseline.train INFO: Epoch 19 done. Time per batch: 0.847[s] Speed: 18.9[samples/s]
+2022-05-20 22:11:41,231 reid_baseline.train INFO: normal accuracy 0.8095019508836355 0.7204070091247559 
+2022-05-20 22:11:42,335 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 19
+2022-05-20 22:11:42,336 reid_baseline.train INFO: Accuracy: 81.0%, best Accuracy: 81.0%, min Mean_entropy: 0.7
+2022-05-20 22:13:11,137 reid_baseline.train INFO: Epoch[20] Iteration[100/147] Loss1: 1.594, Loss2: 1.337, Loss3: 2.054,  Acc: 0.258, Acc2: 0.859, Acc2_pse: 0.859, Base Lr: 4.01e-03
+2022-05-20 22:13:45,572 reid_baseline.train INFO: Epoch 20 done. Time per batch: 0.861[s] Speed: 18.6[samples/s]
+2022-05-20 22:21:13,069 reid_baseline.train INFO: normal accuracy 0.8166169382602708 0.7285765409469604 
+2022-05-20 22:21:13,071 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 20
+2022-05-20 22:21:13,071 reid_baseline.train INFO: Accuracy: 81.7%, best Accuracy: 81.0%, min Mean_entropy: 0.7
+2022-05-20 22:22:46,718 reid_baseline.train INFO: Epoch[21] Iteration[100/147] Loss1: 1.597, Loss2: 1.370, Loss3: 2.072,  Acc: 0.264, Acc2: 0.838, Acc2_pse: 0.838, Base Lr: 3.69e-03
+2022-05-20 22:23:26,561 reid_baseline.train INFO: Epoch 21 done. Time per batch: 0.913[s] Speed: 17.5[samples/s]
+2022-05-20 22:30:48,012 reid_baseline.train INFO: normal accuracy 0.8099609823272894 0.7393868565559387 
+2022-05-20 22:30:48,012 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 21
+2022-05-20 22:30:48,013 reid_baseline.train INFO: Accuracy: 81.0%, best Accuracy: 81.0%, min Mean_entropy: 0.7
+2022-05-20 22:32:17,742 reid_baseline.train INFO: Epoch[22] Iteration[100/147] Loss1: 1.612, Loss2: 1.344, Loss3: 2.046,  Acc: 0.256, Acc2: 0.849, Acc2_pse: 0.849, Base Lr: 3.38e-03
+2022-05-20 22:32:54,448 reid_baseline.train INFO: Epoch 22 done. Time per batch: 0.878[s] Speed: 18.2[samples/s]
+2022-05-20 22:40:07,086 reid_baseline.train INFO: normal accuracy 0.8106495294927702 0.7410567402839661 
+2022-05-20 22:40:07,086 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 22
+2022-05-20 22:40:07,087 reid_baseline.train INFO: Accuracy: 81.1%, best Accuracy: 81.0%, min Mean_entropy: 0.7
+2022-05-20 22:41:35,728 reid_baseline.train INFO: Epoch[23] Iteration[100/147] Loss1: 1.623, Loss2: 1.301, Loss3: 2.011,  Acc: 0.245, Acc2: 0.867, Acc2_pse: 0.867, Base Lr: 3.08e-03
+2022-05-20 22:42:15,135 reid_baseline.train INFO: Epoch 23 done. Time per batch: 0.889[s] Speed: 18.0[samples/s]
+2022-05-20 22:49:35,613 reid_baseline.train INFO: normal accuracy 0.8152398439293091 0.7397449612617493 
+2022-05-20 22:49:35,613 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 23
+2022-05-20 22:49:35,613 reid_baseline.train INFO: Accuracy: 81.5%, best Accuracy: 81.0%, min Mean_entropy: 0.7
+2022-05-20 22:51:03,105 reid_baseline.train INFO: Epoch[24] Iteration[100/147] Loss1: 1.593, Loss2: 1.304, Loss3: 2.020,  Acc: 0.265, Acc2: 0.862, Acc2_pse: 0.862, Base Lr: 2.77e-03
+2022-05-20 22:51:40,659 reid_baseline.train INFO: Epoch 24 done. Time per batch: 0.874[s] Speed: 18.3[samples/s]
+2022-05-20 22:58:49,078 reid_baseline.train INFO: normal accuracy 0.8129446867110397 0.6902600526809692 
+2022-05-20 22:58:50,176 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 24
+2022-05-20 22:58:50,177 reid_baseline.train INFO: Accuracy: 81.3%, best Accuracy: 81.3%, min Mean_entropy: 0.7
+2022-05-20 23:00:17,866 reid_baseline.train INFO: Epoch[25] Iteration[100/147] Loss1: 1.600, Loss2: 1.315, Loss3: 2.020,  Acc: 0.255, Acc2: 0.872, Acc2_pse: 0.872, Base Lr: 2.48e-03
+2022-05-20 23:00:56,307 reid_baseline.train INFO: Epoch 25 done. Time per batch: 0.870[s] Speed: 18.4[samples/s]
+2022-05-20 23:08:10,293 reid_baseline.train INFO: normal accuracy 0.8138627495983475 0.6842553019523621 
+2022-05-20 23:08:11,397 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 25
+2022-05-20 23:08:11,397 reid_baseline.train INFO: Accuracy: 81.4%, best Accuracy: 81.4%, min Mean_entropy: 0.7
+2022-05-20 23:09:40,328 reid_baseline.train INFO: Epoch[26] Iteration[100/147] Loss1: 1.611, Loss2: 1.286, Loss3: 2.008,  Acc: 0.245, Acc2: 0.871, Acc2_pse: 0.871, Base Lr: 2.20e-03
+2022-05-20 23:10:17,328 reid_baseline.train INFO: Epoch 26 done. Time per batch: 0.874[s] Speed: 18.3[samples/s]
+2022-05-20 23:17:24,043 reid_baseline.train INFO: normal accuracy 0.8163874225384439 0.7316787242889404 
+2022-05-20 23:17:24,046 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 26
+2022-05-20 23:17:24,046 reid_baseline.train INFO: Accuracy: 81.6%, best Accuracy: 81.4%, min Mean_entropy: 0.7
+2022-05-20 23:18:55,200 reid_baseline.train INFO: Epoch[27] Iteration[100/147] Loss1: 1.618, Loss2: 1.268, Loss3: 1.948,  Acc: 0.238, Acc2: 0.871, Acc2_pse: 0.871, Base Lr: 1.92e-03
+2022-05-20 23:19:31,794 reid_baseline.train INFO: Epoch 27 done. Time per batch: 0.887[s] Speed: 18.0[samples/s]
+2022-05-20 23:26:39,765 reid_baseline.train INFO: normal accuracy 0.81592839109479 0.7548168897628784 
+2022-05-20 23:26:39,766 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 27
+2022-05-20 23:26:39,766 reid_baseline.train INFO: Accuracy: 81.6%, best Accuracy: 81.4%, min Mean_entropy: 0.7
+2022-05-20 23:28:07,800 reid_baseline.train INFO: Epoch[28] Iteration[100/147] Loss1: 1.622, Loss2: 1.262, Loss3: 1.956,  Acc: 0.248, Acc2: 0.874, Acc2_pse: 0.874, Base Lr: 1.66e-03
+2022-05-20 23:28:42,619 reid_baseline.train INFO: Epoch 28 done. Time per batch: 0.859[s] Speed: 18.6[samples/s]
+2022-05-20 23:35:51,432 reid_baseline.train INFO: normal accuracy 0.8163874225384439 0.6840484738349915 
+2022-05-20 23:35:52,597 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 28
+2022-05-20 23:35:52,597 reid_baseline.train INFO: Accuracy: 81.6%, best Accuracy: 81.6%, min Mean_entropy: 0.7
+2022-05-20 23:37:16,215 reid_baseline.train INFO: Epoch[29] Iteration[100/147] Loss1: 1.618, Loss2: 1.233, Loss3: 1.949,  Acc: 0.257, Acc2: 0.884, Acc2_pse: 0.884, Base Lr: 1.42e-03
+2022-05-20 23:37:53,631 reid_baseline.train INFO: Epoch 29 done. Time per batch: 0.846[s] Speed: 18.9[samples/s]
+2022-05-20 23:44:59,491 reid_baseline.train INFO: normal accuracy 0.8166169382602708 0.6627100110054016 
+2022-05-20 23:45:00,692 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 29
+2022-05-20 23:45:00,692 reid_baseline.train INFO: Accuracy: 81.7%, best Accuracy: 81.7%, min Mean_entropy: 0.7
+2022-05-20 23:46:28,035 reid_baseline.train INFO: Epoch[30] Iteration[100/147] Loss1: 1.632, Loss2: 1.260, Loss3: 1.941,  Acc: 0.225, Acc2: 0.879, Acc2_pse: 0.879, Base Lr: 1.19e-03
+2022-05-20 23:47:04,744 reid_baseline.train INFO: Epoch 30 done. Time per batch: 0.855[s] Speed: 18.7[samples/s]
+2022-05-20 23:54:18,537 reid_baseline.train INFO: normal accuracy 0.8147808124856553 0.6788133382797241 
+2022-05-20 23:54:18,539 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 30
+2022-05-20 23:54:18,540 reid_baseline.train INFO: Accuracy: 81.5%, best Accuracy: 81.7%, min Mean_entropy: 0.7
+2022-05-20 23:55:47,292 reid_baseline.train INFO: Epoch[31] Iteration[100/147] Loss1: 1.649, Loss2: 1.260, Loss3: 1.944,  Acc: 0.219, Acc2: 0.881, Acc2_pse: 0.881, Base Lr: 9.72e-04
+2022-05-20 23:56:22,381 reid_baseline.train INFO: Epoch 31 done. Time per batch: 0.854[s] Speed: 18.7[samples/s]
+2022-05-21 00:03:24,482 reid_baseline.train INFO: normal accuracy 0.8138627495983475 0.6512379050254822 
+2022-05-21 00:03:25,906 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 31
+2022-05-21 00:03:25,906 reid_baseline.train INFO: Accuracy: 81.4%, best Accuracy: 81.4%, min Mean_entropy: 0.7
+2022-05-21 00:04:52,580 reid_baseline.train INFO: Epoch[32] Iteration[100/147] Loss1: 1.629, Loss2: 1.255, Loss3: 1.957,  Acc: 0.225, Acc2: 0.878, Acc2_pse: 0.878, Base Lr: 7.78e-04
+2022-05-21 00:05:32,834 reid_baseline.train INFO: Epoch 32 done. Time per batch: 0.874[s] Speed: 18.3[samples/s]
+2022-05-21 00:12:45,095 reid_baseline.train INFO: normal accuracy 0.8173054854257517 0.6886795163154602 
+2022-05-21 00:12:45,095 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 32
+2022-05-21 00:12:45,096 reid_baseline.train INFO: Accuracy: 81.7%, best Accuracy: 81.4%, min Mean_entropy: 0.7
+2022-05-21 00:14:11,946 reid_baseline.train INFO: Epoch[33] Iteration[100/147] Loss1: 1.600, Loss2: 1.239, Loss3: 1.925,  Acc: 0.260, Acc2: 0.881, Acc2_pse: 0.881, Base Lr: 6.04e-04
+2022-05-21 00:14:50,760 reid_baseline.train INFO: Epoch 33 done. Time per batch: 0.878[s] Speed: 18.2[samples/s]
+2022-05-21 00:22:00,172 reid_baseline.train INFO: normal accuracy 0.8179940325912325 0.6950930953025818 
+2022-05-21 00:22:00,173 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 33
+2022-05-21 00:22:00,173 reid_baseline.train INFO: Accuracy: 81.8%, best Accuracy: 81.4%, min Mean_entropy: 0.7
+2022-05-21 00:23:18,891 reid_baseline.train INFO: Epoch[34] Iteration[100/147] Loss1: 1.615, Loss2: 1.234, Loss3: 1.917,  Acc: 0.255, Acc2: 0.877, Acc2_pse: 0.877, Base Lr: 4.51e-04
+2022-05-21 00:23:55,985 reid_baseline.train INFO: Epoch 34 done. Time per batch: 0.810[s] Speed: 19.8[samples/s]
+2022-05-21 00:30:56,912 reid_baseline.train INFO: normal accuracy 0.8147808124856553 0.6928876638412476 
+2022-05-21 00:30:56,912 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 34
+2022-05-21 00:30:56,913 reid_baseline.train INFO: Accuracy: 81.5%, best Accuracy: 81.4%, min Mean_entropy: 0.7
+2022-05-21 00:32:21,496 reid_baseline.train INFO: Epoch[35] Iteration[100/147] Loss1: 1.633, Loss2: 1.235, Loss3: 1.926,  Acc: 0.244, Acc2: 0.884, Acc2_pse: 0.884, Base Lr: 3.20e-04
+2022-05-21 00:32:52,075 reid_baseline.train INFO: Epoch 35 done. Time per batch: 0.799[s] Speed: 20.0[samples/s]
+2022-05-21 00:40:12,486 reid_baseline.train INFO: normal accuracy 0.8166169382602708 0.6509724855422974 
+2022-05-21 00:40:13,551 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 35
+2022-05-21 00:40:13,551 reid_baseline.train INFO: Accuracy: 81.7%, best Accuracy: 81.7%, min Mean_entropy: 0.7
+2022-05-21 00:41:40,901 reid_baseline.train INFO: Epoch[36] Iteration[100/147] Loss1: 1.614, Loss2: 1.233, Loss3: 1.884,  Acc: 0.254, Acc2: 0.881, Acc2_pse: 0.881, Base Lr: 2.11e-04
+2022-05-21 00:42:16,039 reid_baseline.train INFO: Epoch 36 done. Time per batch: 0.868[s] Speed: 18.4[samples/s]
+2022-05-21 00:49:43,523 reid_baseline.train INFO: normal accuracy 0.8154693596511361 0.7214552760124207 
+2022-05-21 00:49:43,523 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 36
+2022-05-21 00:49:43,524 reid_baseline.train INFO: Accuracy: 81.5%, best Accuracy: 81.7%, min Mean_entropy: 0.7
+2022-05-21 00:51:08,263 reid_baseline.train INFO: Epoch[37] Iteration[100/147] Loss1: 1.617, Loss2: 1.252, Loss3: 1.978,  Acc: 0.244, Acc2: 0.878, Acc2_pse: 0.878, Base Lr: 1.26e-04
+2022-05-21 00:51:46,027 reid_baseline.train INFO: Epoch 37 done. Time per batch: 0.862[s] Speed: 18.6[samples/s]
+2022-05-21 00:58:46,053 reid_baseline.train INFO: normal accuracy 0.8166169382602708 0.7123861908912659 
+2022-05-21 00:58:46,053 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 37
+2022-05-21 00:58:46,054 reid_baseline.train INFO: Accuracy: 81.7%, best Accuracy: 81.7%, min Mean_entropy: 0.7
+2022-05-21 01:00:12,211 reid_baseline.train INFO: Epoch[38] Iteration[100/147] Loss1: 1.622, Loss2: 1.204, Loss3: 1.896,  Acc: 0.253, Acc2: 0.898, Acc2_pse: 0.898, Base Lr: 6.51e-05
+2022-05-21 01:00:47,417 reid_baseline.train INFO: Epoch 38 done. Time per batch: 0.837[s] Speed: 19.1[samples/s]
+2022-05-21 01:08:04,772 reid_baseline.train INFO: normal accuracy 0.8150103282074822 0.7221059799194336 
+2022-05-21 01:08:04,772 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 38
+2022-05-21 01:08:04,772 reid_baseline.train INFO: Accuracy: 81.5%, best Accuracy: 81.7%, min Mean_entropy: 0.7
+2022-05-21 01:09:33,513 reid_baseline.train INFO: Epoch[39] Iteration[100/147] Loss1: 1.612, Loss2: 1.244, Loss3: 1.914,  Acc: 0.239, Acc2: 0.878, Acc2_pse: 0.878, Base Lr: 2.83e-05
+2022-05-21 01:10:11,556 reid_baseline.train INFO: Epoch 39 done. Time per batch: 0.874[s] Speed: 18.3[samples/s]
+2022-05-21 01:17:22,004 reid_baseline.train INFO: normal accuracy 0.8143217810420014 0.646622896194458 
+2022-05-21 01:17:23,191 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 39
+2022-05-21 01:17:23,192 reid_baseline.train INFO: Accuracy: 81.4%, best Accuracy: 81.4%, min Mean_entropy: 0.6
+2022-05-21 01:18:49,376 reid_baseline.train INFO: Epoch[40] Iteration[100/147] Loss1: 1.626, Loss2: 1.243, Loss3: 1.907,  Acc: 0.249, Acc2: 0.880, Acc2_pse: 0.880, Base Lr: 1.60e-05
+2022-05-21 01:19:24,374 reid_baseline.train INFO: Epoch 40 done. Time per batch: 0.836[s] Speed: 19.1[samples/s]
+2022-05-21 01:26:36,911 reid_baseline.train INFO: normal accuracy 0.8150103282074822 0.6685478091239929 
+2022-05-21 01:26:36,912 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Epoch: 40
+2022-05-21 01:26:36,912 reid_baseline.train INFO: Accuracy: 81.5%, best Accuracy: 81.4%, min Mean_entropy: 0.6
+best model preformance is 0.8143217810420014
+Loading pretrained model for finetuning from ../logs/uda/deit_base/office-home/Art2Real_World_DRI_2B_freeze_k_classifier/transformer_best_model.pth
+2022-05-21 01:33:47,245 reid_baseline.train INFO: normal accuracy 0.8143217810420014 0.646622896194458 
+2022-05-21 01:33:47,246 reid_baseline.train INFO: Classify Domain Adapatation Validation Results - Best model
+2022-05-21 01:33:47,246 reid_baseline.train INFO: Accuracy: 81.4%
+2022-05-21 01:36:04,754 reid_baseline.train INFO: normal accuracy 0.9777503090234858 0.21691884100437164 
+2022-05-21 01:36:04,755 reid_baseline.train INFO: Classify Domain Adapatation Source Results - Best model
+2022-05-21 01:36:04,755 reid_baseline.train INFO: Accuracy: 97.8%

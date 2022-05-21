@@ -1,0 +1,3264 @@
+2022-04-11 18:42:50,207 reid_baseline INFO: Namespace(config_file='configs/pretrain.yml', opts=['MODEL.DEVICE_ID', "('3')", 'TEST.WEIGHT', "('../logs/pretrain/deit_base/office-home/Art_2_Clipart_resnet50_clean/transformer_best_model.pth')", 'DATASETS.NAMES', 'OfficeHome', 'OUTPUT_DIR', '../logs/pretrain/deit_base/office-home/Art_2_Clipart_resnet50_clean', 'DATASETS.ROOT_TRAIN_DIR', '../data/OfficeHomeDataset/Art.txt', 'DATASETS.ROOT_TEST_DIR', '../data/OfficeHomeDataset/Clipart.txt', 'TEST.IMS_PER_BATCH', '32'], aug_type=None, alpha=0.1, feature_model_path=None, num_patch_wise=0, layer_num=0, per_class_acc=True, imgnet_model_path='../logs/pretrain/deit_base/office-home/Art_2_Clipart_resnet50_clean_only_classifier/transformer_best_model.pth')
+2022-04-11 18:42:50,207 reid_baseline INFO: Loaded configuration file configs/pretrain.yml
+2022-04-11 18:42:50,208 reid_baseline INFO: 
+MODEL:
+  PRETRAIN_CHOICE: 'imagenet'
+  PRETRAIN_PATH: '../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth'
+  METRIC_LOSS_TYPE: 'triplet'
+  IF_LABELSMOOTH: 'on'
+  IF_WITH_CENTER: 'no'
+  NAME: 'transformer'
+  NO_MARGIN: True
+  DEVICE_ID: ('0')
+  Transformer_TYPE: 'vit_base_patch16_224_TransReID' #vit_small_patch16_224_TransReID
+  STRIDE_SIZE: [16, 16]
+  FC_SETTING: 'TransReID'
+  TASK_TYPE: 'classify_DA' 
+  UDA_STAGE: 'pretrain'
+
+INPUT:
+  SIZE_TRAIN: [256, 256]
+  SIZE_TEST: [256, 256]
+  SIZE_CROP: [224, 224]
+  PROB: 0.5 # random horizontal flip
+  RE_PROB: 0.0 # random erasing
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+
+DATASETS:
+  NAMES: ('OURAPI')
+  ROOT_TRAIN_DIR: ('./datasets/reid_datasets/Corrected_Market1501')
+  NAMES2: ('OURAPI')
+  ROOT_TRAIN_DIR2: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+  ROOT_TEST_DIR: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+
+DATALOADER:
+  SAMPLER: 'softmax'
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+
+SOLVER:
+  OPTIMIZER_NAME: 'SGD'
+  MAX_EPOCHS: 20
+  BASE_LR: 0.008
+  IMS_PER_BATCH: 16
+  STEPS: [40, 80]
+  GAMMA: 0.
+  WARMUP_FACTOR: 0.01
+  WARMUP_EPOCHS: 10
+  WARMUP_METHOD: 'linear'
+  LARGE_FC_LR: False
+  CHECKPOINT_PERIOD: 10
+  LOG_PERIOD: 100
+  EVAL_PERIOD: 1
+  WEIGHT_DECAY:  1e-4
+  WEIGHT_DECAY_BIAS: 1e-4
+  BIAS_LR_FACTOR: 2
+
+TEST:
+  EVAL: True
+  IMS_PER_BATCH: 64
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+
+  WEIGHT: '../logs/trans4DA/transformer_120.pth'
+  NECK_FEAT: 'after'
+  FEAT_NORM: 'yes'
+
+OUTPUT_DIR: '../logs/trans4DA'
+
+
+
+2022-04-11 18:42:50,208 reid_baseline INFO: Running with config:
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+  SAMPLER: softmax
+DATASETS:
+  NAMES: OfficeHome
+  NAMES2: OURAPI
+  PLUS_NUM_ID: 100
+  QUERY_MINING: False
+  ROOT_TEST_DIR: ../data/OfficeHomeDataset/Clipart.txt
+  ROOT_TRAIN_DIR: ../data/OfficeHomeDataset/Art.txt
+  ROOT_TRAIN_DIR2: ./datasets/reid_datasets/Refined_DukeMTMC_reID
+INPUT:
+  AA_PROB: 0.0
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+  PROB: 0.5
+  RE_PROB: 0.0
+  SIZE_CROP: [224, 224]
+  SIZE_TEST: [256, 256]
+  SIZE_TRAIN: [256, 256]
+MODEL:
+  AIE_COE: 1.5
+  BLOCK_PATTERN: normal
+  CAMERA_EMBEDDING: False
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 3
+  DEVIDE_LENGTH: 4
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  FC_SETTING: TransReID
+  FROZEN: -1
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IF_LABELSMOOTH: on
+  IF_WITH_CENTER: no
+  LAST_STRIDE: 1
+  LOCAL_F: False
+  METRIC_LOSS_TYPE: triplet
+  NAME: transformer
+  NECK: bnneck
+  NO_MARGIN: True
+  NO_SHUFFLE: False
+  PATCH_SHUFFLE: 2
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH: ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+  PROB: 0.0
+  RECIP_LOSS: 
+  STRIDE_SIZE: [16, 16]
+  TASK_TYPE: classify_DA
+  THRESH: 0.23
+  TRIPLET_LOSS_WEIGHT: 1.0
+  Transformer_TYPE: vit_base_patch16_224_TransReID
+  UDA_STAGE: pretrain
+  VIEWPOINT_EMBEDDING: False
+  YIWEI_NUM: 5
+  lameda: 0.5
+OUTPUT_DIR: ../logs/pretrain/deit_base/office-home/Art_2_Clipart_resnet50_clean
+SOLVER:
+  BASE_LR: 0.008
+  BIAS_LR_FACTOR: 2
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 10
+  CLUSTER_MARGIN: 0.3
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 1
+  GAMMA: 0.0
+  IMS_PER_BATCH: 16
+  LARGE_FC_LR: False
+  LOG_PERIOD: 100
+  MARGIN: 0.3
+  MAX_EPOCHS: 20
+  MOMENTUM: 0.9
+  OPTIMIZER_NAME: SGD
+  RANGE_ALPHA: 0
+  RANGE_BETA: 1
+  RANGE_K: 2
+  RANGE_LOSS_WEIGHT: 1
+  RANGE_MARGIN: 0.3
+  SEED: 1234
+  STEPS: (40, 80)
+  WARMUP_EPOCHS: 10
+  WARMUP_FACTOR: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WITH_PSEUDO_LABEL_FILTER: False
+TEST:
+  DIST_MAT: dist_mat.npy
+  EVAL: True
+  FEAT_NORM: yes
+  FLIP_FEATS: off
+  IMS_PER_BATCH: 32
+  NECK_FEAT: after
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+  WEIGHT: ../logs/pretrain/deit_base/office-home/Art_2_Clipart_resnet50_clean/transformer_best_model.pth
+=> Office-Home loaded
+Dataset statistics:
+1 1
+train Art and valid is Clipart
+  ----------------------------------------
+  subset   | # ids | # images | # cameras
+  ----------------------------------------
+  train   |    65 |     2427 |         1
+  valid   |    65 |     4365 |         1
+  ----------------------------------------
+use shuffle sampler strategy
+using Transformer_type: vit_base_patch16_224_TransReID as a backbone
+using stride: [16, 16], and part number is num_y14 * num_x14
+using drop_path_rate is : 0.1
+using aie_xishu is : 1.5
+embed_diim 768 mlp_ratio 4
+distill need to choose right cls token in the pth
+Resized position embedding: %s to %s torch.Size([1, 197, 768]) torch.Size([1, 197, 768])
+Position embedding resize to height:14 width: 14
+Loading pretrained ImageNet model......from ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+===========building transformer===========
+model parameter: conv1.weight not match
+model parameter: bn1.weight not match
+model parameter: bn1.bias not match
+model parameter: bn1.running_mean not match
+model parameter: bn1.running_var not match
+model parameter: bn1.num_batches_tracked not match
+model parameter: layer1.0.conv1.weight not match
+model parameter: layer1.0.bn1.weight not match
+model parameter: layer1.0.bn1.bias not match
+model parameter: layer1.0.bn1.running_mean not match
+model parameter: layer1.0.bn1.running_var not match
+model parameter: layer1.0.bn1.num_batches_tracked not match
+model parameter: layer1.0.conv2.weight not match
+model parameter: layer1.0.bn2.weight not match
+model parameter: layer1.0.bn2.bias not match
+model parameter: layer1.0.bn2.running_mean not match
+model parameter: layer1.0.bn2.running_var not match
+model parameter: layer1.0.bn2.num_batches_tracked not match
+model parameter: layer1.0.conv3.weight not match
+model parameter: layer1.0.bn3.weight not match
+model parameter: layer1.0.bn3.bias not match
+model parameter: layer1.0.bn3.running_mean not match
+model parameter: layer1.0.bn3.running_var not match
+model parameter: layer1.0.bn3.num_batches_tracked not match
+model parameter: layer1.0.downsample.0.weight not match
+model parameter: layer1.0.downsample.1.weight not match
+model parameter: layer1.0.downsample.1.bias not match
+model parameter: layer1.0.downsample.1.running_mean not match
+model parameter: layer1.0.downsample.1.running_var not match
+model parameter: layer1.0.downsample.1.num_batches_tracked not match
+model parameter: layer1.1.conv1.weight not match
+model parameter: layer1.1.bn1.weight not match
+model parameter: layer1.1.bn1.bias not match
+model parameter: layer1.1.bn1.running_mean not match
+model parameter: layer1.1.bn1.running_var not match
+model parameter: layer1.1.bn1.num_batches_tracked not match
+model parameter: layer1.1.conv2.weight not match
+model parameter: layer1.1.bn2.weight not match
+model parameter: layer1.1.bn2.bias not match
+model parameter: layer1.1.bn2.running_mean not match
+model parameter: layer1.1.bn2.running_var not match
+model parameter: layer1.1.bn2.num_batches_tracked not match
+model parameter: layer1.1.conv3.weight not match
+model parameter: layer1.1.bn3.weight not match
+model parameter: layer1.1.bn3.bias not match
+model parameter: layer1.1.bn3.running_mean not match
+model parameter: layer1.1.bn3.running_var not match
+model parameter: layer1.1.bn3.num_batches_tracked not match
+model parameter: layer1.2.conv1.weight not match
+model parameter: layer1.2.bn1.weight not match
+model parameter: layer1.2.bn1.bias not match
+model parameter: layer1.2.bn1.running_mean not match
+model parameter: layer1.2.bn1.running_var not match
+model parameter: layer1.2.bn1.num_batches_tracked not match
+model parameter: layer1.2.conv2.weight not match
+model parameter: layer1.2.bn2.weight not match
+model parameter: layer1.2.bn2.bias not match
+model parameter: layer1.2.bn2.running_mean not match
+model parameter: layer1.2.bn2.running_var not match
+model parameter: layer1.2.bn2.num_batches_tracked not match
+model parameter: layer1.2.conv3.weight not match
+model parameter: layer1.2.bn3.weight not match
+model parameter: layer1.2.bn3.bias not match
+model parameter: layer1.2.bn3.running_mean not match
+model parameter: layer1.2.bn3.running_var not match
+model parameter: layer1.2.bn3.num_batches_tracked not match
+model parameter: layer2.0.conv1.weight not match
+model parameter: layer2.0.bn1.weight not match
+model parameter: layer2.0.bn1.bias not match
+model parameter: layer2.0.bn1.running_mean not match
+model parameter: layer2.0.bn1.running_var not match
+model parameter: layer2.0.bn1.num_batches_tracked not match
+model parameter: layer2.0.conv2.weight not match
+model parameter: layer2.0.bn2.weight not match
+model parameter: layer2.0.bn2.bias not match
+model parameter: layer2.0.bn2.running_mean not match
+model parameter: layer2.0.bn2.running_var not match
+model parameter: layer2.0.bn2.num_batches_tracked not match
+model parameter: layer2.0.conv3.weight not match
+model parameter: layer2.0.bn3.weight not match
+model parameter: layer2.0.bn3.bias not match
+model parameter: layer2.0.bn3.running_mean not match
+model parameter: layer2.0.bn3.running_var not match
+model parameter: layer2.0.bn3.num_batches_tracked not match
+model parameter: layer2.0.downsample.0.weight not match
+model parameter: layer2.0.downsample.1.weight not match
+model parameter: layer2.0.downsample.1.bias not match
+model parameter: layer2.0.downsample.1.running_mean not match
+model parameter: layer2.0.downsample.1.running_var not match
+model parameter: layer2.0.downsample.1.num_batches_tracked not match
+model parameter: layer2.1.conv1.weight not match
+model parameter: layer2.1.bn1.weight not match
+model parameter: layer2.1.bn1.bias not match
+model parameter: layer2.1.bn1.running_mean not match
+model parameter: layer2.1.bn1.running_var not match
+model parameter: layer2.1.bn1.num_batches_tracked not match
+model parameter: layer2.1.conv2.weight not match
+model parameter: layer2.1.bn2.weight not match
+model parameter: layer2.1.bn2.bias not match
+model parameter: layer2.1.bn2.running_mean not match
+model parameter: layer2.1.bn2.running_var not match
+model parameter: layer2.1.bn2.num_batches_tracked not match
+model parameter: layer2.1.conv3.weight not match
+model parameter: layer2.1.bn3.weight not match
+model parameter: layer2.1.bn3.bias not match
+model parameter: layer2.1.bn3.running_mean not match
+model parameter: layer2.1.bn3.running_var not match
+model parameter: layer2.1.bn3.num_batches_tracked not match
+model parameter: layer2.2.conv1.weight not match
+model parameter: layer2.2.bn1.weight not match
+model parameter: layer2.2.bn1.bias not match
+model parameter: layer2.2.bn1.running_mean not match
+model parameter: layer2.2.bn1.running_var not match
+model parameter: layer2.2.bn1.num_batches_tracked not match
+model parameter: layer2.2.conv2.weight not match
+model parameter: layer2.2.bn2.weight not match
+model parameter: layer2.2.bn2.bias not match
+model parameter: layer2.2.bn2.running_mean not match
+model parameter: layer2.2.bn2.running_var not match
+model parameter: layer2.2.bn2.num_batches_tracked not match
+model parameter: layer2.2.conv3.weight not match
+model parameter: layer2.2.bn3.weight not match
+model parameter: layer2.2.bn3.bias not match
+model parameter: layer2.2.bn3.running_mean not match
+model parameter: layer2.2.bn3.running_var not match
+model parameter: layer2.2.bn3.num_batches_tracked not match
+model parameter: layer2.3.conv1.weight not match
+model parameter: layer2.3.bn1.weight not match
+model parameter: layer2.3.bn1.bias not match
+model parameter: layer2.3.bn1.running_mean not match
+model parameter: layer2.3.bn1.running_var not match
+model parameter: layer2.3.bn1.num_batches_tracked not match
+model parameter: layer2.3.conv2.weight not match
+model parameter: layer2.3.bn2.weight not match
+model parameter: layer2.3.bn2.bias not match
+model parameter: layer2.3.bn2.running_mean not match
+model parameter: layer2.3.bn2.running_var not match
+model parameter: layer2.3.bn2.num_batches_tracked not match
+model parameter: layer2.3.conv3.weight not match
+model parameter: layer2.3.bn3.weight not match
+model parameter: layer2.3.bn3.bias not match
+model parameter: layer2.3.bn3.running_mean not match
+model parameter: layer2.3.bn3.running_var not match
+model parameter: layer2.3.bn3.num_batches_tracked not match
+model parameter: layer3.0.conv1.weight not match
+model parameter: layer3.0.bn1.weight not match
+model parameter: layer3.0.bn1.bias not match
+model parameter: layer3.0.bn1.running_mean not match
+model parameter: layer3.0.bn1.running_var not match
+model parameter: layer3.0.bn1.num_batches_tracked not match
+model parameter: layer3.0.conv2.weight not match
+model parameter: layer3.0.bn2.weight not match
+model parameter: layer3.0.bn2.bias not match
+model parameter: layer3.0.bn2.running_mean not match
+model parameter: layer3.0.bn2.running_var not match
+model parameter: layer3.0.bn2.num_batches_tracked not match
+model parameter: layer3.0.conv3.weight not match
+model parameter: layer3.0.bn3.weight not match
+model parameter: layer3.0.bn3.bias not match
+model parameter: layer3.0.bn3.running_mean not match
+model parameter: layer3.0.bn3.running_var not match
+model parameter: layer3.0.bn3.num_batches_tracked not match
+model parameter: layer3.0.downsample.0.weight not match
+model parameter: layer3.0.downsample.1.weight not match
+model parameter: layer3.0.downsample.1.bias not match
+model parameter: layer3.0.downsample.1.running_mean not match
+model parameter: layer3.0.downsample.1.running_var not match
+model parameter: layer3.0.downsample.1.num_batches_tracked not match
+model parameter: layer3.1.conv1.weight not match
+model parameter: layer3.1.bn1.weight not match
+model parameter: layer3.1.bn1.bias not match
+model parameter: layer3.1.bn1.running_mean not match
+model parameter: layer3.1.bn1.running_var not match
+model parameter: layer3.1.bn1.num_batches_tracked not match
+model parameter: layer3.1.conv2.weight not match
+model parameter: layer3.1.bn2.weight not match
+model parameter: layer3.1.bn2.bias not match
+model parameter: layer3.1.bn2.running_mean not match
+model parameter: layer3.1.bn2.running_var not match
+model parameter: layer3.1.bn2.num_batches_tracked not match
+model parameter: layer3.1.conv3.weight not match
+model parameter: layer3.1.bn3.weight not match
+model parameter: layer3.1.bn3.bias not match
+model parameter: layer3.1.bn3.running_mean not match
+model parameter: layer3.1.bn3.running_var not match
+model parameter: layer3.1.bn3.num_batches_tracked not match
+model parameter: layer3.2.conv1.weight not match
+model parameter: layer3.2.bn1.weight not match
+model parameter: layer3.2.bn1.bias not match
+model parameter: layer3.2.bn1.running_mean not match
+model parameter: layer3.2.bn1.running_var not match
+model parameter: layer3.2.bn1.num_batches_tracked not match
+model parameter: layer3.2.conv2.weight not match
+model parameter: layer3.2.bn2.weight not match
+model parameter: layer3.2.bn2.bias not match
+model parameter: layer3.2.bn2.running_mean not match
+model parameter: layer3.2.bn2.running_var not match
+model parameter: layer3.2.bn2.num_batches_tracked not match
+model parameter: layer3.2.conv3.weight not match
+model parameter: layer3.2.bn3.weight not match
+model parameter: layer3.2.bn3.bias not match
+model parameter: layer3.2.bn3.running_mean not match
+model parameter: layer3.2.bn3.running_var not match
+model parameter: layer3.2.bn3.num_batches_tracked not match
+model parameter: layer3.3.conv1.weight not match
+model parameter: layer3.3.bn1.weight not match
+model parameter: layer3.3.bn1.bias not match
+model parameter: layer3.3.bn1.running_mean not match
+model parameter: layer3.3.bn1.running_var not match
+model parameter: layer3.3.bn1.num_batches_tracked not match
+model parameter: layer3.3.conv2.weight not match
+model parameter: layer3.3.bn2.weight not match
+model parameter: layer3.3.bn2.bias not match
+model parameter: layer3.3.bn2.running_mean not match
+model parameter: layer3.3.bn2.running_var not match
+model parameter: layer3.3.bn2.num_batches_tracked not match
+model parameter: layer3.3.conv3.weight not match
+model parameter: layer3.3.bn3.weight not match
+model parameter: layer3.3.bn3.bias not match
+model parameter: layer3.3.bn3.running_mean not match
+model parameter: layer3.3.bn3.running_var not match
+model parameter: layer3.3.bn3.num_batches_tracked not match
+model parameter: layer3.4.conv1.weight not match
+model parameter: layer3.4.bn1.weight not match
+model parameter: layer3.4.bn1.bias not match
+model parameter: layer3.4.bn1.running_mean not match
+model parameter: layer3.4.bn1.running_var not match
+model parameter: layer3.4.bn1.num_batches_tracked not match
+model parameter: layer3.4.conv2.weight not match
+model parameter: layer3.4.bn2.weight not match
+model parameter: layer3.4.bn2.bias not match
+model parameter: layer3.4.bn2.running_mean not match
+model parameter: layer3.4.bn2.running_var not match
+model parameter: layer3.4.bn2.num_batches_tracked not match
+model parameter: layer3.4.conv3.weight not match
+model parameter: layer3.4.bn3.weight not match
+model parameter: layer3.4.bn3.bias not match
+model parameter: layer3.4.bn3.running_mean not match
+model parameter: layer3.4.bn3.running_var not match
+model parameter: layer3.4.bn3.num_batches_tracked not match
+model parameter: layer3.5.conv1.weight not match
+model parameter: layer3.5.bn1.weight not match
+model parameter: layer3.5.bn1.bias not match
+model parameter: layer3.5.bn1.running_mean not match
+model parameter: layer3.5.bn1.running_var not match
+model parameter: layer3.5.bn1.num_batches_tracked not match
+model parameter: layer3.5.conv2.weight not match
+model parameter: layer3.5.bn2.weight not match
+model parameter: layer3.5.bn2.bias not match
+model parameter: layer3.5.bn2.running_mean not match
+model parameter: layer3.5.bn2.running_var not match
+model parameter: layer3.5.bn2.num_batches_tracked not match
+model parameter: layer3.5.conv3.weight not match
+model parameter: layer3.5.bn3.weight not match
+model parameter: layer3.5.bn3.bias not match
+model parameter: layer3.5.bn3.running_mean not match
+model parameter: layer3.5.bn3.running_var not match
+model parameter: layer3.5.bn3.num_batches_tracked not match
+model parameter: layer4.0.conv1.weight not match
+model parameter: layer4.0.bn1.weight not match
+model parameter: layer4.0.bn1.bias not match
+model parameter: layer4.0.bn1.running_mean not match
+model parameter: layer4.0.bn1.running_var not match
+model parameter: layer4.0.bn1.num_batches_tracked not match
+model parameter: layer4.0.conv2.weight not match
+model parameter: layer4.0.bn2.weight not match
+model parameter: layer4.0.bn2.bias not match
+model parameter: layer4.0.bn2.running_mean not match
+model parameter: layer4.0.bn2.running_var not match
+model parameter: layer4.0.bn2.num_batches_tracked not match
+model parameter: layer4.0.conv3.weight not match
+model parameter: layer4.0.bn3.weight not match
+model parameter: layer4.0.bn3.bias not match
+model parameter: layer4.0.bn3.running_mean not match
+model parameter: layer4.0.bn3.running_var not match
+model parameter: layer4.0.bn3.num_batches_tracked not match
+model parameter: layer4.0.downsample.0.weight not match
+model parameter: layer4.0.downsample.1.weight not match
+model parameter: layer4.0.downsample.1.bias not match
+model parameter: layer4.0.downsample.1.running_mean not match
+model parameter: layer4.0.downsample.1.running_var not match
+model parameter: layer4.0.downsample.1.num_batches_tracked not match
+model parameter: layer4.1.conv1.weight not match
+model parameter: layer4.1.bn1.weight not match
+model parameter: layer4.1.bn1.bias not match
+model parameter: layer4.1.bn1.running_mean not match
+model parameter: layer4.1.bn1.running_var not match
+model parameter: layer4.1.bn1.num_batches_tracked not match
+model parameter: layer4.1.conv2.weight not match
+model parameter: layer4.1.bn2.weight not match
+model parameter: layer4.1.bn2.bias not match
+model parameter: layer4.1.bn2.running_mean not match
+model parameter: layer4.1.bn2.running_var not match
+model parameter: layer4.1.bn2.num_batches_tracked not match
+model parameter: layer4.1.conv3.weight not match
+model parameter: layer4.1.bn3.weight not match
+model parameter: layer4.1.bn3.bias not match
+model parameter: layer4.1.bn3.running_mean not match
+model parameter: layer4.1.bn3.running_var not match
+model parameter: layer4.1.bn3.num_batches_tracked not match
+model parameter: layer4.2.conv1.weight not match
+model parameter: layer4.2.bn1.weight not match
+model parameter: layer4.2.bn1.bias not match
+model parameter: layer4.2.bn1.running_mean not match
+model parameter: layer4.2.bn1.running_var not match
+model parameter: layer4.2.bn1.num_batches_tracked not match
+model parameter: layer4.2.conv2.weight not match
+model parameter: layer4.2.bn2.weight not match
+model parameter: layer4.2.bn2.bias not match
+model parameter: layer4.2.bn2.running_mean not match
+model parameter: layer4.2.bn2.running_var not match
+model parameter: layer4.2.bn2.num_batches_tracked not match
+model parameter: layer4.2.conv3.weight not match
+model parameter: layer4.2.bn3.weight not match
+model parameter: layer4.2.bn3.bias not match
+model parameter: layer4.2.bn3.running_mean not match
+model parameter: layer4.2.bn3.running_var not match
+model parameter: layer4.2.bn3.num_batches_tracked not match
+model parameter: fc.weight not match
+model parameter: fc.bias not match
+Loading pretrained model for finetuning from ../logs/pretrain/deit_base/office-home/Art_2_Clipart_resnet50_clean/transformer_best_model.pth
+Per class acc
+2022-04-11 18:43:10,019 reid_baseline.test INFO: Enter inferencing
+Using 4 GPUs for inference
+M1 per class acc: tensor([0.4583, 1.0000, 0.2929, 0.8269, 0.1919, 0.7750, 0.2143, 0.0909, 0.1190,
+        0.9394, 0.7750, 0.3939, 0.4747, 0.5500, 0.4040, 0.2041, 0.5455, 0.5128,
+        0.4062, 0.8384, 0.1220, 0.6364, 0.4250, 0.1951, 0.2020, 0.1884, 0.5526,
+        0.2626, 0.4949, 0.2750, 0.6744, 0.1807, 0.2857, 0.7167, 0.6500, 0.7500,
+        0.3438, 0.4565, 0.7400, 0.7463, 0.6863, 0.4667, 0.5094, 0.4138, 0.6778,
+        0.1500, 0.3425, 0.4848, 0.4231, 0.9130, 0.5758, 0.8000, 0.3667, 0.2929,
+        0.3750, 0.7778, 0.1313, 0.9048, 0.2951, 0.3770, 0.7375, 0.4151, 0.2000,
+        0.3750, 0.0000])
+M2 per class acc: tensor([0.1042, 1.0000, 0.2828, 0.6923, 0.2424, 0.8750, 0.4048, 0.1212, 0.2143,
+        0.9192, 0.6500, 0.3838, 0.3636, 0.4250, 0.2121, 0.1327, 0.5455, 0.6410,
+        0.3281, 0.7879, 0.0000, 0.6162, 0.2500, 0.0244, 0.1515, 0.2174, 0.6184,
+        0.1818, 0.3030, 0.3000, 0.6047, 0.0120, 0.3750, 0.7333, 0.4750, 0.6250,
+        0.3125, 0.5435, 0.5400, 0.6269, 0.6275, 0.4400, 0.3962, 0.4713, 0.6222,
+        0.0750, 0.4658, 0.6162, 0.5385, 0.9348, 0.4242, 0.7250, 0.2833, 0.3131,
+        0.3250, 0.5657, 0.1919, 0.7619, 0.4098, 0.3770, 0.4625, 0.4528, 0.1500,
+        0.4750, 0.0000])
+Per class numbers: tensor([48., 41., 99., 52., 99., 40., 42., 99., 42., 99., 40., 99., 99., 40.,
+        99., 98., 99., 39., 64., 99., 41., 99., 40., 41., 99., 69., 76., 99.,
+        99., 40., 43., 83., 56., 60., 40., 40., 64., 46., 50., 67., 51., 75.,
+        53., 87., 90., 40., 73., 99., 78., 46., 99., 40., 60., 99., 40., 99.,
+        99., 42., 61., 61., 80., 53., 40., 40., 71.])
+2022-04-11 18:44:24,852 reid_baseline.test INFO: normal accuracy 0.4586483390607102 2.125087261199951 
+2022-04-11 18:44:24,852 reid_baseline.test INFO: Classify Domain Adapatation Validation Results - In the source trained model
+2022-04-11 18:44:24,852 reid_baseline.test INFO: Accuracy: 45.9%
+2022-04-11 18:44:35,210 reid_baseline INFO: Namespace(config_file='configs/pretrain.yml', opts=['MODEL.DEVICE_ID', "('3')", 'TEST.WEIGHT', "('../logs/pretrain/deit_base/office-home/Art_2_Product_resnet50_clean/transformer_best_model.pth')", 'DATASETS.NAMES', 'OfficeHome', 'OUTPUT_DIR', '../logs/pretrain/deit_base/office-home/Art_2_Product_resnet50_clean', 'DATASETS.ROOT_TRAIN_DIR', '../data/OfficeHomeDataset/Art.txt', 'DATASETS.ROOT_TEST_DIR', '../data/OfficeHomeDataset/Product.txt', 'TEST.IMS_PER_BATCH', '32'], aug_type=None, alpha=0.1, feature_model_path=None, num_patch_wise=0, layer_num=0, per_class_acc=True, imgnet_model_path='../logs/pretrain/deit_base/office-home/Art_2_Product_resnet50_clean_only_classifier/transformer_best_model.pth')
+2022-04-11 18:44:35,210 reid_baseline INFO: Loaded configuration file configs/pretrain.yml
+2022-04-11 18:44:35,210 reid_baseline INFO: 
+MODEL:
+  PRETRAIN_CHOICE: 'imagenet'
+  PRETRAIN_PATH: '../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth'
+  METRIC_LOSS_TYPE: 'triplet'
+  IF_LABELSMOOTH: 'on'
+  IF_WITH_CENTER: 'no'
+  NAME: 'transformer'
+  NO_MARGIN: True
+  DEVICE_ID: ('0')
+  Transformer_TYPE: 'vit_base_patch16_224_TransReID' #vit_small_patch16_224_TransReID
+  STRIDE_SIZE: [16, 16]
+  FC_SETTING: 'TransReID'
+  TASK_TYPE: 'classify_DA' 
+  UDA_STAGE: 'pretrain'
+
+INPUT:
+  SIZE_TRAIN: [256, 256]
+  SIZE_TEST: [256, 256]
+  SIZE_CROP: [224, 224]
+  PROB: 0.5 # random horizontal flip
+  RE_PROB: 0.0 # random erasing
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+
+DATASETS:
+  NAMES: ('OURAPI')
+  ROOT_TRAIN_DIR: ('./datasets/reid_datasets/Corrected_Market1501')
+  NAMES2: ('OURAPI')
+  ROOT_TRAIN_DIR2: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+  ROOT_TEST_DIR: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+
+DATALOADER:
+  SAMPLER: 'softmax'
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+
+SOLVER:
+  OPTIMIZER_NAME: 'SGD'
+  MAX_EPOCHS: 20
+  BASE_LR: 0.008
+  IMS_PER_BATCH: 16
+  STEPS: [40, 80]
+  GAMMA: 0.
+  WARMUP_FACTOR: 0.01
+  WARMUP_EPOCHS: 10
+  WARMUP_METHOD: 'linear'
+  LARGE_FC_LR: False
+  CHECKPOINT_PERIOD: 10
+  LOG_PERIOD: 100
+  EVAL_PERIOD: 1
+  WEIGHT_DECAY:  1e-4
+  WEIGHT_DECAY_BIAS: 1e-4
+  BIAS_LR_FACTOR: 2
+
+TEST:
+  EVAL: True
+  IMS_PER_BATCH: 64
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+
+  WEIGHT: '../logs/trans4DA/transformer_120.pth'
+  NECK_FEAT: 'after'
+  FEAT_NORM: 'yes'
+
+OUTPUT_DIR: '../logs/trans4DA'
+
+
+
+2022-04-11 18:44:35,211 reid_baseline INFO: Running with config:
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+  SAMPLER: softmax
+DATASETS:
+  NAMES: OfficeHome
+  NAMES2: OURAPI
+  PLUS_NUM_ID: 100
+  QUERY_MINING: False
+  ROOT_TEST_DIR: ../data/OfficeHomeDataset/Product.txt
+  ROOT_TRAIN_DIR: ../data/OfficeHomeDataset/Art.txt
+  ROOT_TRAIN_DIR2: ./datasets/reid_datasets/Refined_DukeMTMC_reID
+INPUT:
+  AA_PROB: 0.0
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+  PROB: 0.5
+  RE_PROB: 0.0
+  SIZE_CROP: [224, 224]
+  SIZE_TEST: [256, 256]
+  SIZE_TRAIN: [256, 256]
+MODEL:
+  AIE_COE: 1.5
+  BLOCK_PATTERN: normal
+  CAMERA_EMBEDDING: False
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 3
+  DEVIDE_LENGTH: 4
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  FC_SETTING: TransReID
+  FROZEN: -1
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IF_LABELSMOOTH: on
+  IF_WITH_CENTER: no
+  LAST_STRIDE: 1
+  LOCAL_F: False
+  METRIC_LOSS_TYPE: triplet
+  NAME: transformer
+  NECK: bnneck
+  NO_MARGIN: True
+  NO_SHUFFLE: False
+  PATCH_SHUFFLE: 2
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH: ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+  PROB: 0.0
+  RECIP_LOSS: 
+  STRIDE_SIZE: [16, 16]
+  TASK_TYPE: classify_DA
+  THRESH: 0.23
+  TRIPLET_LOSS_WEIGHT: 1.0
+  Transformer_TYPE: vit_base_patch16_224_TransReID
+  UDA_STAGE: pretrain
+  VIEWPOINT_EMBEDDING: False
+  YIWEI_NUM: 5
+  lameda: 0.5
+OUTPUT_DIR: ../logs/pretrain/deit_base/office-home/Art_2_Product_resnet50_clean
+SOLVER:
+  BASE_LR: 0.008
+  BIAS_LR_FACTOR: 2
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 10
+  CLUSTER_MARGIN: 0.3
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 1
+  GAMMA: 0.0
+  IMS_PER_BATCH: 16
+  LARGE_FC_LR: False
+  LOG_PERIOD: 100
+  MARGIN: 0.3
+  MAX_EPOCHS: 20
+  MOMENTUM: 0.9
+  OPTIMIZER_NAME: SGD
+  RANGE_ALPHA: 0
+  RANGE_BETA: 1
+  RANGE_K: 2
+  RANGE_LOSS_WEIGHT: 1
+  RANGE_MARGIN: 0.3
+  SEED: 1234
+  STEPS: (40, 80)
+  WARMUP_EPOCHS: 10
+  WARMUP_FACTOR: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WITH_PSEUDO_LABEL_FILTER: False
+TEST:
+  DIST_MAT: dist_mat.npy
+  EVAL: True
+  FEAT_NORM: yes
+  FLIP_FEATS: off
+  IMS_PER_BATCH: 32
+  NECK_FEAT: after
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+  WEIGHT: ../logs/pretrain/deit_base/office-home/Art_2_Product_resnet50_clean/transformer_best_model.pth
+=> Office-Home loaded
+Dataset statistics:
+1 1
+train Art and valid is Product
+  ----------------------------------------
+  subset   | # ids | # images | # cameras
+  ----------------------------------------
+  train   |    65 |     2427 |         1
+  valid   |    65 |     4439 |         1
+  ----------------------------------------
+use shuffle sampler strategy
+using Transformer_type: vit_base_patch16_224_TransReID as a backbone
+using stride: [16, 16], and part number is num_y14 * num_x14
+using drop_path_rate is : 0.1
+using aie_xishu is : 1.5
+embed_diim 768 mlp_ratio 4
+distill need to choose right cls token in the pth
+Resized position embedding: %s to %s torch.Size([1, 197, 768]) torch.Size([1, 197, 768])
+Position embedding resize to height:14 width: 14
+Loading pretrained ImageNet model......from ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+===========building transformer===========
+model parameter: conv1.weight not match
+model parameter: bn1.weight not match
+model parameter: bn1.bias not match
+model parameter: bn1.running_mean not match
+model parameter: bn1.running_var not match
+model parameter: bn1.num_batches_tracked not match
+model parameter: layer1.0.conv1.weight not match
+model parameter: layer1.0.bn1.weight not match
+model parameter: layer1.0.bn1.bias not match
+model parameter: layer1.0.bn1.running_mean not match
+model parameter: layer1.0.bn1.running_var not match
+model parameter: layer1.0.bn1.num_batches_tracked not match
+model parameter: layer1.0.conv2.weight not match
+model parameter: layer1.0.bn2.weight not match
+model parameter: layer1.0.bn2.bias not match
+model parameter: layer1.0.bn2.running_mean not match
+model parameter: layer1.0.bn2.running_var not match
+model parameter: layer1.0.bn2.num_batches_tracked not match
+model parameter: layer1.0.conv3.weight not match
+model parameter: layer1.0.bn3.weight not match
+model parameter: layer1.0.bn3.bias not match
+model parameter: layer1.0.bn3.running_mean not match
+model parameter: layer1.0.bn3.running_var not match
+model parameter: layer1.0.bn3.num_batches_tracked not match
+model parameter: layer1.0.downsample.0.weight not match
+model parameter: layer1.0.downsample.1.weight not match
+model parameter: layer1.0.downsample.1.bias not match
+model parameter: layer1.0.downsample.1.running_mean not match
+model parameter: layer1.0.downsample.1.running_var not match
+model parameter: layer1.0.downsample.1.num_batches_tracked not match
+model parameter: layer1.1.conv1.weight not match
+model parameter: layer1.1.bn1.weight not match
+model parameter: layer1.1.bn1.bias not match
+model parameter: layer1.1.bn1.running_mean not match
+model parameter: layer1.1.bn1.running_var not match
+model parameter: layer1.1.bn1.num_batches_tracked not match
+model parameter: layer1.1.conv2.weight not match
+model parameter: layer1.1.bn2.weight not match
+model parameter: layer1.1.bn2.bias not match
+model parameter: layer1.1.bn2.running_mean not match
+model parameter: layer1.1.bn2.running_var not match
+model parameter: layer1.1.bn2.num_batches_tracked not match
+model parameter: layer1.1.conv3.weight not match
+model parameter: layer1.1.bn3.weight not match
+model parameter: layer1.1.bn3.bias not match
+model parameter: layer1.1.bn3.running_mean not match
+model parameter: layer1.1.bn3.running_var not match
+model parameter: layer1.1.bn3.num_batches_tracked not match
+model parameter: layer1.2.conv1.weight not match
+model parameter: layer1.2.bn1.weight not match
+model parameter: layer1.2.bn1.bias not match
+model parameter: layer1.2.bn1.running_mean not match
+model parameter: layer1.2.bn1.running_var not match
+model parameter: layer1.2.bn1.num_batches_tracked not match
+model parameter: layer1.2.conv2.weight not match
+model parameter: layer1.2.bn2.weight not match
+model parameter: layer1.2.bn2.bias not match
+model parameter: layer1.2.bn2.running_mean not match
+model parameter: layer1.2.bn2.running_var not match
+model parameter: layer1.2.bn2.num_batches_tracked not match
+model parameter: layer1.2.conv3.weight not match
+model parameter: layer1.2.bn3.weight not match
+model parameter: layer1.2.bn3.bias not match
+model parameter: layer1.2.bn3.running_mean not match
+model parameter: layer1.2.bn3.running_var not match
+model parameter: layer1.2.bn3.num_batches_tracked not match
+model parameter: layer2.0.conv1.weight not match
+model parameter: layer2.0.bn1.weight not match
+model parameter: layer2.0.bn1.bias not match
+model parameter: layer2.0.bn1.running_mean not match
+model parameter: layer2.0.bn1.running_var not match
+model parameter: layer2.0.bn1.num_batches_tracked not match
+model parameter: layer2.0.conv2.weight not match
+model parameter: layer2.0.bn2.weight not match
+model parameter: layer2.0.bn2.bias not match
+model parameter: layer2.0.bn2.running_mean not match
+model parameter: layer2.0.bn2.running_var not match
+model parameter: layer2.0.bn2.num_batches_tracked not match
+model parameter: layer2.0.conv3.weight not match
+model parameter: layer2.0.bn3.weight not match
+model parameter: layer2.0.bn3.bias not match
+model parameter: layer2.0.bn3.running_mean not match
+model parameter: layer2.0.bn3.running_var not match
+model parameter: layer2.0.bn3.num_batches_tracked not match
+model parameter: layer2.0.downsample.0.weight not match
+model parameter: layer2.0.downsample.1.weight not match
+model parameter: layer2.0.downsample.1.bias not match
+model parameter: layer2.0.downsample.1.running_mean not match
+model parameter: layer2.0.downsample.1.running_var not match
+model parameter: layer2.0.downsample.1.num_batches_tracked not match
+model parameter: layer2.1.conv1.weight not match
+model parameter: layer2.1.bn1.weight not match
+model parameter: layer2.1.bn1.bias not match
+model parameter: layer2.1.bn1.running_mean not match
+model parameter: layer2.1.bn1.running_var not match
+model parameter: layer2.1.bn1.num_batches_tracked not match
+model parameter: layer2.1.conv2.weight not match
+model parameter: layer2.1.bn2.weight not match
+model parameter: layer2.1.bn2.bias not match
+model parameter: layer2.1.bn2.running_mean not match
+model parameter: layer2.1.bn2.running_var not match
+model parameter: layer2.1.bn2.num_batches_tracked not match
+model parameter: layer2.1.conv3.weight not match
+model parameter: layer2.1.bn3.weight not match
+model parameter: layer2.1.bn3.bias not match
+model parameter: layer2.1.bn3.running_mean not match
+model parameter: layer2.1.bn3.running_var not match
+model parameter: layer2.1.bn3.num_batches_tracked not match
+model parameter: layer2.2.conv1.weight not match
+model parameter: layer2.2.bn1.weight not match
+model parameter: layer2.2.bn1.bias not match
+model parameter: layer2.2.bn1.running_mean not match
+model parameter: layer2.2.bn1.running_var not match
+model parameter: layer2.2.bn1.num_batches_tracked not match
+model parameter: layer2.2.conv2.weight not match
+model parameter: layer2.2.bn2.weight not match
+model parameter: layer2.2.bn2.bias not match
+model parameter: layer2.2.bn2.running_mean not match
+model parameter: layer2.2.bn2.running_var not match
+model parameter: layer2.2.bn2.num_batches_tracked not match
+model parameter: layer2.2.conv3.weight not match
+model parameter: layer2.2.bn3.weight not match
+model parameter: layer2.2.bn3.bias not match
+model parameter: layer2.2.bn3.running_mean not match
+model parameter: layer2.2.bn3.running_var not match
+model parameter: layer2.2.bn3.num_batches_tracked not match
+model parameter: layer2.3.conv1.weight not match
+model parameter: layer2.3.bn1.weight not match
+model parameter: layer2.3.bn1.bias not match
+model parameter: layer2.3.bn1.running_mean not match
+model parameter: layer2.3.bn1.running_var not match
+model parameter: layer2.3.bn1.num_batches_tracked not match
+model parameter: layer2.3.conv2.weight not match
+model parameter: layer2.3.bn2.weight not match
+model parameter: layer2.3.bn2.bias not match
+model parameter: layer2.3.bn2.running_mean not match
+model parameter: layer2.3.bn2.running_var not match
+model parameter: layer2.3.bn2.num_batches_tracked not match
+model parameter: layer2.3.conv3.weight not match
+model parameter: layer2.3.bn3.weight not match
+model parameter: layer2.3.bn3.bias not match
+model parameter: layer2.3.bn3.running_mean not match
+model parameter: layer2.3.bn3.running_var not match
+model parameter: layer2.3.bn3.num_batches_tracked not match
+model parameter: layer3.0.conv1.weight not match
+model parameter: layer3.0.bn1.weight not match
+model parameter: layer3.0.bn1.bias not match
+model parameter: layer3.0.bn1.running_mean not match
+model parameter: layer3.0.bn1.running_var not match
+model parameter: layer3.0.bn1.num_batches_tracked not match
+model parameter: layer3.0.conv2.weight not match
+model parameter: layer3.0.bn2.weight not match
+model parameter: layer3.0.bn2.bias not match
+model parameter: layer3.0.bn2.running_mean not match
+model parameter: layer3.0.bn2.running_var not match
+model parameter: layer3.0.bn2.num_batches_tracked not match
+model parameter: layer3.0.conv3.weight not match
+model parameter: layer3.0.bn3.weight not match
+model parameter: layer3.0.bn3.bias not match
+model parameter: layer3.0.bn3.running_mean not match
+model parameter: layer3.0.bn3.running_var not match
+model parameter: layer3.0.bn3.num_batches_tracked not match
+model parameter: layer3.0.downsample.0.weight not match
+model parameter: layer3.0.downsample.1.weight not match
+model parameter: layer3.0.downsample.1.bias not match
+model parameter: layer3.0.downsample.1.running_mean not match
+model parameter: layer3.0.downsample.1.running_var not match
+model parameter: layer3.0.downsample.1.num_batches_tracked not match
+model parameter: layer3.1.conv1.weight not match
+model parameter: layer3.1.bn1.weight not match
+model parameter: layer3.1.bn1.bias not match
+model parameter: layer3.1.bn1.running_mean not match
+model parameter: layer3.1.bn1.running_var not match
+model parameter: layer3.1.bn1.num_batches_tracked not match
+model parameter: layer3.1.conv2.weight not match
+model parameter: layer3.1.bn2.weight not match
+model parameter: layer3.1.bn2.bias not match
+model parameter: layer3.1.bn2.running_mean not match
+model parameter: layer3.1.bn2.running_var not match
+model parameter: layer3.1.bn2.num_batches_tracked not match
+model parameter: layer3.1.conv3.weight not match
+model parameter: layer3.1.bn3.weight not match
+model parameter: layer3.1.bn3.bias not match
+model parameter: layer3.1.bn3.running_mean not match
+model parameter: layer3.1.bn3.running_var not match
+model parameter: layer3.1.bn3.num_batches_tracked not match
+model parameter: layer3.2.conv1.weight not match
+model parameter: layer3.2.bn1.weight not match
+model parameter: layer3.2.bn1.bias not match
+model parameter: layer3.2.bn1.running_mean not match
+model parameter: layer3.2.bn1.running_var not match
+model parameter: layer3.2.bn1.num_batches_tracked not match
+model parameter: layer3.2.conv2.weight not match
+model parameter: layer3.2.bn2.weight not match
+model parameter: layer3.2.bn2.bias not match
+model parameter: layer3.2.bn2.running_mean not match
+model parameter: layer3.2.bn2.running_var not match
+model parameter: layer3.2.bn2.num_batches_tracked not match
+model parameter: layer3.2.conv3.weight not match
+model parameter: layer3.2.bn3.weight not match
+model parameter: layer3.2.bn3.bias not match
+model parameter: layer3.2.bn3.running_mean not match
+model parameter: layer3.2.bn3.running_var not match
+model parameter: layer3.2.bn3.num_batches_tracked not match
+model parameter: layer3.3.conv1.weight not match
+model parameter: layer3.3.bn1.weight not match
+model parameter: layer3.3.bn1.bias not match
+model parameter: layer3.3.bn1.running_mean not match
+model parameter: layer3.3.bn1.running_var not match
+model parameter: layer3.3.bn1.num_batches_tracked not match
+model parameter: layer3.3.conv2.weight not match
+model parameter: layer3.3.bn2.weight not match
+model parameter: layer3.3.bn2.bias not match
+model parameter: layer3.3.bn2.running_mean not match
+model parameter: layer3.3.bn2.running_var not match
+model parameter: layer3.3.bn2.num_batches_tracked not match
+model parameter: layer3.3.conv3.weight not match
+model parameter: layer3.3.bn3.weight not match
+model parameter: layer3.3.bn3.bias not match
+model parameter: layer3.3.bn3.running_mean not match
+model parameter: layer3.3.bn3.running_var not match
+model parameter: layer3.3.bn3.num_batches_tracked not match
+model parameter: layer3.4.conv1.weight not match
+model parameter: layer3.4.bn1.weight not match
+model parameter: layer3.4.bn1.bias not match
+model parameter: layer3.4.bn1.running_mean not match
+model parameter: layer3.4.bn1.running_var not match
+model parameter: layer3.4.bn1.num_batches_tracked not match
+model parameter: layer3.4.conv2.weight not match
+model parameter: layer3.4.bn2.weight not match
+model parameter: layer3.4.bn2.bias not match
+model parameter: layer3.4.bn2.running_mean not match
+model parameter: layer3.4.bn2.running_var not match
+model parameter: layer3.4.bn2.num_batches_tracked not match
+model parameter: layer3.4.conv3.weight not match
+model parameter: layer3.4.bn3.weight not match
+model parameter: layer3.4.bn3.bias not match
+model parameter: layer3.4.bn3.running_mean not match
+model parameter: layer3.4.bn3.running_var not match
+model parameter: layer3.4.bn3.num_batches_tracked not match
+model parameter: layer3.5.conv1.weight not match
+model parameter: layer3.5.bn1.weight not match
+model parameter: layer3.5.bn1.bias not match
+model parameter: layer3.5.bn1.running_mean not match
+model parameter: layer3.5.bn1.running_var not match
+model parameter: layer3.5.bn1.num_batches_tracked not match
+model parameter: layer3.5.conv2.weight not match
+model parameter: layer3.5.bn2.weight not match
+model parameter: layer3.5.bn2.bias not match
+model parameter: layer3.5.bn2.running_mean not match
+model parameter: layer3.5.bn2.running_var not match
+model parameter: layer3.5.bn2.num_batches_tracked not match
+model parameter: layer3.5.conv3.weight not match
+model parameter: layer3.5.bn3.weight not match
+model parameter: layer3.5.bn3.bias not match
+model parameter: layer3.5.bn3.running_mean not match
+model parameter: layer3.5.bn3.running_var not match
+model parameter: layer3.5.bn3.num_batches_tracked not match
+model parameter: layer4.0.conv1.weight not match
+model parameter: layer4.0.bn1.weight not match
+model parameter: layer4.0.bn1.bias not match
+model parameter: layer4.0.bn1.running_mean not match
+model parameter: layer4.0.bn1.running_var not match
+model parameter: layer4.0.bn1.num_batches_tracked not match
+model parameter: layer4.0.conv2.weight not match
+model parameter: layer4.0.bn2.weight not match
+model parameter: layer4.0.bn2.bias not match
+model parameter: layer4.0.bn2.running_mean not match
+model parameter: layer4.0.bn2.running_var not match
+model parameter: layer4.0.bn2.num_batches_tracked not match
+model parameter: layer4.0.conv3.weight not match
+model parameter: layer4.0.bn3.weight not match
+model parameter: layer4.0.bn3.bias not match
+model parameter: layer4.0.bn3.running_mean not match
+model parameter: layer4.0.bn3.running_var not match
+model parameter: layer4.0.bn3.num_batches_tracked not match
+model parameter: layer4.0.downsample.0.weight not match
+model parameter: layer4.0.downsample.1.weight not match
+model parameter: layer4.0.downsample.1.bias not match
+model parameter: layer4.0.downsample.1.running_mean not match
+model parameter: layer4.0.downsample.1.running_var not match
+model parameter: layer4.0.downsample.1.num_batches_tracked not match
+model parameter: layer4.1.conv1.weight not match
+model parameter: layer4.1.bn1.weight not match
+model parameter: layer4.1.bn1.bias not match
+model parameter: layer4.1.bn1.running_mean not match
+model parameter: layer4.1.bn1.running_var not match
+model parameter: layer4.1.bn1.num_batches_tracked not match
+model parameter: layer4.1.conv2.weight not match
+model parameter: layer4.1.bn2.weight not match
+model parameter: layer4.1.bn2.bias not match
+model parameter: layer4.1.bn2.running_mean not match
+model parameter: layer4.1.bn2.running_var not match
+model parameter: layer4.1.bn2.num_batches_tracked not match
+model parameter: layer4.1.conv3.weight not match
+model parameter: layer4.1.bn3.weight not match
+model parameter: layer4.1.bn3.bias not match
+model parameter: layer4.1.bn3.running_mean not match
+model parameter: layer4.1.bn3.running_var not match
+model parameter: layer4.1.bn3.num_batches_tracked not match
+model parameter: layer4.2.conv1.weight not match
+model parameter: layer4.2.bn1.weight not match
+model parameter: layer4.2.bn1.bias not match
+model parameter: layer4.2.bn1.running_mean not match
+model parameter: layer4.2.bn1.running_var not match
+model parameter: layer4.2.bn1.num_batches_tracked not match
+model parameter: layer4.2.conv2.weight not match
+model parameter: layer4.2.bn2.weight not match
+model parameter: layer4.2.bn2.bias not match
+model parameter: layer4.2.bn2.running_mean not match
+model parameter: layer4.2.bn2.running_var not match
+model parameter: layer4.2.bn2.num_batches_tracked not match
+model parameter: layer4.2.conv3.weight not match
+model parameter: layer4.2.bn3.weight not match
+model parameter: layer4.2.bn3.bias not match
+model parameter: layer4.2.bn3.running_mean not match
+model parameter: layer4.2.bn3.running_var not match
+model parameter: layer4.2.bn3.num_batches_tracked not match
+model parameter: fc.weight not match
+model parameter: fc.bias not match
+Loading pretrained model for finetuning from ../logs/pretrain/deit_base/office-home/Art_2_Product_resnet50_clean/transformer_best_model.pth
+Per class acc
+2022-04-11 18:44:52,061 reid_baseline.test INFO: Enter inferencing
+Using 4 GPUs for inference
+M1 per class acc: tensor([0.9701, 1.0000, 0.5484, 0.9552, 0.1146, 0.8310, 0.3469, 0.3333, 0.9348,
+        0.8788, 0.5972, 0.5556, 0.6768, 0.6061, 0.5000, 0.7907, 0.5789, 0.3333,
+        0.9091, 0.9545, 0.3684, 0.8780, 0.8673, 0.2771, 0.1207, 0.6889, 0.9479,
+        0.5167, 0.8980, 0.3611, 0.8283, 0.4301, 0.8990, 0.7975, 0.3488, 0.8723,
+        0.7903, 0.4651, 0.6207, 0.9655, 0.7286, 0.7500, 0.8065, 0.9697, 0.2424,
+        0.2683, 0.7447, 0.6869, 0.8642, 1.0000, 0.9341, 0.6852, 0.7872, 0.5536,
+        0.4308, 0.6667, 0.0000, 0.8933, 0.6585, 0.7674, 0.8167, 0.6829, 0.7353,
+        0.8814, 0.3750])
+M2 per class acc: tensor([0.8955, 0.8657, 0.4677, 0.9403, 0.1458, 0.8310, 0.2245, 0.2889, 0.8478,
+        0.8788, 0.6389, 0.4667, 0.5960, 0.6162, 0.3750, 0.6047, 0.7544, 0.5000,
+        0.8295, 0.9545, 0.5526, 0.8780, 0.6939, 0.0964, 0.1207, 0.8222, 0.9062,
+        0.2667, 0.9082, 0.4583, 0.8485, 0.1828, 0.8990, 0.7848, 0.2558, 0.7234,
+        0.8065, 0.7674, 0.7241, 0.9655, 0.7857, 0.8250, 0.6989, 0.9495, 0.3030,
+        0.3415, 0.9362, 0.5859, 0.8642, 1.0000, 0.9451, 0.7407, 0.6596, 0.5357,
+        0.2769, 0.5051, 0.0132, 0.6133, 0.7073, 0.8140, 0.6167, 0.6829, 0.7059,
+        0.9492, 0.3929])
+Per class numbers: tensor([67., 67., 62., 67., 96., 71., 49., 45., 46., 99., 72., 90., 99., 99.,
+        40., 43., 57., 42., 88., 44., 38., 41., 98., 83., 58., 90., 96., 60.,
+        98., 72., 99., 93., 99., 79., 43., 47., 62., 43., 58., 58., 70., 40.,
+        93., 99., 99., 41., 47., 99., 81., 81., 91., 54., 47., 56., 65., 99.,
+        76., 75., 41., 43., 60., 41., 68., 59., 56.])
+2022-04-11 18:46:10,715 reid_baseline.test INFO: normal accuracy 0.6783059247578284 1.6013453006744385 
+2022-04-11 18:46:10,716 reid_baseline.test INFO: Classify Domain Adapatation Validation Results - In the source trained model
+2022-04-11 18:46:10,716 reid_baseline.test INFO: Accuracy: 67.8%
+2022-04-11 18:46:20,027 reid_baseline INFO: Namespace(config_file='configs/pretrain.yml', opts=['MODEL.DEVICE_ID', "('3')", 'TEST.WEIGHT', "('../logs/pretrain/deit_base/office-home/Art_2_Real_World_resnet50_clean/transformer_best_model.pth')", 'DATASETS.NAMES', 'OfficeHome', 'OUTPUT_DIR', '../logs/pretrain/deit_base/office-home/Art_2_Real_World_resnet50_clean', 'DATASETS.ROOT_TRAIN_DIR', '../data/OfficeHomeDataset/Art.txt', 'DATASETS.ROOT_TEST_DIR', '../data/OfficeHomeDataset/Real_World.txt', 'TEST.IMS_PER_BATCH', '32'], aug_type=None, alpha=0.1, feature_model_path=None, num_patch_wise=0, layer_num=0, per_class_acc=True, imgnet_model_path='../logs/pretrain/deit_base/office-home/Art_2_Real_World_resnet50_clean_only_classifier/transformer_best_model.pth')
+2022-04-11 18:46:20,028 reid_baseline INFO: Loaded configuration file configs/pretrain.yml
+2022-04-11 18:46:20,028 reid_baseline INFO: 
+MODEL:
+  PRETRAIN_CHOICE: 'imagenet'
+  PRETRAIN_PATH: '../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth'
+  METRIC_LOSS_TYPE: 'triplet'
+  IF_LABELSMOOTH: 'on'
+  IF_WITH_CENTER: 'no'
+  NAME: 'transformer'
+  NO_MARGIN: True
+  DEVICE_ID: ('0')
+  Transformer_TYPE: 'vit_base_patch16_224_TransReID' #vit_small_patch16_224_TransReID
+  STRIDE_SIZE: [16, 16]
+  FC_SETTING: 'TransReID'
+  TASK_TYPE: 'classify_DA' 
+  UDA_STAGE: 'pretrain'
+
+INPUT:
+  SIZE_TRAIN: [256, 256]
+  SIZE_TEST: [256, 256]
+  SIZE_CROP: [224, 224]
+  PROB: 0.5 # random horizontal flip
+  RE_PROB: 0.0 # random erasing
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+
+DATASETS:
+  NAMES: ('OURAPI')
+  ROOT_TRAIN_DIR: ('./datasets/reid_datasets/Corrected_Market1501')
+  NAMES2: ('OURAPI')
+  ROOT_TRAIN_DIR2: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+  ROOT_TEST_DIR: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+
+DATALOADER:
+  SAMPLER: 'softmax'
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+
+SOLVER:
+  OPTIMIZER_NAME: 'SGD'
+  MAX_EPOCHS: 20
+  BASE_LR: 0.008
+  IMS_PER_BATCH: 16
+  STEPS: [40, 80]
+  GAMMA: 0.
+  WARMUP_FACTOR: 0.01
+  WARMUP_EPOCHS: 10
+  WARMUP_METHOD: 'linear'
+  LARGE_FC_LR: False
+  CHECKPOINT_PERIOD: 10
+  LOG_PERIOD: 100
+  EVAL_PERIOD: 1
+  WEIGHT_DECAY:  1e-4
+  WEIGHT_DECAY_BIAS: 1e-4
+  BIAS_LR_FACTOR: 2
+
+TEST:
+  EVAL: True
+  IMS_PER_BATCH: 64
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+
+  WEIGHT: '../logs/trans4DA/transformer_120.pth'
+  NECK_FEAT: 'after'
+  FEAT_NORM: 'yes'
+
+OUTPUT_DIR: '../logs/trans4DA'
+
+
+
+2022-04-11 18:46:20,029 reid_baseline INFO: Running with config:
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+  SAMPLER: softmax
+DATASETS:
+  NAMES: OfficeHome
+  NAMES2: OURAPI
+  PLUS_NUM_ID: 100
+  QUERY_MINING: False
+  ROOT_TEST_DIR: ../data/OfficeHomeDataset/Real_World.txt
+  ROOT_TRAIN_DIR: ../data/OfficeHomeDataset/Art.txt
+  ROOT_TRAIN_DIR2: ./datasets/reid_datasets/Refined_DukeMTMC_reID
+INPUT:
+  AA_PROB: 0.0
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+  PROB: 0.5
+  RE_PROB: 0.0
+  SIZE_CROP: [224, 224]
+  SIZE_TEST: [256, 256]
+  SIZE_TRAIN: [256, 256]
+MODEL:
+  AIE_COE: 1.5
+  BLOCK_PATTERN: normal
+  CAMERA_EMBEDDING: False
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 3
+  DEVIDE_LENGTH: 4
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  FC_SETTING: TransReID
+  FROZEN: -1
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IF_LABELSMOOTH: on
+  IF_WITH_CENTER: no
+  LAST_STRIDE: 1
+  LOCAL_F: False
+  METRIC_LOSS_TYPE: triplet
+  NAME: transformer
+  NECK: bnneck
+  NO_MARGIN: True
+  NO_SHUFFLE: False
+  PATCH_SHUFFLE: 2
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH: ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+  PROB: 0.0
+  RECIP_LOSS: 
+  STRIDE_SIZE: [16, 16]
+  TASK_TYPE: classify_DA
+  THRESH: 0.23
+  TRIPLET_LOSS_WEIGHT: 1.0
+  Transformer_TYPE: vit_base_patch16_224_TransReID
+  UDA_STAGE: pretrain
+  VIEWPOINT_EMBEDDING: False
+  YIWEI_NUM: 5
+  lameda: 0.5
+OUTPUT_DIR: ../logs/pretrain/deit_base/office-home/Art_2_Real_World_resnet50_clean
+SOLVER:
+  BASE_LR: 0.008
+  BIAS_LR_FACTOR: 2
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 10
+  CLUSTER_MARGIN: 0.3
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 1
+  GAMMA: 0.0
+  IMS_PER_BATCH: 16
+  LARGE_FC_LR: False
+  LOG_PERIOD: 100
+  MARGIN: 0.3
+  MAX_EPOCHS: 20
+  MOMENTUM: 0.9
+  OPTIMIZER_NAME: SGD
+  RANGE_ALPHA: 0
+  RANGE_BETA: 1
+  RANGE_K: 2
+  RANGE_LOSS_WEIGHT: 1
+  RANGE_MARGIN: 0.3
+  SEED: 1234
+  STEPS: (40, 80)
+  WARMUP_EPOCHS: 10
+  WARMUP_FACTOR: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WITH_PSEUDO_LABEL_FILTER: False
+TEST:
+  DIST_MAT: dist_mat.npy
+  EVAL: True
+  FEAT_NORM: yes
+  FLIP_FEATS: off
+  IMS_PER_BATCH: 32
+  NECK_FEAT: after
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+  WEIGHT: ../logs/pretrain/deit_base/office-home/Art_2_Real_World_resnet50_clean/transformer_best_model.pth
+=> Office-Home loaded
+Dataset statistics:
+1 1
+train Art and valid is Real_World
+  ----------------------------------------
+  subset   | # ids | # images | # cameras
+  ----------------------------------------
+  train   |    65 |     2427 |         1
+  valid   |    65 |     4357 |         1
+  ----------------------------------------
+use shuffle sampler strategy
+using Transformer_type: vit_base_patch16_224_TransReID as a backbone
+using stride: [16, 16], and part number is num_y14 * num_x14
+using drop_path_rate is : 0.1
+using aie_xishu is : 1.5
+embed_diim 768 mlp_ratio 4
+distill need to choose right cls token in the pth
+Resized position embedding: %s to %s torch.Size([1, 197, 768]) torch.Size([1, 197, 768])
+Position embedding resize to height:14 width: 14
+Loading pretrained ImageNet model......from ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+===========building transformer===========
+model parameter: conv1.weight not match
+model parameter: bn1.weight not match
+model parameter: bn1.bias not match
+model parameter: bn1.running_mean not match
+model parameter: bn1.running_var not match
+model parameter: bn1.num_batches_tracked not match
+model parameter: layer1.0.conv1.weight not match
+model parameter: layer1.0.bn1.weight not match
+model parameter: layer1.0.bn1.bias not match
+model parameter: layer1.0.bn1.running_mean not match
+model parameter: layer1.0.bn1.running_var not match
+model parameter: layer1.0.bn1.num_batches_tracked not match
+model parameter: layer1.0.conv2.weight not match
+model parameter: layer1.0.bn2.weight not match
+model parameter: layer1.0.bn2.bias not match
+model parameter: layer1.0.bn2.running_mean not match
+model parameter: layer1.0.bn2.running_var not match
+model parameter: layer1.0.bn2.num_batches_tracked not match
+model parameter: layer1.0.conv3.weight not match
+model parameter: layer1.0.bn3.weight not match
+model parameter: layer1.0.bn3.bias not match
+model parameter: layer1.0.bn3.running_mean not match
+model parameter: layer1.0.bn3.running_var not match
+model parameter: layer1.0.bn3.num_batches_tracked not match
+model parameter: layer1.0.downsample.0.weight not match
+model parameter: layer1.0.downsample.1.weight not match
+model parameter: layer1.0.downsample.1.bias not match
+model parameter: layer1.0.downsample.1.running_mean not match
+model parameter: layer1.0.downsample.1.running_var not match
+model parameter: layer1.0.downsample.1.num_batches_tracked not match
+model parameter: layer1.1.conv1.weight not match
+model parameter: layer1.1.bn1.weight not match
+model parameter: layer1.1.bn1.bias not match
+model parameter: layer1.1.bn1.running_mean not match
+model parameter: layer1.1.bn1.running_var not match
+model parameter: layer1.1.bn1.num_batches_tracked not match
+model parameter: layer1.1.conv2.weight not match
+model parameter: layer1.1.bn2.weight not match
+model parameter: layer1.1.bn2.bias not match
+model parameter: layer1.1.bn2.running_mean not match
+model parameter: layer1.1.bn2.running_var not match
+model parameter: layer1.1.bn2.num_batches_tracked not match
+model parameter: layer1.1.conv3.weight not match
+model parameter: layer1.1.bn3.weight not match
+model parameter: layer1.1.bn3.bias not match
+model parameter: layer1.1.bn3.running_mean not match
+model parameter: layer1.1.bn3.running_var not match
+model parameter: layer1.1.bn3.num_batches_tracked not match
+model parameter: layer1.2.conv1.weight not match
+model parameter: layer1.2.bn1.weight not match
+model parameter: layer1.2.bn1.bias not match
+model parameter: layer1.2.bn1.running_mean not match
+model parameter: layer1.2.bn1.running_var not match
+model parameter: layer1.2.bn1.num_batches_tracked not match
+model parameter: layer1.2.conv2.weight not match
+model parameter: layer1.2.bn2.weight not match
+model parameter: layer1.2.bn2.bias not match
+model parameter: layer1.2.bn2.running_mean not match
+model parameter: layer1.2.bn2.running_var not match
+model parameter: layer1.2.bn2.num_batches_tracked not match
+model parameter: layer1.2.conv3.weight not match
+model parameter: layer1.2.bn3.weight not match
+model parameter: layer1.2.bn3.bias not match
+model parameter: layer1.2.bn3.running_mean not match
+model parameter: layer1.2.bn3.running_var not match
+model parameter: layer1.2.bn3.num_batches_tracked not match
+model parameter: layer2.0.conv1.weight not match
+model parameter: layer2.0.bn1.weight not match
+model parameter: layer2.0.bn1.bias not match
+model parameter: layer2.0.bn1.running_mean not match
+model parameter: layer2.0.bn1.running_var not match
+model parameter: layer2.0.bn1.num_batches_tracked not match
+model parameter: layer2.0.conv2.weight not match
+model parameter: layer2.0.bn2.weight not match
+model parameter: layer2.0.bn2.bias not match
+model parameter: layer2.0.bn2.running_mean not match
+model parameter: layer2.0.bn2.running_var not match
+model parameter: layer2.0.bn2.num_batches_tracked not match
+model parameter: layer2.0.conv3.weight not match
+model parameter: layer2.0.bn3.weight not match
+model parameter: layer2.0.bn3.bias not match
+model parameter: layer2.0.bn3.running_mean not match
+model parameter: layer2.0.bn3.running_var not match
+model parameter: layer2.0.bn3.num_batches_tracked not match
+model parameter: layer2.0.downsample.0.weight not match
+model parameter: layer2.0.downsample.1.weight not match
+model parameter: layer2.0.downsample.1.bias not match
+model parameter: layer2.0.downsample.1.running_mean not match
+model parameter: layer2.0.downsample.1.running_var not match
+model parameter: layer2.0.downsample.1.num_batches_tracked not match
+model parameter: layer2.1.conv1.weight not match
+model parameter: layer2.1.bn1.weight not match
+model parameter: layer2.1.bn1.bias not match
+model parameter: layer2.1.bn1.running_mean not match
+model parameter: layer2.1.bn1.running_var not match
+model parameter: layer2.1.bn1.num_batches_tracked not match
+model parameter: layer2.1.conv2.weight not match
+model parameter: layer2.1.bn2.weight not match
+model parameter: layer2.1.bn2.bias not match
+model parameter: layer2.1.bn2.running_mean not match
+model parameter: layer2.1.bn2.running_var not match
+model parameter: layer2.1.bn2.num_batches_tracked not match
+model parameter: layer2.1.conv3.weight not match
+model parameter: layer2.1.bn3.weight not match
+model parameter: layer2.1.bn3.bias not match
+model parameter: layer2.1.bn3.running_mean not match
+model parameter: layer2.1.bn3.running_var not match
+model parameter: layer2.1.bn3.num_batches_tracked not match
+model parameter: layer2.2.conv1.weight not match
+model parameter: layer2.2.bn1.weight not match
+model parameter: layer2.2.bn1.bias not match
+model parameter: layer2.2.bn1.running_mean not match
+model parameter: layer2.2.bn1.running_var not match
+model parameter: layer2.2.bn1.num_batches_tracked not match
+model parameter: layer2.2.conv2.weight not match
+model parameter: layer2.2.bn2.weight not match
+model parameter: layer2.2.bn2.bias not match
+model parameter: layer2.2.bn2.running_mean not match
+model parameter: layer2.2.bn2.running_var not match
+model parameter: layer2.2.bn2.num_batches_tracked not match
+model parameter: layer2.2.conv3.weight not match
+model parameter: layer2.2.bn3.weight not match
+model parameter: layer2.2.bn3.bias not match
+model parameter: layer2.2.bn3.running_mean not match
+model parameter: layer2.2.bn3.running_var not match
+model parameter: layer2.2.bn3.num_batches_tracked not match
+model parameter: layer2.3.conv1.weight not match
+model parameter: layer2.3.bn1.weight not match
+model parameter: layer2.3.bn1.bias not match
+model parameter: layer2.3.bn1.running_mean not match
+model parameter: layer2.3.bn1.running_var not match
+model parameter: layer2.3.bn1.num_batches_tracked not match
+model parameter: layer2.3.conv2.weight not match
+model parameter: layer2.3.bn2.weight not match
+model parameter: layer2.3.bn2.bias not match
+model parameter: layer2.3.bn2.running_mean not match
+model parameter: layer2.3.bn2.running_var not match
+model parameter: layer2.3.bn2.num_batches_tracked not match
+model parameter: layer2.3.conv3.weight not match
+model parameter: layer2.3.bn3.weight not match
+model parameter: layer2.3.bn3.bias not match
+model parameter: layer2.3.bn3.running_mean not match
+model parameter: layer2.3.bn3.running_var not match
+model parameter: layer2.3.bn3.num_batches_tracked not match
+model parameter: layer3.0.conv1.weight not match
+model parameter: layer3.0.bn1.weight not match
+model parameter: layer3.0.bn1.bias not match
+model parameter: layer3.0.bn1.running_mean not match
+model parameter: layer3.0.bn1.running_var not match
+model parameter: layer3.0.bn1.num_batches_tracked not match
+model parameter: layer3.0.conv2.weight not match
+model parameter: layer3.0.bn2.weight not match
+model parameter: layer3.0.bn2.bias not match
+model parameter: layer3.0.bn2.running_mean not match
+model parameter: layer3.0.bn2.running_var not match
+model parameter: layer3.0.bn2.num_batches_tracked not match
+model parameter: layer3.0.conv3.weight not match
+model parameter: layer3.0.bn3.weight not match
+model parameter: layer3.0.bn3.bias not match
+model parameter: layer3.0.bn3.running_mean not match
+model parameter: layer3.0.bn3.running_var not match
+model parameter: layer3.0.bn3.num_batches_tracked not match
+model parameter: layer3.0.downsample.0.weight not match
+model parameter: layer3.0.downsample.1.weight not match
+model parameter: layer3.0.downsample.1.bias not match
+model parameter: layer3.0.downsample.1.running_mean not match
+model parameter: layer3.0.downsample.1.running_var not match
+model parameter: layer3.0.downsample.1.num_batches_tracked not match
+model parameter: layer3.1.conv1.weight not match
+model parameter: layer3.1.bn1.weight not match
+model parameter: layer3.1.bn1.bias not match
+model parameter: layer3.1.bn1.running_mean not match
+model parameter: layer3.1.bn1.running_var not match
+model parameter: layer3.1.bn1.num_batches_tracked not match
+model parameter: layer3.1.conv2.weight not match
+model parameter: layer3.1.bn2.weight not match
+model parameter: layer3.1.bn2.bias not match
+model parameter: layer3.1.bn2.running_mean not match
+model parameter: layer3.1.bn2.running_var not match
+model parameter: layer3.1.bn2.num_batches_tracked not match
+model parameter: layer3.1.conv3.weight not match
+model parameter: layer3.1.bn3.weight not match
+model parameter: layer3.1.bn3.bias not match
+model parameter: layer3.1.bn3.running_mean not match
+model parameter: layer3.1.bn3.running_var not match
+model parameter: layer3.1.bn3.num_batches_tracked not match
+model parameter: layer3.2.conv1.weight not match
+model parameter: layer3.2.bn1.weight not match
+model parameter: layer3.2.bn1.bias not match
+model parameter: layer3.2.bn1.running_mean not match
+model parameter: layer3.2.bn1.running_var not match
+model parameter: layer3.2.bn1.num_batches_tracked not match
+model parameter: layer3.2.conv2.weight not match
+model parameter: layer3.2.bn2.weight not match
+model parameter: layer3.2.bn2.bias not match
+model parameter: layer3.2.bn2.running_mean not match
+model parameter: layer3.2.bn2.running_var not match
+model parameter: layer3.2.bn2.num_batches_tracked not match
+model parameter: layer3.2.conv3.weight not match
+model parameter: layer3.2.bn3.weight not match
+model parameter: layer3.2.bn3.bias not match
+model parameter: layer3.2.bn3.running_mean not match
+model parameter: layer3.2.bn3.running_var not match
+model parameter: layer3.2.bn3.num_batches_tracked not match
+model parameter: layer3.3.conv1.weight not match
+model parameter: layer3.3.bn1.weight not match
+model parameter: layer3.3.bn1.bias not match
+model parameter: layer3.3.bn1.running_mean not match
+model parameter: layer3.3.bn1.running_var not match
+model parameter: layer3.3.bn1.num_batches_tracked not match
+model parameter: layer3.3.conv2.weight not match
+model parameter: layer3.3.bn2.weight not match
+model parameter: layer3.3.bn2.bias not match
+model parameter: layer3.3.bn2.running_mean not match
+model parameter: layer3.3.bn2.running_var not match
+model parameter: layer3.3.bn2.num_batches_tracked not match
+model parameter: layer3.3.conv3.weight not match
+model parameter: layer3.3.bn3.weight not match
+model parameter: layer3.3.bn3.bias not match
+model parameter: layer3.3.bn3.running_mean not match
+model parameter: layer3.3.bn3.running_var not match
+model parameter: layer3.3.bn3.num_batches_tracked not match
+model parameter: layer3.4.conv1.weight not match
+model parameter: layer3.4.bn1.weight not match
+model parameter: layer3.4.bn1.bias not match
+model parameter: layer3.4.bn1.running_mean not match
+model parameter: layer3.4.bn1.running_var not match
+model parameter: layer3.4.bn1.num_batches_tracked not match
+model parameter: layer3.4.conv2.weight not match
+model parameter: layer3.4.bn2.weight not match
+model parameter: layer3.4.bn2.bias not match
+model parameter: layer3.4.bn2.running_mean not match
+model parameter: layer3.4.bn2.running_var not match
+model parameter: layer3.4.bn2.num_batches_tracked not match
+model parameter: layer3.4.conv3.weight not match
+model parameter: layer3.4.bn3.weight not match
+model parameter: layer3.4.bn3.bias not match
+model parameter: layer3.4.bn3.running_mean not match
+model parameter: layer3.4.bn3.running_var not match
+model parameter: layer3.4.bn3.num_batches_tracked not match
+model parameter: layer3.5.conv1.weight not match
+model parameter: layer3.5.bn1.weight not match
+model parameter: layer3.5.bn1.bias not match
+model parameter: layer3.5.bn1.running_mean not match
+model parameter: layer3.5.bn1.running_var not match
+model parameter: layer3.5.bn1.num_batches_tracked not match
+model parameter: layer3.5.conv2.weight not match
+model parameter: layer3.5.bn2.weight not match
+model parameter: layer3.5.bn2.bias not match
+model parameter: layer3.5.bn2.running_mean not match
+model parameter: layer3.5.bn2.running_var not match
+model parameter: layer3.5.bn2.num_batches_tracked not match
+model parameter: layer3.5.conv3.weight not match
+model parameter: layer3.5.bn3.weight not match
+model parameter: layer3.5.bn3.bias not match
+model parameter: layer3.5.bn3.running_mean not match
+model parameter: layer3.5.bn3.running_var not match
+model parameter: layer3.5.bn3.num_batches_tracked not match
+model parameter: layer4.0.conv1.weight not match
+model parameter: layer4.0.bn1.weight not match
+model parameter: layer4.0.bn1.bias not match
+model parameter: layer4.0.bn1.running_mean not match
+model parameter: layer4.0.bn1.running_var not match
+model parameter: layer4.0.bn1.num_batches_tracked not match
+model parameter: layer4.0.conv2.weight not match
+model parameter: layer4.0.bn2.weight not match
+model parameter: layer4.0.bn2.bias not match
+model parameter: layer4.0.bn2.running_mean not match
+model parameter: layer4.0.bn2.running_var not match
+model parameter: layer4.0.bn2.num_batches_tracked not match
+model parameter: layer4.0.conv3.weight not match
+model parameter: layer4.0.bn3.weight not match
+model parameter: layer4.0.bn3.bias not match
+model parameter: layer4.0.bn3.running_mean not match
+model parameter: layer4.0.bn3.running_var not match
+model parameter: layer4.0.bn3.num_batches_tracked not match
+model parameter: layer4.0.downsample.0.weight not match
+model parameter: layer4.0.downsample.1.weight not match
+model parameter: layer4.0.downsample.1.bias not match
+model parameter: layer4.0.downsample.1.running_mean not match
+model parameter: layer4.0.downsample.1.running_var not match
+model parameter: layer4.0.downsample.1.num_batches_tracked not match
+model parameter: layer4.1.conv1.weight not match
+model parameter: layer4.1.bn1.weight not match
+model parameter: layer4.1.bn1.bias not match
+model parameter: layer4.1.bn1.running_mean not match
+model parameter: layer4.1.bn1.running_var not match
+model parameter: layer4.1.bn1.num_batches_tracked not match
+model parameter: layer4.1.conv2.weight not match
+model parameter: layer4.1.bn2.weight not match
+model parameter: layer4.1.bn2.bias not match
+model parameter: layer4.1.bn2.running_mean not match
+model parameter: layer4.1.bn2.running_var not match
+model parameter: layer4.1.bn2.num_batches_tracked not match
+model parameter: layer4.1.conv3.weight not match
+model parameter: layer4.1.bn3.weight not match
+model parameter: layer4.1.bn3.bias not match
+model parameter: layer4.1.bn3.running_mean not match
+model parameter: layer4.1.bn3.running_var not match
+model parameter: layer4.1.bn3.num_batches_tracked not match
+model parameter: layer4.2.conv1.weight not match
+model parameter: layer4.2.bn1.weight not match
+model parameter: layer4.2.bn1.bias not match
+model parameter: layer4.2.bn1.running_mean not match
+model parameter: layer4.2.bn1.running_var not match
+model parameter: layer4.2.bn1.num_batches_tracked not match
+model parameter: layer4.2.conv2.weight not match
+model parameter: layer4.2.bn2.weight not match
+model parameter: layer4.2.bn2.bias not match
+model parameter: layer4.2.bn2.running_mean not match
+model parameter: layer4.2.bn2.running_var not match
+model parameter: layer4.2.bn2.num_batches_tracked not match
+model parameter: layer4.2.conv3.weight not match
+model parameter: layer4.2.bn3.weight not match
+model parameter: layer4.2.bn3.bias not match
+model parameter: layer4.2.bn3.running_mean not match
+model parameter: layer4.2.bn3.running_var not match
+model parameter: layer4.2.bn3.num_batches_tracked not match
+model parameter: fc.weight not match
+model parameter: fc.bias not match
+Loading pretrained model for finetuning from ../logs/pretrain/deit_base/office-home/Art_2_Real_World_resnet50_clean/transformer_best_model.pth
+Per class acc
+2022-04-11 18:46:40,636 reid_baseline.test INFO: Enter inferencing
+Using 4 GPUs for inference
+M1 per class acc: tensor([0.6667, 0.9630, 0.7564, 0.9500, 0.5625, 0.8621, 0.6667, 0.3433, 0.7532,
+        0.9254, 0.7083, 0.4386, 0.7733, 0.7059, 0.6610, 0.7831, 0.6731, 0.6000,
+        0.7632, 1.0000, 0.6418, 0.9138, 0.7347, 0.5000, 0.6341, 0.8667, 0.9667,
+        0.8462, 0.6479, 0.5435, 0.9545, 0.4118, 0.9293, 0.8605, 0.7358, 0.7206,
+        0.7969, 0.6818, 0.7667, 0.9756, 0.7667, 0.7451, 0.5309, 0.9808, 0.3951,
+        0.6977, 0.7500, 0.7292, 0.9412, 1.0000, 1.0000, 0.6667, 0.8148, 0.9495,
+        0.5077, 0.7792, 0.3208, 0.9178, 0.5278, 0.8413, 0.7288, 0.9398, 0.4688,
+        0.9067, 0.3478])
+M2 per class acc: tensor([0.5882, 0.9383, 0.7179, 0.9333, 0.5156, 0.8103, 0.5606, 0.3284, 0.7792,
+        0.9403, 0.7500, 0.4737, 0.6933, 0.6588, 0.6271, 0.8434, 0.7115, 0.6588,
+        0.6184, 1.0000, 0.6418, 0.9138, 0.4898, 0.4355, 0.7073, 0.8833, 0.9000,
+        0.7231, 0.5493, 0.5652, 0.9091, 0.2500, 0.9394, 0.8721, 0.6792, 0.5882,
+        0.8281, 0.8333, 0.8000, 0.9268, 0.7667, 0.7843, 0.3210, 0.9615, 0.3704,
+        0.6744, 0.8875, 0.8646, 0.9706, 0.9863, 1.0000, 0.7692, 0.7222, 0.9596,
+        0.3846, 0.5584, 0.3396, 0.7260, 0.3889, 0.8730, 0.2881, 0.9277, 0.5156,
+        0.9333, 0.3478])
+Per class numbers: tensor([51., 81., 78., 60., 64., 58., 66., 67., 77., 67., 72., 57., 75., 85.,
+        59., 83., 52., 85., 76., 99., 67., 58., 49., 62., 82., 60., 60., 65.,
+        71., 46., 88., 68., 99., 86., 53., 68., 64., 66., 60., 41., 30., 51.,
+        81., 52., 81., 43., 80., 96., 68., 73., 75., 78., 54., 99., 65., 77.,
+        53., 73., 36., 63., 59., 83., 64., 75., 23.])
+2022-04-11 18:48:54,536 reid_baseline.test INFO: normal accuracy 0.7495983474868029 1.3702915906906128 
+2022-04-11 18:48:54,537 reid_baseline.test INFO: Classify Domain Adapatation Validation Results - In the source trained model
+2022-04-11 18:48:54,537 reid_baseline.test INFO: Accuracy: 75.0%
+2022-04-11 18:49:07,891 reid_baseline INFO: Namespace(config_file='configs/pretrain.yml', opts=['MODEL.DEVICE_ID', "('3')", 'TEST.WEIGHT', "('../logs/pretrain/deit_base/office-home/Clipart_2_Art_resnet50_clean/transformer_best_model.pth')", 'DATASETS.NAMES', 'OfficeHome', 'OUTPUT_DIR', '../logs/pretrain/deit_base/office-home/Clipart_2_Art_resnet50_clean', 'DATASETS.ROOT_TRAIN_DIR', '../data/OfficeHomeDataset/Clipart.txt', 'DATASETS.ROOT_TEST_DIR', '../data/OfficeHomeDataset/Art.txt', 'TEST.IMS_PER_BATCH', '32'], aug_type=None, alpha=0.1, feature_model_path=None, num_patch_wise=0, layer_num=0, per_class_acc=True, imgnet_model_path='../logs/pretrain/deit_base/office-home/Clipart_2_Art_resnet50_clean_only_classifier/transformer_best_model.pth')
+2022-04-11 18:49:07,892 reid_baseline INFO: Loaded configuration file configs/pretrain.yml
+2022-04-11 18:49:07,892 reid_baseline INFO: 
+MODEL:
+  PRETRAIN_CHOICE: 'imagenet'
+  PRETRAIN_PATH: '../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth'
+  METRIC_LOSS_TYPE: 'triplet'
+  IF_LABELSMOOTH: 'on'
+  IF_WITH_CENTER: 'no'
+  NAME: 'transformer'
+  NO_MARGIN: True
+  DEVICE_ID: ('0')
+  Transformer_TYPE: 'vit_base_patch16_224_TransReID' #vit_small_patch16_224_TransReID
+  STRIDE_SIZE: [16, 16]
+  FC_SETTING: 'TransReID'
+  TASK_TYPE: 'classify_DA' 
+  UDA_STAGE: 'pretrain'
+
+INPUT:
+  SIZE_TRAIN: [256, 256]
+  SIZE_TEST: [256, 256]
+  SIZE_CROP: [224, 224]
+  PROB: 0.5 # random horizontal flip
+  RE_PROB: 0.0 # random erasing
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+
+DATASETS:
+  NAMES: ('OURAPI')
+  ROOT_TRAIN_DIR: ('./datasets/reid_datasets/Corrected_Market1501')
+  NAMES2: ('OURAPI')
+  ROOT_TRAIN_DIR2: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+  ROOT_TEST_DIR: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+
+DATALOADER:
+  SAMPLER: 'softmax'
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+
+SOLVER:
+  OPTIMIZER_NAME: 'SGD'
+  MAX_EPOCHS: 20
+  BASE_LR: 0.008
+  IMS_PER_BATCH: 16
+  STEPS: [40, 80]
+  GAMMA: 0.
+  WARMUP_FACTOR: 0.01
+  WARMUP_EPOCHS: 10
+  WARMUP_METHOD: 'linear'
+  LARGE_FC_LR: False
+  CHECKPOINT_PERIOD: 10
+  LOG_PERIOD: 100
+  EVAL_PERIOD: 1
+  WEIGHT_DECAY:  1e-4
+  WEIGHT_DECAY_BIAS: 1e-4
+  BIAS_LR_FACTOR: 2
+
+TEST:
+  EVAL: True
+  IMS_PER_BATCH: 64
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+
+  WEIGHT: '../logs/trans4DA/transformer_120.pth'
+  NECK_FEAT: 'after'
+  FEAT_NORM: 'yes'
+
+OUTPUT_DIR: '../logs/trans4DA'
+
+
+
+2022-04-11 18:49:07,892 reid_baseline INFO: Running with config:
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+  SAMPLER: softmax
+DATASETS:
+  NAMES: OfficeHome
+  NAMES2: OURAPI
+  PLUS_NUM_ID: 100
+  QUERY_MINING: False
+  ROOT_TEST_DIR: ../data/OfficeHomeDataset/Art.txt
+  ROOT_TRAIN_DIR: ../data/OfficeHomeDataset/Clipart.txt
+  ROOT_TRAIN_DIR2: ./datasets/reid_datasets/Refined_DukeMTMC_reID
+INPUT:
+  AA_PROB: 0.0
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+  PROB: 0.5
+  RE_PROB: 0.0
+  SIZE_CROP: [224, 224]
+  SIZE_TEST: [256, 256]
+  SIZE_TRAIN: [256, 256]
+MODEL:
+  AIE_COE: 1.5
+  BLOCK_PATTERN: normal
+  CAMERA_EMBEDDING: False
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 3
+  DEVIDE_LENGTH: 4
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  FC_SETTING: TransReID
+  FROZEN: -1
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IF_LABELSMOOTH: on
+  IF_WITH_CENTER: no
+  LAST_STRIDE: 1
+  LOCAL_F: False
+  METRIC_LOSS_TYPE: triplet
+  NAME: transformer
+  NECK: bnneck
+  NO_MARGIN: True
+  NO_SHUFFLE: False
+  PATCH_SHUFFLE: 2
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH: ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+  PROB: 0.0
+  RECIP_LOSS: 
+  STRIDE_SIZE: [16, 16]
+  TASK_TYPE: classify_DA
+  THRESH: 0.23
+  TRIPLET_LOSS_WEIGHT: 1.0
+  Transformer_TYPE: vit_base_patch16_224_TransReID
+  UDA_STAGE: pretrain
+  VIEWPOINT_EMBEDDING: False
+  YIWEI_NUM: 5
+  lameda: 0.5
+OUTPUT_DIR: ../logs/pretrain/deit_base/office-home/Clipart_2_Art_resnet50_clean
+SOLVER:
+  BASE_LR: 0.008
+  BIAS_LR_FACTOR: 2
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 10
+  CLUSTER_MARGIN: 0.3
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 1
+  GAMMA: 0.0
+  IMS_PER_BATCH: 16
+  LARGE_FC_LR: False
+  LOG_PERIOD: 100
+  MARGIN: 0.3
+  MAX_EPOCHS: 20
+  MOMENTUM: 0.9
+  OPTIMIZER_NAME: SGD
+  RANGE_ALPHA: 0
+  RANGE_BETA: 1
+  RANGE_K: 2
+  RANGE_LOSS_WEIGHT: 1
+  RANGE_MARGIN: 0.3
+  SEED: 1234
+  STEPS: (40, 80)
+  WARMUP_EPOCHS: 10
+  WARMUP_FACTOR: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WITH_PSEUDO_LABEL_FILTER: False
+TEST:
+  DIST_MAT: dist_mat.npy
+  EVAL: True
+  FEAT_NORM: yes
+  FLIP_FEATS: off
+  IMS_PER_BATCH: 32
+  NECK_FEAT: after
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+  WEIGHT: ../logs/pretrain/deit_base/office-home/Clipart_2_Art_resnet50_clean/transformer_best_model.pth
+=> Office-Home loaded
+Dataset statistics:
+1 1
+train Clipart and valid is Art
+  ----------------------------------------
+  subset   | # ids | # images | # cameras
+  ----------------------------------------
+  train   |    65 |     4365 |         1
+  valid   |    65 |     2427 |         1
+  ----------------------------------------
+use shuffle sampler strategy
+using Transformer_type: vit_base_patch16_224_TransReID as a backbone
+using stride: [16, 16], and part number is num_y14 * num_x14
+using drop_path_rate is : 0.1
+using aie_xishu is : 1.5
+embed_diim 768 mlp_ratio 4
+distill need to choose right cls token in the pth
+Resized position embedding: %s to %s torch.Size([1, 197, 768]) torch.Size([1, 197, 768])
+Position embedding resize to height:14 width: 14
+Loading pretrained ImageNet model......from ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+===========building transformer===========
+model parameter: conv1.weight not match
+model parameter: bn1.weight not match
+model parameter: bn1.bias not match
+model parameter: bn1.running_mean not match
+model parameter: bn1.running_var not match
+model parameter: bn1.num_batches_tracked not match
+model parameter: layer1.0.conv1.weight not match
+model parameter: layer1.0.bn1.weight not match
+model parameter: layer1.0.bn1.bias not match
+model parameter: layer1.0.bn1.running_mean not match
+model parameter: layer1.0.bn1.running_var not match
+model parameter: layer1.0.bn1.num_batches_tracked not match
+model parameter: layer1.0.conv2.weight not match
+model parameter: layer1.0.bn2.weight not match
+model parameter: layer1.0.bn2.bias not match
+model parameter: layer1.0.bn2.running_mean not match
+model parameter: layer1.0.bn2.running_var not match
+model parameter: layer1.0.bn2.num_batches_tracked not match
+model parameter: layer1.0.conv3.weight not match
+model parameter: layer1.0.bn3.weight not match
+model parameter: layer1.0.bn3.bias not match
+model parameter: layer1.0.bn3.running_mean not match
+model parameter: layer1.0.bn3.running_var not match
+model parameter: layer1.0.bn3.num_batches_tracked not match
+model parameter: layer1.0.downsample.0.weight not match
+model parameter: layer1.0.downsample.1.weight not match
+model parameter: layer1.0.downsample.1.bias not match
+model parameter: layer1.0.downsample.1.running_mean not match
+model parameter: layer1.0.downsample.1.running_var not match
+model parameter: layer1.0.downsample.1.num_batches_tracked not match
+model parameter: layer1.1.conv1.weight not match
+model parameter: layer1.1.bn1.weight not match
+model parameter: layer1.1.bn1.bias not match
+model parameter: layer1.1.bn1.running_mean not match
+model parameter: layer1.1.bn1.running_var not match
+model parameter: layer1.1.bn1.num_batches_tracked not match
+model parameter: layer1.1.conv2.weight not match
+model parameter: layer1.1.bn2.weight not match
+model parameter: layer1.1.bn2.bias not match
+model parameter: layer1.1.bn2.running_mean not match
+model parameter: layer1.1.bn2.running_var not match
+model parameter: layer1.1.bn2.num_batches_tracked not match
+model parameter: layer1.1.conv3.weight not match
+model parameter: layer1.1.bn3.weight not match
+model parameter: layer1.1.bn3.bias not match
+model parameter: layer1.1.bn3.running_mean not match
+model parameter: layer1.1.bn3.running_var not match
+model parameter: layer1.1.bn3.num_batches_tracked not match
+model parameter: layer1.2.conv1.weight not match
+model parameter: layer1.2.bn1.weight not match
+model parameter: layer1.2.bn1.bias not match
+model parameter: layer1.2.bn1.running_mean not match
+model parameter: layer1.2.bn1.running_var not match
+model parameter: layer1.2.bn1.num_batches_tracked not match
+model parameter: layer1.2.conv2.weight not match
+model parameter: layer1.2.bn2.weight not match
+model parameter: layer1.2.bn2.bias not match
+model parameter: layer1.2.bn2.running_mean not match
+model parameter: layer1.2.bn2.running_var not match
+model parameter: layer1.2.bn2.num_batches_tracked not match
+model parameter: layer1.2.conv3.weight not match
+model parameter: layer1.2.bn3.weight not match
+model parameter: layer1.2.bn3.bias not match
+model parameter: layer1.2.bn3.running_mean not match
+model parameter: layer1.2.bn3.running_var not match
+model parameter: layer1.2.bn3.num_batches_tracked not match
+model parameter: layer2.0.conv1.weight not match
+model parameter: layer2.0.bn1.weight not match
+model parameter: layer2.0.bn1.bias not match
+model parameter: layer2.0.bn1.running_mean not match
+model parameter: layer2.0.bn1.running_var not match
+model parameter: layer2.0.bn1.num_batches_tracked not match
+model parameter: layer2.0.conv2.weight not match
+model parameter: layer2.0.bn2.weight not match
+model parameter: layer2.0.bn2.bias not match
+model parameter: layer2.0.bn2.running_mean not match
+model parameter: layer2.0.bn2.running_var not match
+model parameter: layer2.0.bn2.num_batches_tracked not match
+model parameter: layer2.0.conv3.weight not match
+model parameter: layer2.0.bn3.weight not match
+model parameter: layer2.0.bn3.bias not match
+model parameter: layer2.0.bn3.running_mean not match
+model parameter: layer2.0.bn3.running_var not match
+model parameter: layer2.0.bn3.num_batches_tracked not match
+model parameter: layer2.0.downsample.0.weight not match
+model parameter: layer2.0.downsample.1.weight not match
+model parameter: layer2.0.downsample.1.bias not match
+model parameter: layer2.0.downsample.1.running_mean not match
+model parameter: layer2.0.downsample.1.running_var not match
+model parameter: layer2.0.downsample.1.num_batches_tracked not match
+model parameter: layer2.1.conv1.weight not match
+model parameter: layer2.1.bn1.weight not match
+model parameter: layer2.1.bn1.bias not match
+model parameter: layer2.1.bn1.running_mean not match
+model parameter: layer2.1.bn1.running_var not match
+model parameter: layer2.1.bn1.num_batches_tracked not match
+model parameter: layer2.1.conv2.weight not match
+model parameter: layer2.1.bn2.weight not match
+model parameter: layer2.1.bn2.bias not match
+model parameter: layer2.1.bn2.running_mean not match
+model parameter: layer2.1.bn2.running_var not match
+model parameter: layer2.1.bn2.num_batches_tracked not match
+model parameter: layer2.1.conv3.weight not match
+model parameter: layer2.1.bn3.weight not match
+model parameter: layer2.1.bn3.bias not match
+model parameter: layer2.1.bn3.running_mean not match
+model parameter: layer2.1.bn3.running_var not match
+model parameter: layer2.1.bn3.num_batches_tracked not match
+model parameter: layer2.2.conv1.weight not match
+model parameter: layer2.2.bn1.weight not match
+model parameter: layer2.2.bn1.bias not match
+model parameter: layer2.2.bn1.running_mean not match
+model parameter: layer2.2.bn1.running_var not match
+model parameter: layer2.2.bn1.num_batches_tracked not match
+model parameter: layer2.2.conv2.weight not match
+model parameter: layer2.2.bn2.weight not match
+model parameter: layer2.2.bn2.bias not match
+model parameter: layer2.2.bn2.running_mean not match
+model parameter: layer2.2.bn2.running_var not match
+model parameter: layer2.2.bn2.num_batches_tracked not match
+model parameter: layer2.2.conv3.weight not match
+model parameter: layer2.2.bn3.weight not match
+model parameter: layer2.2.bn3.bias not match
+model parameter: layer2.2.bn3.running_mean not match
+model parameter: layer2.2.bn3.running_var not match
+model parameter: layer2.2.bn3.num_batches_tracked not match
+model parameter: layer2.3.conv1.weight not match
+model parameter: layer2.3.bn1.weight not match
+model parameter: layer2.3.bn1.bias not match
+model parameter: layer2.3.bn1.running_mean not match
+model parameter: layer2.3.bn1.running_var not match
+model parameter: layer2.3.bn1.num_batches_tracked not match
+model parameter: layer2.3.conv2.weight not match
+model parameter: layer2.3.bn2.weight not match
+model parameter: layer2.3.bn2.bias not match
+model parameter: layer2.3.bn2.running_mean not match
+model parameter: layer2.3.bn2.running_var not match
+model parameter: layer2.3.bn2.num_batches_tracked not match
+model parameter: layer2.3.conv3.weight not match
+model parameter: layer2.3.bn3.weight not match
+model parameter: layer2.3.bn3.bias not match
+model parameter: layer2.3.bn3.running_mean not match
+model parameter: layer2.3.bn3.running_var not match
+model parameter: layer2.3.bn3.num_batches_tracked not match
+model parameter: layer3.0.conv1.weight not match
+model parameter: layer3.0.bn1.weight not match
+model parameter: layer3.0.bn1.bias not match
+model parameter: layer3.0.bn1.running_mean not match
+model parameter: layer3.0.bn1.running_var not match
+model parameter: layer3.0.bn1.num_batches_tracked not match
+model parameter: layer3.0.conv2.weight not match
+model parameter: layer3.0.bn2.weight not match
+model parameter: layer3.0.bn2.bias not match
+model parameter: layer3.0.bn2.running_mean not match
+model parameter: layer3.0.bn2.running_var not match
+model parameter: layer3.0.bn2.num_batches_tracked not match
+model parameter: layer3.0.conv3.weight not match
+model parameter: layer3.0.bn3.weight not match
+model parameter: layer3.0.bn3.bias not match
+model parameter: layer3.0.bn3.running_mean not match
+model parameter: layer3.0.bn3.running_var not match
+model parameter: layer3.0.bn3.num_batches_tracked not match
+model parameter: layer3.0.downsample.0.weight not match
+model parameter: layer3.0.downsample.1.weight not match
+model parameter: layer3.0.downsample.1.bias not match
+model parameter: layer3.0.downsample.1.running_mean not match
+model parameter: layer3.0.downsample.1.running_var not match
+model parameter: layer3.0.downsample.1.num_batches_tracked not match
+model parameter: layer3.1.conv1.weight not match
+model parameter: layer3.1.bn1.weight not match
+model parameter: layer3.1.bn1.bias not match
+model parameter: layer3.1.bn1.running_mean not match
+model parameter: layer3.1.bn1.running_var not match
+model parameter: layer3.1.bn1.num_batches_tracked not match
+model parameter: layer3.1.conv2.weight not match
+model parameter: layer3.1.bn2.weight not match
+model parameter: layer3.1.bn2.bias not match
+model parameter: layer3.1.bn2.running_mean not match
+model parameter: layer3.1.bn2.running_var not match
+model parameter: layer3.1.bn2.num_batches_tracked not match
+model parameter: layer3.1.conv3.weight not match
+model parameter: layer3.1.bn3.weight not match
+model parameter: layer3.1.bn3.bias not match
+model parameter: layer3.1.bn3.running_mean not match
+model parameter: layer3.1.bn3.running_var not match
+model parameter: layer3.1.bn3.num_batches_tracked not match
+model parameter: layer3.2.conv1.weight not match
+model parameter: layer3.2.bn1.weight not match
+model parameter: layer3.2.bn1.bias not match
+model parameter: layer3.2.bn1.running_mean not match
+model parameter: layer3.2.bn1.running_var not match
+model parameter: layer3.2.bn1.num_batches_tracked not match
+model parameter: layer3.2.conv2.weight not match
+model parameter: layer3.2.bn2.weight not match
+model parameter: layer3.2.bn2.bias not match
+model parameter: layer3.2.bn2.running_mean not match
+model parameter: layer3.2.bn2.running_var not match
+model parameter: layer3.2.bn2.num_batches_tracked not match
+model parameter: layer3.2.conv3.weight not match
+model parameter: layer3.2.bn3.weight not match
+model parameter: layer3.2.bn3.bias not match
+model parameter: layer3.2.bn3.running_mean not match
+model parameter: layer3.2.bn3.running_var not match
+model parameter: layer3.2.bn3.num_batches_tracked not match
+model parameter: layer3.3.conv1.weight not match
+model parameter: layer3.3.bn1.weight not match
+model parameter: layer3.3.bn1.bias not match
+model parameter: layer3.3.bn1.running_mean not match
+model parameter: layer3.3.bn1.running_var not match
+model parameter: layer3.3.bn1.num_batches_tracked not match
+model parameter: layer3.3.conv2.weight not match
+model parameter: layer3.3.bn2.weight not match
+model parameter: layer3.3.bn2.bias not match
+model parameter: layer3.3.bn2.running_mean not match
+model parameter: layer3.3.bn2.running_var not match
+model parameter: layer3.3.bn2.num_batches_tracked not match
+model parameter: layer3.3.conv3.weight not match
+model parameter: layer3.3.bn3.weight not match
+model parameter: layer3.3.bn3.bias not match
+model parameter: layer3.3.bn3.running_mean not match
+model parameter: layer3.3.bn3.running_var not match
+model parameter: layer3.3.bn3.num_batches_tracked not match
+model parameter: layer3.4.conv1.weight not match
+model parameter: layer3.4.bn1.weight not match
+model parameter: layer3.4.bn1.bias not match
+model parameter: layer3.4.bn1.running_mean not match
+model parameter: layer3.4.bn1.running_var not match
+model parameter: layer3.4.bn1.num_batches_tracked not match
+model parameter: layer3.4.conv2.weight not match
+model parameter: layer3.4.bn2.weight not match
+model parameter: layer3.4.bn2.bias not match
+model parameter: layer3.4.bn2.running_mean not match
+model parameter: layer3.4.bn2.running_var not match
+model parameter: layer3.4.bn2.num_batches_tracked not match
+model parameter: layer3.4.conv3.weight not match
+model parameter: layer3.4.bn3.weight not match
+model parameter: layer3.4.bn3.bias not match
+model parameter: layer3.4.bn3.running_mean not match
+model parameter: layer3.4.bn3.running_var not match
+model parameter: layer3.4.bn3.num_batches_tracked not match
+model parameter: layer3.5.conv1.weight not match
+model parameter: layer3.5.bn1.weight not match
+model parameter: layer3.5.bn1.bias not match
+model parameter: layer3.5.bn1.running_mean not match
+model parameter: layer3.5.bn1.running_var not match
+model parameter: layer3.5.bn1.num_batches_tracked not match
+model parameter: layer3.5.conv2.weight not match
+model parameter: layer3.5.bn2.weight not match
+model parameter: layer3.5.bn2.bias not match
+model parameter: layer3.5.bn2.running_mean not match
+model parameter: layer3.5.bn2.running_var not match
+model parameter: layer3.5.bn2.num_batches_tracked not match
+model parameter: layer3.5.conv3.weight not match
+model parameter: layer3.5.bn3.weight not match
+model parameter: layer3.5.bn3.bias not match
+model parameter: layer3.5.bn3.running_mean not match
+model parameter: layer3.5.bn3.running_var not match
+model parameter: layer3.5.bn3.num_batches_tracked not match
+model parameter: layer4.0.conv1.weight not match
+model parameter: layer4.0.bn1.weight not match
+model parameter: layer4.0.bn1.bias not match
+model parameter: layer4.0.bn1.running_mean not match
+model parameter: layer4.0.bn1.running_var not match
+model parameter: layer4.0.bn1.num_batches_tracked not match
+model parameter: layer4.0.conv2.weight not match
+model parameter: layer4.0.bn2.weight not match
+model parameter: layer4.0.bn2.bias not match
+model parameter: layer4.0.bn2.running_mean not match
+model parameter: layer4.0.bn2.running_var not match
+model parameter: layer4.0.bn2.num_batches_tracked not match
+model parameter: layer4.0.conv3.weight not match
+model parameter: layer4.0.bn3.weight not match
+model parameter: layer4.0.bn3.bias not match
+model parameter: layer4.0.bn3.running_mean not match
+model parameter: layer4.0.bn3.running_var not match
+model parameter: layer4.0.bn3.num_batches_tracked not match
+model parameter: layer4.0.downsample.0.weight not match
+model parameter: layer4.0.downsample.1.weight not match
+model parameter: layer4.0.downsample.1.bias not match
+model parameter: layer4.0.downsample.1.running_mean not match
+model parameter: layer4.0.downsample.1.running_var not match
+model parameter: layer4.0.downsample.1.num_batches_tracked not match
+model parameter: layer4.1.conv1.weight not match
+model parameter: layer4.1.bn1.weight not match
+model parameter: layer4.1.bn1.bias not match
+model parameter: layer4.1.bn1.running_mean not match
+model parameter: layer4.1.bn1.running_var not match
+model parameter: layer4.1.bn1.num_batches_tracked not match
+model parameter: layer4.1.conv2.weight not match
+model parameter: layer4.1.bn2.weight not match
+model parameter: layer4.1.bn2.bias not match
+model parameter: layer4.1.bn2.running_mean not match
+model parameter: layer4.1.bn2.running_var not match
+model parameter: layer4.1.bn2.num_batches_tracked not match
+model parameter: layer4.1.conv3.weight not match
+model parameter: layer4.1.bn3.weight not match
+model parameter: layer4.1.bn3.bias not match
+model parameter: layer4.1.bn3.running_mean not match
+model parameter: layer4.1.bn3.running_var not match
+model parameter: layer4.1.bn3.num_batches_tracked not match
+model parameter: layer4.2.conv1.weight not match
+model parameter: layer4.2.bn1.weight not match
+model parameter: layer4.2.bn1.bias not match
+model parameter: layer4.2.bn1.running_mean not match
+model parameter: layer4.2.bn1.running_var not match
+model parameter: layer4.2.bn1.num_batches_tracked not match
+model parameter: layer4.2.conv2.weight not match
+model parameter: layer4.2.bn2.weight not match
+model parameter: layer4.2.bn2.bias not match
+model parameter: layer4.2.bn2.running_mean not match
+model parameter: layer4.2.bn2.running_var not match
+model parameter: layer4.2.bn2.num_batches_tracked not match
+model parameter: layer4.2.conv3.weight not match
+model parameter: layer4.2.bn3.weight not match
+model parameter: layer4.2.bn3.bias not match
+model parameter: layer4.2.bn3.running_mean not match
+model parameter: layer4.2.bn3.running_var not match
+model parameter: layer4.2.bn3.num_batches_tracked not match
+model parameter: fc.weight not match
+model parameter: fc.bias not match
+Loading pretrained model for finetuning from ../logs/pretrain/deit_base/office-home/Clipart_2_Art_resnet50_clean/transformer_best_model.pth
+Per class acc
+2022-04-11 18:49:27,725 reid_baseline.test INFO: Enter inferencing
+Using 4 GPUs for inference
+M1 per class acc: tensor([0.5333, 0.6190, 0.5556, 0.7000, 0.2500, 0.6818, 0.7381, 0.6000, 0.6341,
+        0.5882, 0.8043, 0.1500, 0.8889, 0.3913, 0.3077, 0.5750, 0.3000, 0.1860,
+        0.5000, 0.8667, 0.3158, 0.8776, 0.6250, 0.3478, 0.3864, 0.5696, 0.7778,
+        0.5500, 0.1190, 0.3125, 0.6957, 0.2857, 0.5122, 0.8514, 0.2500, 0.5263,
+        0.4444, 0.6383, 0.3778, 0.8000, 0.5789, 0.6667, 0.5714, 0.5000, 0.7500,
+        0.1111, 0.4000, 0.5652, 0.8000, 0.4242, 0.9333, 0.6939, 0.4783, 0.8026,
+        0.5200, 0.3500, 0.8000, 0.8250, 0.3913, 0.4500, 0.5000, 0.5556, 0.5000,
+        0.5510, 0.0000])
+M2 per class acc: tensor([0.6000, 0.6190, 0.3737, 0.5250, 0.2500, 0.5909, 0.6905, 0.7000, 0.3902,
+        0.3725, 0.7609, 0.2000, 0.6111, 0.2174, 0.4231, 0.1250, 0.3000, 0.1163,
+        0.3750, 0.7867, 0.0526, 0.7755, 0.4375, 0.3043, 0.3409, 0.4430, 0.5000,
+        0.4000, 0.1667, 0.1875, 0.5000, 0.0952, 0.3171, 0.7027, 0.2917, 0.3684,
+        0.5556, 0.5106, 0.3556, 0.8667, 0.5789, 0.7000, 0.3333, 0.4444, 0.6500,
+        0.0556, 0.2250, 0.4783, 0.7500, 0.4848, 0.9222, 0.5306, 0.2391, 0.7763,
+        0.3200, 0.5000, 0.5750, 0.8250, 0.3261, 0.3250, 0.3750, 0.5556, 0.3500,
+        0.2857, 0.0000])
+Per class numbers: tensor([15., 21., 99., 40., 44., 22., 42., 20., 41., 51., 46., 20., 18., 46.,
+        26., 40., 40., 43., 40., 75., 19., 49., 16., 23., 44., 79., 18., 20.,
+        42., 32., 46., 21., 41., 74., 24., 19., 27., 47., 45., 15., 19., 30.,
+        21., 18., 20., 18., 40., 69., 20., 33., 90., 49., 46., 76., 25., 20.,
+        40., 40., 46., 40., 16., 72., 20., 49., 20.])
+2022-04-11 18:50:29,730 reid_baseline.test INFO: normal accuracy 0.5677791512154924 2.046433925628662 
+2022-04-11 18:50:29,730 reid_baseline.test INFO: Classify Domain Adapatation Validation Results - In the source trained model
+2022-04-11 18:50:29,730 reid_baseline.test INFO: Accuracy: 56.8%
+2022-04-11 18:50:44,299 reid_baseline INFO: Namespace(config_file='configs/pretrain.yml', opts=['MODEL.DEVICE_ID', "('3')", 'TEST.WEIGHT', "('../logs/pretrain/deit_base/office-home/Clipart_2_Product_resnet50_clean/transformer_best_model.pth')", 'DATASETS.NAMES', 'OfficeHome', 'OUTPUT_DIR', '../logs/pretrain/deit_base/office-home/Clipart_2_Product_resnet50_clean', 'DATASETS.ROOT_TRAIN_DIR', '../data/OfficeHomeDataset/Clipart.txt', 'DATASETS.ROOT_TEST_DIR', '../data/OfficeHomeDataset/Product.txt', 'TEST.IMS_PER_BATCH', '32'], aug_type=None, alpha=0.1, feature_model_path=None, num_patch_wise=0, layer_num=0, per_class_acc=True, imgnet_model_path='../logs/pretrain/deit_base/office-home/Clipart_2_Product_resnet50_clean_only_classifier/transformer_best_model.pth')
+2022-04-11 18:50:44,299 reid_baseline INFO: Loaded configuration file configs/pretrain.yml
+2022-04-11 18:50:44,299 reid_baseline INFO: 
+MODEL:
+  PRETRAIN_CHOICE: 'imagenet'
+  PRETRAIN_PATH: '../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth'
+  METRIC_LOSS_TYPE: 'triplet'
+  IF_LABELSMOOTH: 'on'
+  IF_WITH_CENTER: 'no'
+  NAME: 'transformer'
+  NO_MARGIN: True
+  DEVICE_ID: ('0')
+  Transformer_TYPE: 'vit_base_patch16_224_TransReID' #vit_small_patch16_224_TransReID
+  STRIDE_SIZE: [16, 16]
+  FC_SETTING: 'TransReID'
+  TASK_TYPE: 'classify_DA' 
+  UDA_STAGE: 'pretrain'
+
+INPUT:
+  SIZE_TRAIN: [256, 256]
+  SIZE_TEST: [256, 256]
+  SIZE_CROP: [224, 224]
+  PROB: 0.5 # random horizontal flip
+  RE_PROB: 0.0 # random erasing
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+
+DATASETS:
+  NAMES: ('OURAPI')
+  ROOT_TRAIN_DIR: ('./datasets/reid_datasets/Corrected_Market1501')
+  NAMES2: ('OURAPI')
+  ROOT_TRAIN_DIR2: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+  ROOT_TEST_DIR: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+
+DATALOADER:
+  SAMPLER: 'softmax'
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+
+SOLVER:
+  OPTIMIZER_NAME: 'SGD'
+  MAX_EPOCHS: 20
+  BASE_LR: 0.008
+  IMS_PER_BATCH: 16
+  STEPS: [40, 80]
+  GAMMA: 0.
+  WARMUP_FACTOR: 0.01
+  WARMUP_EPOCHS: 10
+  WARMUP_METHOD: 'linear'
+  LARGE_FC_LR: False
+  CHECKPOINT_PERIOD: 10
+  LOG_PERIOD: 100
+  EVAL_PERIOD: 1
+  WEIGHT_DECAY:  1e-4
+  WEIGHT_DECAY_BIAS: 1e-4
+  BIAS_LR_FACTOR: 2
+
+TEST:
+  EVAL: True
+  IMS_PER_BATCH: 64
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+
+  WEIGHT: '../logs/trans4DA/transformer_120.pth'
+  NECK_FEAT: 'after'
+  FEAT_NORM: 'yes'
+
+OUTPUT_DIR: '../logs/trans4DA'
+
+
+
+2022-04-11 18:50:44,300 reid_baseline INFO: Running with config:
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+  SAMPLER: softmax
+DATASETS:
+  NAMES: OfficeHome
+  NAMES2: OURAPI
+  PLUS_NUM_ID: 100
+  QUERY_MINING: False
+  ROOT_TEST_DIR: ../data/OfficeHomeDataset/Product.txt
+  ROOT_TRAIN_DIR: ../data/OfficeHomeDataset/Clipart.txt
+  ROOT_TRAIN_DIR2: ./datasets/reid_datasets/Refined_DukeMTMC_reID
+INPUT:
+  AA_PROB: 0.0
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+  PROB: 0.5
+  RE_PROB: 0.0
+  SIZE_CROP: [224, 224]
+  SIZE_TEST: [256, 256]
+  SIZE_TRAIN: [256, 256]
+MODEL:
+  AIE_COE: 1.5
+  BLOCK_PATTERN: normal
+  CAMERA_EMBEDDING: False
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 3
+  DEVIDE_LENGTH: 4
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  FC_SETTING: TransReID
+  FROZEN: -1
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IF_LABELSMOOTH: on
+  IF_WITH_CENTER: no
+  LAST_STRIDE: 1
+  LOCAL_F: False
+  METRIC_LOSS_TYPE: triplet
+  NAME: transformer
+  NECK: bnneck
+  NO_MARGIN: True
+  NO_SHUFFLE: False
+  PATCH_SHUFFLE: 2
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH: ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+  PROB: 0.0
+  RECIP_LOSS: 
+  STRIDE_SIZE: [16, 16]
+  TASK_TYPE: classify_DA
+  THRESH: 0.23
+  TRIPLET_LOSS_WEIGHT: 1.0
+  Transformer_TYPE: vit_base_patch16_224_TransReID
+  UDA_STAGE: pretrain
+  VIEWPOINT_EMBEDDING: False
+  YIWEI_NUM: 5
+  lameda: 0.5
+OUTPUT_DIR: ../logs/pretrain/deit_base/office-home/Clipart_2_Product_resnet50_clean
+SOLVER:
+  BASE_LR: 0.008
+  BIAS_LR_FACTOR: 2
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 10
+  CLUSTER_MARGIN: 0.3
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 1
+  GAMMA: 0.0
+  IMS_PER_BATCH: 16
+  LARGE_FC_LR: False
+  LOG_PERIOD: 100
+  MARGIN: 0.3
+  MAX_EPOCHS: 20
+  MOMENTUM: 0.9
+  OPTIMIZER_NAME: SGD
+  RANGE_ALPHA: 0
+  RANGE_BETA: 1
+  RANGE_K: 2
+  RANGE_LOSS_WEIGHT: 1
+  RANGE_MARGIN: 0.3
+  SEED: 1234
+  STEPS: (40, 80)
+  WARMUP_EPOCHS: 10
+  WARMUP_FACTOR: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WITH_PSEUDO_LABEL_FILTER: False
+TEST:
+  DIST_MAT: dist_mat.npy
+  EVAL: True
+  FEAT_NORM: yes
+  FLIP_FEATS: off
+  IMS_PER_BATCH: 32
+  NECK_FEAT: after
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+  WEIGHT: ../logs/pretrain/deit_base/office-home/Clipart_2_Product_resnet50_clean/transformer_best_model.pth
+=> Office-Home loaded
+Dataset statistics:
+1 1
+train Clipart and valid is Product
+  ----------------------------------------
+  subset   | # ids | # images | # cameras
+  ----------------------------------------
+  train   |    65 |     4365 |         1
+  valid   |    65 |     4439 |         1
+  ----------------------------------------
+use shuffle sampler strategy
+using Transformer_type: vit_base_patch16_224_TransReID as a backbone
+using stride: [16, 16], and part number is num_y14 * num_x14
+using drop_path_rate is : 0.1
+using aie_xishu is : 1.5
+embed_diim 768 mlp_ratio 4
+distill need to choose right cls token in the pth
+Resized position embedding: %s to %s torch.Size([1, 197, 768]) torch.Size([1, 197, 768])
+Position embedding resize to height:14 width: 14
+Loading pretrained ImageNet model......from ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+===========building transformer===========
+model parameter: conv1.weight not match
+model parameter: bn1.weight not match
+model parameter: bn1.bias not match
+model parameter: bn1.running_mean not match
+model parameter: bn1.running_var not match
+model parameter: bn1.num_batches_tracked not match
+model parameter: layer1.0.conv1.weight not match
+model parameter: layer1.0.bn1.weight not match
+model parameter: layer1.0.bn1.bias not match
+model parameter: layer1.0.bn1.running_mean not match
+model parameter: layer1.0.bn1.running_var not match
+model parameter: layer1.0.bn1.num_batches_tracked not match
+model parameter: layer1.0.conv2.weight not match
+model parameter: layer1.0.bn2.weight not match
+model parameter: layer1.0.bn2.bias not match
+model parameter: layer1.0.bn2.running_mean not match
+model parameter: layer1.0.bn2.running_var not match
+model parameter: layer1.0.bn2.num_batches_tracked not match
+model parameter: layer1.0.conv3.weight not match
+model parameter: layer1.0.bn3.weight not match
+model parameter: layer1.0.bn3.bias not match
+model parameter: layer1.0.bn3.running_mean not match
+model parameter: layer1.0.bn3.running_var not match
+model parameter: layer1.0.bn3.num_batches_tracked not match
+model parameter: layer1.0.downsample.0.weight not match
+model parameter: layer1.0.downsample.1.weight not match
+model parameter: layer1.0.downsample.1.bias not match
+model parameter: layer1.0.downsample.1.running_mean not match
+model parameter: layer1.0.downsample.1.running_var not match
+model parameter: layer1.0.downsample.1.num_batches_tracked not match
+model parameter: layer1.1.conv1.weight not match
+model parameter: layer1.1.bn1.weight not match
+model parameter: layer1.1.bn1.bias not match
+model parameter: layer1.1.bn1.running_mean not match
+model parameter: layer1.1.bn1.running_var not match
+model parameter: layer1.1.bn1.num_batches_tracked not match
+model parameter: layer1.1.conv2.weight not match
+model parameter: layer1.1.bn2.weight not match
+model parameter: layer1.1.bn2.bias not match
+model parameter: layer1.1.bn2.running_mean not match
+model parameter: layer1.1.bn2.running_var not match
+model parameter: layer1.1.bn2.num_batches_tracked not match
+model parameter: layer1.1.conv3.weight not match
+model parameter: layer1.1.bn3.weight not match
+model parameter: layer1.1.bn3.bias not match
+model parameter: layer1.1.bn3.running_mean not match
+model parameter: layer1.1.bn3.running_var not match
+model parameter: layer1.1.bn3.num_batches_tracked not match
+model parameter: layer1.2.conv1.weight not match
+model parameter: layer1.2.bn1.weight not match
+model parameter: layer1.2.bn1.bias not match
+model parameter: layer1.2.bn1.running_mean not match
+model parameter: layer1.2.bn1.running_var not match
+model parameter: layer1.2.bn1.num_batches_tracked not match
+model parameter: layer1.2.conv2.weight not match
+model parameter: layer1.2.bn2.weight not match
+model parameter: layer1.2.bn2.bias not match
+model parameter: layer1.2.bn2.running_mean not match
+model parameter: layer1.2.bn2.running_var not match
+model parameter: layer1.2.bn2.num_batches_tracked not match
+model parameter: layer1.2.conv3.weight not match
+model parameter: layer1.2.bn3.weight not match
+model parameter: layer1.2.bn3.bias not match
+model parameter: layer1.2.bn3.running_mean not match
+model parameter: layer1.2.bn3.running_var not match
+model parameter: layer1.2.bn3.num_batches_tracked not match
+model parameter: layer2.0.conv1.weight not match
+model parameter: layer2.0.bn1.weight not match
+model parameter: layer2.0.bn1.bias not match
+model parameter: layer2.0.bn1.running_mean not match
+model parameter: layer2.0.bn1.running_var not match
+model parameter: layer2.0.bn1.num_batches_tracked not match
+model parameter: layer2.0.conv2.weight not match
+model parameter: layer2.0.bn2.weight not match
+model parameter: layer2.0.bn2.bias not match
+model parameter: layer2.0.bn2.running_mean not match
+model parameter: layer2.0.bn2.running_var not match
+model parameter: layer2.0.bn2.num_batches_tracked not match
+model parameter: layer2.0.conv3.weight not match
+model parameter: layer2.0.bn3.weight not match
+model parameter: layer2.0.bn3.bias not match
+model parameter: layer2.0.bn3.running_mean not match
+model parameter: layer2.0.bn3.running_var not match
+model parameter: layer2.0.bn3.num_batches_tracked not match
+model parameter: layer2.0.downsample.0.weight not match
+model parameter: layer2.0.downsample.1.weight not match
+model parameter: layer2.0.downsample.1.bias not match
+model parameter: layer2.0.downsample.1.running_mean not match
+model parameter: layer2.0.downsample.1.running_var not match
+model parameter: layer2.0.downsample.1.num_batches_tracked not match
+model parameter: layer2.1.conv1.weight not match
+model parameter: layer2.1.bn1.weight not match
+model parameter: layer2.1.bn1.bias not match
+model parameter: layer2.1.bn1.running_mean not match
+model parameter: layer2.1.bn1.running_var not match
+model parameter: layer2.1.bn1.num_batches_tracked not match
+model parameter: layer2.1.conv2.weight not match
+model parameter: layer2.1.bn2.weight not match
+model parameter: layer2.1.bn2.bias not match
+model parameter: layer2.1.bn2.running_mean not match
+model parameter: layer2.1.bn2.running_var not match
+model parameter: layer2.1.bn2.num_batches_tracked not match
+model parameter: layer2.1.conv3.weight not match
+model parameter: layer2.1.bn3.weight not match
+model parameter: layer2.1.bn3.bias not match
+model parameter: layer2.1.bn3.running_mean not match
+model parameter: layer2.1.bn3.running_var not match
+model parameter: layer2.1.bn3.num_batches_tracked not match
+model parameter: layer2.2.conv1.weight not match
+model parameter: layer2.2.bn1.weight not match
+model parameter: layer2.2.bn1.bias not match
+model parameter: layer2.2.bn1.running_mean not match
+model parameter: layer2.2.bn1.running_var not match
+model parameter: layer2.2.bn1.num_batches_tracked not match
+model parameter: layer2.2.conv2.weight not match
+model parameter: layer2.2.bn2.weight not match
+model parameter: layer2.2.bn2.bias not match
+model parameter: layer2.2.bn2.running_mean not match
+model parameter: layer2.2.bn2.running_var not match
+model parameter: layer2.2.bn2.num_batches_tracked not match
+model parameter: layer2.2.conv3.weight not match
+model parameter: layer2.2.bn3.weight not match
+model parameter: layer2.2.bn3.bias not match
+model parameter: layer2.2.bn3.running_mean not match
+model parameter: layer2.2.bn3.running_var not match
+model parameter: layer2.2.bn3.num_batches_tracked not match
+model parameter: layer2.3.conv1.weight not match
+model parameter: layer2.3.bn1.weight not match
+model parameter: layer2.3.bn1.bias not match
+model parameter: layer2.3.bn1.running_mean not match
+model parameter: layer2.3.bn1.running_var not match
+model parameter: layer2.3.bn1.num_batches_tracked not match
+model parameter: layer2.3.conv2.weight not match
+model parameter: layer2.3.bn2.weight not match
+model parameter: layer2.3.bn2.bias not match
+model parameter: layer2.3.bn2.running_mean not match
+model parameter: layer2.3.bn2.running_var not match
+model parameter: layer2.3.bn2.num_batches_tracked not match
+model parameter: layer2.3.conv3.weight not match
+model parameter: layer2.3.bn3.weight not match
+model parameter: layer2.3.bn3.bias not match
+model parameter: layer2.3.bn3.running_mean not match
+model parameter: layer2.3.bn3.running_var not match
+model parameter: layer2.3.bn3.num_batches_tracked not match
+model parameter: layer3.0.conv1.weight not match
+model parameter: layer3.0.bn1.weight not match
+model parameter: layer3.0.bn1.bias not match
+model parameter: layer3.0.bn1.running_mean not match
+model parameter: layer3.0.bn1.running_var not match
+model parameter: layer3.0.bn1.num_batches_tracked not match
+model parameter: layer3.0.conv2.weight not match
+model parameter: layer3.0.bn2.weight not match
+model parameter: layer3.0.bn2.bias not match
+model parameter: layer3.0.bn2.running_mean not match
+model parameter: layer3.0.bn2.running_var not match
+model parameter: layer3.0.bn2.num_batches_tracked not match
+model parameter: layer3.0.conv3.weight not match
+model parameter: layer3.0.bn3.weight not match
+model parameter: layer3.0.bn3.bias not match
+model parameter: layer3.0.bn3.running_mean not match
+model parameter: layer3.0.bn3.running_var not match
+model parameter: layer3.0.bn3.num_batches_tracked not match
+model parameter: layer3.0.downsample.0.weight not match
+model parameter: layer3.0.downsample.1.weight not match
+model parameter: layer3.0.downsample.1.bias not match
+model parameter: layer3.0.downsample.1.running_mean not match
+model parameter: layer3.0.downsample.1.running_var not match
+model parameter: layer3.0.downsample.1.num_batches_tracked not match
+model parameter: layer3.1.conv1.weight not match
+model parameter: layer3.1.bn1.weight not match
+model parameter: layer3.1.bn1.bias not match
+model parameter: layer3.1.bn1.running_mean not match
+model parameter: layer3.1.bn1.running_var not match
+model parameter: layer3.1.bn1.num_batches_tracked not match
+model parameter: layer3.1.conv2.weight not match
+model parameter: layer3.1.bn2.weight not match
+model parameter: layer3.1.bn2.bias not match
+model parameter: layer3.1.bn2.running_mean not match
+model parameter: layer3.1.bn2.running_var not match
+model parameter: layer3.1.bn2.num_batches_tracked not match
+model parameter: layer3.1.conv3.weight not match
+model parameter: layer3.1.bn3.weight not match
+model parameter: layer3.1.bn3.bias not match
+model parameter: layer3.1.bn3.running_mean not match
+model parameter: layer3.1.bn3.running_var not match
+model parameter: layer3.1.bn3.num_batches_tracked not match
+model parameter: layer3.2.conv1.weight not match
+model parameter: layer3.2.bn1.weight not match
+model parameter: layer3.2.bn1.bias not match
+model parameter: layer3.2.bn1.running_mean not match
+model parameter: layer3.2.bn1.running_var not match
+model parameter: layer3.2.bn1.num_batches_tracked not match
+model parameter: layer3.2.conv2.weight not match
+model parameter: layer3.2.bn2.weight not match
+model parameter: layer3.2.bn2.bias not match
+model parameter: layer3.2.bn2.running_mean not match
+model parameter: layer3.2.bn2.running_var not match
+model parameter: layer3.2.bn2.num_batches_tracked not match
+model parameter: layer3.2.conv3.weight not match
+model parameter: layer3.2.bn3.weight not match
+model parameter: layer3.2.bn3.bias not match
+model parameter: layer3.2.bn3.running_mean not match
+model parameter: layer3.2.bn3.running_var not match
+model parameter: layer3.2.bn3.num_batches_tracked not match
+model parameter: layer3.3.conv1.weight not match
+model parameter: layer3.3.bn1.weight not match
+model parameter: layer3.3.bn1.bias not match
+model parameter: layer3.3.bn1.running_mean not match
+model parameter: layer3.3.bn1.running_var not match
+model parameter: layer3.3.bn1.num_batches_tracked not match
+model parameter: layer3.3.conv2.weight not match
+model parameter: layer3.3.bn2.weight not match
+model parameter: layer3.3.bn2.bias not match
+model parameter: layer3.3.bn2.running_mean not match
+model parameter: layer3.3.bn2.running_var not match
+model parameter: layer3.3.bn2.num_batches_tracked not match
+model parameter: layer3.3.conv3.weight not match
+model parameter: layer3.3.bn3.weight not match
+model parameter: layer3.3.bn3.bias not match
+model parameter: layer3.3.bn3.running_mean not match
+model parameter: layer3.3.bn3.running_var not match
+model parameter: layer3.3.bn3.num_batches_tracked not match
+model parameter: layer3.4.conv1.weight not match
+model parameter: layer3.4.bn1.weight not match
+model parameter: layer3.4.bn1.bias not match
+model parameter: layer3.4.bn1.running_mean not match
+model parameter: layer3.4.bn1.running_var not match
+model parameter: layer3.4.bn1.num_batches_tracked not match
+model parameter: layer3.4.conv2.weight not match
+model parameter: layer3.4.bn2.weight not match
+model parameter: layer3.4.bn2.bias not match
+model parameter: layer3.4.bn2.running_mean not match
+model parameter: layer3.4.bn2.running_var not match
+model parameter: layer3.4.bn2.num_batches_tracked not match
+model parameter: layer3.4.conv3.weight not match
+model parameter: layer3.4.bn3.weight not match
+model parameter: layer3.4.bn3.bias not match
+model parameter: layer3.4.bn3.running_mean not match
+model parameter: layer3.4.bn3.running_var not match
+model parameter: layer3.4.bn3.num_batches_tracked not match
+model parameter: layer3.5.conv1.weight not match
+model parameter: layer3.5.bn1.weight not match
+model parameter: layer3.5.bn1.bias not match
+model parameter: layer3.5.bn1.running_mean not match
+model parameter: layer3.5.bn1.running_var not match
+model parameter: layer3.5.bn1.num_batches_tracked not match
+model parameter: layer3.5.conv2.weight not match
+model parameter: layer3.5.bn2.weight not match
+model parameter: layer3.5.bn2.bias not match
+model parameter: layer3.5.bn2.running_mean not match
+model parameter: layer3.5.bn2.running_var not match
+model parameter: layer3.5.bn2.num_batches_tracked not match
+model parameter: layer3.5.conv3.weight not match
+model parameter: layer3.5.bn3.weight not match
+model parameter: layer3.5.bn3.bias not match
+model parameter: layer3.5.bn3.running_mean not match
+model parameter: layer3.5.bn3.running_var not match
+model parameter: layer3.5.bn3.num_batches_tracked not match
+model parameter: layer4.0.conv1.weight not match
+model parameter: layer4.0.bn1.weight not match
+model parameter: layer4.0.bn1.bias not match
+model parameter: layer4.0.bn1.running_mean not match
+model parameter: layer4.0.bn1.running_var not match
+model parameter: layer4.0.bn1.num_batches_tracked not match
+model parameter: layer4.0.conv2.weight not match
+model parameter: layer4.0.bn2.weight not match
+model parameter: layer4.0.bn2.bias not match
+model parameter: layer4.0.bn2.running_mean not match
+model parameter: layer4.0.bn2.running_var not match
+model parameter: layer4.0.bn2.num_batches_tracked not match
+model parameter: layer4.0.conv3.weight not match
+model parameter: layer4.0.bn3.weight not match
+model parameter: layer4.0.bn3.bias not match
+model parameter: layer4.0.bn3.running_mean not match
+model parameter: layer4.0.bn3.running_var not match
+model parameter: layer4.0.bn3.num_batches_tracked not match
+model parameter: layer4.0.downsample.0.weight not match
+model parameter: layer4.0.downsample.1.weight not match
+model parameter: layer4.0.downsample.1.bias not match
+model parameter: layer4.0.downsample.1.running_mean not match
+model parameter: layer4.0.downsample.1.running_var not match
+model parameter: layer4.0.downsample.1.num_batches_tracked not match
+model parameter: layer4.1.conv1.weight not match
+model parameter: layer4.1.bn1.weight not match
+model parameter: layer4.1.bn1.bias not match
+model parameter: layer4.1.bn1.running_mean not match
+model parameter: layer4.1.bn1.running_var not match
+model parameter: layer4.1.bn1.num_batches_tracked not match
+model parameter: layer4.1.conv2.weight not match
+model parameter: layer4.1.bn2.weight not match
+model parameter: layer4.1.bn2.bias not match
+model parameter: layer4.1.bn2.running_mean not match
+model parameter: layer4.1.bn2.running_var not match
+model parameter: layer4.1.bn2.num_batches_tracked not match
+model parameter: layer4.1.conv3.weight not match
+model parameter: layer4.1.bn3.weight not match
+model parameter: layer4.1.bn3.bias not match
+model parameter: layer4.1.bn3.running_mean not match
+model parameter: layer4.1.bn3.running_var not match
+model parameter: layer4.1.bn3.num_batches_tracked not match
+model parameter: layer4.2.conv1.weight not match
+model parameter: layer4.2.bn1.weight not match
+model parameter: layer4.2.bn1.bias not match
+model parameter: layer4.2.bn1.running_mean not match
+model parameter: layer4.2.bn1.running_var not match
+model parameter: layer4.2.bn1.num_batches_tracked not match
+model parameter: layer4.2.conv2.weight not match
+model parameter: layer4.2.bn2.weight not match
+model parameter: layer4.2.bn2.bias not match
+model parameter: layer4.2.bn2.running_mean not match
+model parameter: layer4.2.bn2.running_var not match
+model parameter: layer4.2.bn2.num_batches_tracked not match
+model parameter: layer4.2.conv3.weight not match
+model parameter: layer4.2.bn3.weight not match
+model parameter: layer4.2.bn3.bias not match
+model parameter: layer4.2.bn3.running_mean not match
+model parameter: layer4.2.bn3.running_var not match
+model parameter: layer4.2.bn3.num_batches_tracked not match
+model parameter: fc.weight not match
+model parameter: fc.bias not match
+Loading pretrained model for finetuning from ../logs/pretrain/deit_base/office-home/Clipart_2_Product_resnet50_clean/transformer_best_model.pth
+Per class acc
+2022-04-11 18:51:06,328 reid_baseline.test INFO: Enter inferencing
+Using 4 GPUs for inference
+M1 per class acc: tensor([0.9403, 0.8209, 0.7258, 0.8806, 0.5208, 0.8028, 0.3673, 0.6222, 0.7826,
+        0.6061, 0.7083, 0.3333, 0.9798, 0.1717, 0.3500, 0.7442, 0.8772, 0.1190,
+        0.7159, 0.9545, 0.1579, 0.8780, 0.7347, 0.3012, 0.6552, 0.8556, 0.8542,
+        0.5000, 0.7755, 0.3889, 0.7576, 0.5054, 0.7677, 0.4430, 0.1395, 0.7021,
+        0.4032, 0.5814, 0.5000, 0.8448, 0.9143, 0.6750, 0.6882, 0.8990, 0.4040,
+        0.0488, 0.6596, 0.8283, 0.9383, 0.8642, 0.9890, 0.3519, 0.7021, 0.2679,
+        0.1231, 0.8485, 0.3553, 0.6533, 0.7073, 0.5116, 0.8833, 0.6098, 0.9265,
+        0.7288, 0.1607])
+M2 per class acc: tensor([0.9851, 0.6269, 0.6935, 0.7463, 0.3542, 0.7324, 0.2653, 0.5333, 0.6304,
+        0.6667, 0.6528, 0.3000, 0.8384, 0.0808, 0.4000, 0.5116, 0.7895, 0.0238,
+        0.6932, 0.9318, 0.0526, 0.8537, 0.6429, 0.0723, 0.3966, 0.7667, 0.7500,
+        0.5000, 0.7347, 0.3472, 0.7273, 0.2688, 0.5758, 0.4937, 0.0465, 0.5745,
+        0.3226, 0.6512, 0.6034, 0.8966, 0.7714, 0.8500, 0.6022, 0.8081, 0.5657,
+        0.0000, 0.3404, 0.7778, 0.7160, 0.9259, 0.8901, 0.3704, 0.4043, 0.3393,
+        0.0000, 0.6970, 0.2895, 0.6400, 0.5610, 0.5581, 0.8000, 0.4146, 0.7647,
+        0.5932, 0.0357])
+Per class numbers: tensor([67., 67., 62., 67., 96., 71., 49., 45., 46., 99., 72., 90., 99., 99.,
+        40., 43., 57., 42., 88., 44., 38., 41., 98., 83., 58., 90., 96., 60.,
+        98., 72., 99., 93., 99., 79., 43., 47., 62., 43., 58., 58., 70., 40.,
+        93., 99., 99., 41., 47., 99., 81., 81., 91., 54., 47., 56., 65., 99.,
+        76., 75., 41., 43., 60., 41., 68., 59., 56.])
+2022-04-11 18:52:24,968 reid_baseline.test INFO: normal accuracy 0.6433881504843433 1.77399742603302 
+2022-04-11 18:52:24,969 reid_baseline.test INFO: Classify Domain Adapatation Validation Results - In the source trained model
+2022-04-11 18:52:24,969 reid_baseline.test INFO: Accuracy: 64.3%
+2022-04-11 18:52:32,066 reid_baseline INFO: Namespace(config_file='configs/pretrain.yml', opts=['MODEL.DEVICE_ID', "('3')", 'TEST.WEIGHT', "('../logs/pretrain/deit_base/office-home/Clipart_2_Real_World_resnet50_clean/transformer_best_model.pth')", 'DATASETS.NAMES', 'OfficeHome', 'OUTPUT_DIR', '../logs/pretrain/deit_base/office-home/Clipart_2_Real_World_resnet50_clean', 'DATASETS.ROOT_TRAIN_DIR', '../data/OfficeHomeDataset/Clipart.txt', 'DATASETS.ROOT_TEST_DIR', '../data/OfficeHomeDataset/Real_World.txt', 'TEST.IMS_PER_BATCH', '32'], aug_type=None, alpha=0.1, feature_model_path=None, num_patch_wise=0, layer_num=0, per_class_acc=True, imgnet_model_path='../logs/pretrain/deit_base/office-home/Clipart_2_Real_World_resnet50_clean_only_classifier/transformer_best_model.pth')
+2022-04-11 18:52:32,066 reid_baseline INFO: Loaded configuration file configs/pretrain.yml
+2022-04-11 18:52:32,067 reid_baseline INFO: 
+MODEL:
+  PRETRAIN_CHOICE: 'imagenet'
+  PRETRAIN_PATH: '../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth'
+  METRIC_LOSS_TYPE: 'triplet'
+  IF_LABELSMOOTH: 'on'
+  IF_WITH_CENTER: 'no'
+  NAME: 'transformer'
+  NO_MARGIN: True
+  DEVICE_ID: ('0')
+  Transformer_TYPE: 'vit_base_patch16_224_TransReID' #vit_small_patch16_224_TransReID
+  STRIDE_SIZE: [16, 16]
+  FC_SETTING: 'TransReID'
+  TASK_TYPE: 'classify_DA' 
+  UDA_STAGE: 'pretrain'
+
+INPUT:
+  SIZE_TRAIN: [256, 256]
+  SIZE_TEST: [256, 256]
+  SIZE_CROP: [224, 224]
+  PROB: 0.5 # random horizontal flip
+  RE_PROB: 0.0 # random erasing
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+
+DATASETS:
+  NAMES: ('OURAPI')
+  ROOT_TRAIN_DIR: ('./datasets/reid_datasets/Corrected_Market1501')
+  NAMES2: ('OURAPI')
+  ROOT_TRAIN_DIR2: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+  ROOT_TEST_DIR: ('./datasets/reid_datasets/Refined_DukeMTMC_reID')
+
+DATALOADER:
+  SAMPLER: 'softmax'
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+
+SOLVER:
+  OPTIMIZER_NAME: 'SGD'
+  MAX_EPOCHS: 20
+  BASE_LR: 0.008
+  IMS_PER_BATCH: 16
+  STEPS: [40, 80]
+  GAMMA: 0.
+  WARMUP_FACTOR: 0.01
+  WARMUP_EPOCHS: 10
+  WARMUP_METHOD: 'linear'
+  LARGE_FC_LR: False
+  CHECKPOINT_PERIOD: 10
+  LOG_PERIOD: 100
+  EVAL_PERIOD: 1
+  WEIGHT_DECAY:  1e-4
+  WEIGHT_DECAY_BIAS: 1e-4
+  BIAS_LR_FACTOR: 2
+
+TEST:
+  EVAL: True
+  IMS_PER_BATCH: 64
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+
+  WEIGHT: '../logs/trans4DA/transformer_120.pth'
+  NECK_FEAT: 'after'
+  FEAT_NORM: 'yes'
+
+OUTPUT_DIR: '../logs/trans4DA'
+
+
+
+2022-04-11 18:52:32,067 reid_baseline INFO: Running with config:
+DATALOADER:
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+  SAMPLER: softmax
+DATASETS:
+  NAMES: OfficeHome
+  NAMES2: OURAPI
+  PLUS_NUM_ID: 100
+  QUERY_MINING: False
+  ROOT_TEST_DIR: ../data/OfficeHomeDataset/Real_World.txt
+  ROOT_TRAIN_DIR: ../data/OfficeHomeDataset/Clipart.txt
+  ROOT_TRAIN_DIR2: ./datasets/reid_datasets/Refined_DukeMTMC_reID
+INPUT:
+  AA_PROB: 0.0
+  PADDING: 0
+  PIXEL_MEAN: [0.485, 0.456, 0.406]
+  PIXEL_STD: [0.229, 0.224, 0.225]
+  PROB: 0.5
+  RE_PROB: 0.0
+  SIZE_CROP: [224, 224]
+  SIZE_TEST: [256, 256]
+  SIZE_TRAIN: [256, 256]
+MODEL:
+  AIE_COE: 1.5
+  BLOCK_PATTERN: normal
+  CAMERA_EMBEDDING: False
+  COS_LAYER: False
+  DEVICE: cuda
+  DEVICE_ID: 3
+  DEVIDE_LENGTH: 4
+  DIST_TRAIN: False
+  DROP_OUT: 0.0
+  DROP_PATH: 0.1
+  FC_SETTING: TransReID
+  FROZEN: -1
+  ID_LOSS_TYPE: softmax
+  ID_LOSS_WEIGHT: 1.0
+  IF_LABELSMOOTH: on
+  IF_WITH_CENTER: no
+  LAST_STRIDE: 1
+  LOCAL_F: False
+  METRIC_LOSS_TYPE: triplet
+  NAME: transformer
+  NECK: bnneck
+  NO_MARGIN: True
+  NO_SHUFFLE: False
+  PATCH_SHUFFLE: 2
+  PRETRAIN_CHOICE: imagenet
+  PRETRAIN_PATH: ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+  PROB: 0.0
+  RECIP_LOSS: 
+  STRIDE_SIZE: [16, 16]
+  TASK_TYPE: classify_DA
+  THRESH: 0.23
+  TRIPLET_LOSS_WEIGHT: 1.0
+  Transformer_TYPE: vit_base_patch16_224_TransReID
+  UDA_STAGE: pretrain
+  VIEWPOINT_EMBEDDING: False
+  YIWEI_NUM: 5
+  lameda: 0.5
+OUTPUT_DIR: ../logs/pretrain/deit_base/office-home/Clipart_2_Real_World_resnet50_clean
+SOLVER:
+  BASE_LR: 0.008
+  BIAS_LR_FACTOR: 2
+  CENTER_LOSS_WEIGHT: 0.0005
+  CENTER_LR: 0.5
+  CHECKPOINT_PERIOD: 10
+  CLUSTER_MARGIN: 0.3
+  COSINE_MARGIN: 0.5
+  COSINE_SCALE: 30
+  EVAL_PERIOD: 1
+  GAMMA: 0.0
+  IMS_PER_BATCH: 16
+  LARGE_FC_LR: False
+  LOG_PERIOD: 100
+  MARGIN: 0.3
+  MAX_EPOCHS: 20
+  MOMENTUM: 0.9
+  OPTIMIZER_NAME: SGD
+  RANGE_ALPHA: 0
+  RANGE_BETA: 1
+  RANGE_K: 2
+  RANGE_LOSS_WEIGHT: 1
+  RANGE_MARGIN: 0.3
+  SEED: 1234
+  STEPS: (40, 80)
+  WARMUP_EPOCHS: 10
+  WARMUP_FACTOR: 0.01
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WITH_PSEUDO_LABEL_FILTER: False
+TEST:
+  DIST_MAT: dist_mat.npy
+  EVAL: True
+  FEAT_NORM: yes
+  FLIP_FEATS: off
+  IMS_PER_BATCH: 32
+  NECK_FEAT: after
+  RE_RANKING: False
+  RE_RANKING_TRACK: False
+  WEIGHT: ../logs/pretrain/deit_base/office-home/Clipart_2_Real_World_resnet50_clean/transformer_best_model.pth
+=> Office-Home loaded
+Dataset statistics:
+1 1
+train Clipart and valid is Real_World
+  ----------------------------------------
+  subset   | # ids | # images | # cameras
+  ----------------------------------------
+  train   |    65 |     4365 |         1
+  valid   |    65 |     4357 |         1
+  ----------------------------------------
+use shuffle sampler strategy
+using Transformer_type: vit_base_patch16_224_TransReID as a backbone
+using stride: [16, 16], and part number is num_y14 * num_x14
+using drop_path_rate is : 0.1
+using aie_xishu is : 1.5
+embed_diim 768 mlp_ratio 4
+distill need to choose right cls token in the pth
+Resized position embedding: %s to %s torch.Size([1, 197, 768]) torch.Size([1, 197, 768])
+Position embedding resize to height:14 width: 14
+Loading pretrained ImageNet model......from ../data/pretrainModel/deit_base_distilled_patch16_224-df68dfff.pth
+===========building transformer===========
+model parameter: conv1.weight not match
+model parameter: bn1.weight not match
+model parameter: bn1.bias not match
+model parameter: bn1.running_mean not match
+model parameter: bn1.running_var not match
+model parameter: bn1.num_batches_tracked not match
+model parameter: layer1.0.conv1.weight not match
+model parameter: layer1.0.bn1.weight not match
+model parameter: layer1.0.bn1.bias not match
+model parameter: layer1.0.bn1.running_mean not match
+model parameter: layer1.0.bn1.running_var not match
+model parameter: layer1.0.bn1.num_batches_tracked not match
+model parameter: layer1.0.conv2.weight not match
+model parameter: layer1.0.bn2.weight not match
+model parameter: layer1.0.bn2.bias not match
+model parameter: layer1.0.bn2.running_mean not match
+model parameter: layer1.0.bn2.running_var not match
+model parameter: layer1.0.bn2.num_batches_tracked not match
+model parameter: layer1.0.conv3.weight not match
+model parameter: layer1.0.bn3.weight not match
+model parameter: layer1.0.bn3.bias not match
+model parameter: layer1.0.bn3.running_mean not match
+model parameter: layer1.0.bn3.running_var not match
+model parameter: layer1.0.bn3.num_batches_tracked not match
+model parameter: layer1.0.downsample.0.weight not match
+model parameter: layer1.0.downsample.1.weight not match
+model parameter: layer1.0.downsample.1.bias not match
+model parameter: layer1.0.downsample.1.running_mean not match
+model parameter: layer1.0.downsample.1.running_var not match
+model parameter: layer1.0.downsample.1.num_batches_tracked not match
+model parameter: layer1.1.conv1.weight not match
+model parameter: layer1.1.bn1.weight not match
+model parameter: layer1.1.bn1.bias not match
+model parameter: layer1.1.bn1.running_mean not match
+model parameter: layer1.1.bn1.running_var not match
+model parameter: layer1.1.bn1.num_batches_tracked not match
+model parameter: layer1.1.conv2.weight not match
+model parameter: layer1.1.bn2.weight not match
+model parameter: layer1.1.bn2.bias not match
+model parameter: layer1.1.bn2.running_mean not match
+model parameter: layer1.1.bn2.running_var not match
+model parameter: layer1.1.bn2.num_batches_tracked not match
+model parameter: layer1.1.conv3.weight not match
+model parameter: layer1.1.bn3.weight not match
+model parameter: layer1.1.bn3.bias not match
+model parameter: layer1.1.bn3.running_mean not match
+model parameter: layer1.1.bn3.running_var not match
+model parameter: layer1.1.bn3.num_batches_tracked not match
+model parameter: layer1.2.conv1.weight not match
+model parameter: layer1.2.bn1.weight not match
+model parameter: layer1.2.bn1.bias not match
+model parameter: layer1.2.bn1.running_mean not match
+model parameter: layer1.2.bn1.running_var not match
+model parameter: layer1.2.bn1.num_batches_tracked not match
+model parameter: layer1.2.conv2.weight not match
+model parameter: layer1.2.bn2.weight not match
+model parameter: layer1.2.bn2.bias not match
+model parameter: layer1.2.bn2.running_mean not match
+model parameter: layer1.2.bn2.running_var not match
+model parameter: layer1.2.bn2.num_batches_tracked not match
+model parameter: layer1.2.conv3.weight not match
+model parameter: layer1.2.bn3.weight not match
+model parameter: layer1.2.bn3.bias not match
+model parameter: layer1.2.bn3.running_mean not match
+model parameter: layer1.2.bn3.running_var not match
+model parameter: layer1.2.bn3.num_batches_tracked not match
+model parameter: layer2.0.conv1.weight not match
+model parameter: layer2.0.bn1.weight not match
+model parameter: layer2.0.bn1.bias not match
+model parameter: layer2.0.bn1.running_mean not match
+model parameter: layer2.0.bn1.running_var not match
+model parameter: layer2.0.bn1.num_batches_tracked not match
+model parameter: layer2.0.conv2.weight not match
+model parameter: layer2.0.bn2.weight not match
+model parameter: layer2.0.bn2.bias not match
+model parameter: layer2.0.bn2.running_mean not match
+model parameter: layer2.0.bn2.running_var not match
+model parameter: layer2.0.bn2.num_batches_tracked not match
+model parameter: layer2.0.conv3.weight not match
+model parameter: layer2.0.bn3.weight not match
+model parameter: layer2.0.bn3.bias not match
+model parameter: layer2.0.bn3.running_mean not match
+model parameter: layer2.0.bn3.running_var not match
+model parameter: layer2.0.bn3.num_batches_tracked not match
+model parameter: layer2.0.downsample.0.weight not match
+model parameter: layer2.0.downsample.1.weight not match
+model parameter: layer2.0.downsample.1.bias not match
+model parameter: layer2.0.downsample.1.running_mean not match
+model parameter: layer2.0.downsample.1.running_var not match
+model parameter: layer2.0.downsample.1.num_batches_tracked not match
+model parameter: layer2.1.conv1.weight not match
+model parameter: layer2.1.bn1.weight not match
+model parameter: layer2.1.bn1.bias not match
+model parameter: layer2.1.bn1.running_mean not match
+model parameter: layer2.1.bn1.running_var not match
+model parameter: layer2.1.bn1.num_batches_tracked not match
+model parameter: layer2.1.conv2.weight not match
+model parameter: layer2.1.bn2.weight not match
+model parameter: layer2.1.bn2.bias not match
+model parameter: layer2.1.bn2.running_mean not match
+model parameter: layer2.1.bn2.running_var not match
+model parameter: layer2.1.bn2.num_batches_tracked not match
+model parameter: layer2.1.conv3.weight not match
+model parameter: layer2.1.bn3.weight not match
+model parameter: layer2.1.bn3.bias not match
+model parameter: layer2.1.bn3.running_mean not match
+model parameter: layer2.1.bn3.running_var not match
+model parameter: layer2.1.bn3.num_batches_tracked not match
+model parameter: layer2.2.conv1.weight not match
+model parameter: layer2.2.bn1.weight not match
+model parameter: layer2.2.bn1.bias not match
+model parameter: layer2.2.bn1.running_mean not match
+model parameter: layer2.2.bn1.running_var not match
+model parameter: layer2.2.bn1.num_batches_tracked not match
+model parameter: layer2.2.conv2.weight not match
+model parameter: layer2.2.bn2.weight not match
+model parameter: layer2.2.bn2.bias not match
+model parameter: layer2.2.bn2.running_mean not match
+model parameter: layer2.2.bn2.running_var not match
+model parameter: layer2.2.bn2.num_batches_tracked not match
+model parameter: layer2.2.conv3.weight not match
+model parameter: layer2.2.bn3.weight not match
+model parameter: layer2.2.bn3.bias not match
+model parameter: layer2.2.bn3.running_mean not match
+model parameter: layer2.2.bn3.running_var not match
+model parameter: layer2.2.bn3.num_batches_tracked not match
+model parameter: layer2.3.conv1.weight not match
+model parameter: layer2.3.bn1.weight not match
+model parameter: layer2.3.bn1.bias not match
+model parameter: layer2.3.bn1.running_mean not match
+model parameter: layer2.3.bn1.running_var not match
+model parameter: layer2.3.bn1.num_batches_tracked not match
+model parameter: layer2.3.conv2.weight not match
+model parameter: layer2.3.bn2.weight not match
+model parameter: layer2.3.bn2.bias not match
+model parameter: layer2.3.bn2.running_mean not match
+model parameter: layer2.3.bn2.running_var not match
+model parameter: layer2.3.bn2.num_batches_tracked not match
+model parameter: layer2.3.conv3.weight not match
+model parameter: layer2.3.bn3.weight not match
+model parameter: layer2.3.bn3.bias not match
+model parameter: layer2.3.bn3.running_mean not match
+model parameter: layer2.3.bn3.running_var not match
+model parameter: layer2.3.bn3.num_batches_tracked not match
+model parameter: layer3.0.conv1.weight not match
+model parameter: layer3.0.bn1.weight not match
+model parameter: layer3.0.bn1.bias not match
+model parameter: layer3.0.bn1.running_mean not match
+model parameter: layer3.0.bn1.running_var not match
+model parameter: layer3.0.bn1.num_batches_tracked not match
+model parameter: layer3.0.conv2.weight not match
+model parameter: layer3.0.bn2.weight not match
+model parameter: layer3.0.bn2.bias not match
+model parameter: layer3.0.bn2.running_mean not match
+model parameter: layer3.0.bn2.running_var not match
+model parameter: layer3.0.bn2.num_batches_tracked not match
+model parameter: layer3.0.conv3.weight not match
+model parameter: layer3.0.bn3.weight not match
+model parameter: layer3.0.bn3.bias not match
+model parameter: layer3.0.bn3.running_mean not match
+model parameter: layer3.0.bn3.running_var not match
+model parameter: layer3.0.bn3.num_batches_tracked not match
+model parameter: layer3.0.downsample.0.weight not match
+model parameter: layer3.0.downsample.1.weight not match
+model parameter: layer3.0.downsample.1.bias not match
+model parameter: layer3.0.downsample.1.running_mean not match
+model parameter: layer3.0.downsample.1.running_var not match
+model parameter: layer3.0.downsample.1.num_batches_tracked not match
+model parameter: layer3.1.conv1.weight not match
+model parameter: layer3.1.bn1.weight not match
+model parameter: layer3.1.bn1.bias not match
+model parameter: layer3.1.bn1.running_mean not match
+model parameter: layer3.1.bn1.running_var not match
+model parameter: layer3.1.bn1.num_batches_tracked not match
+model parameter: layer3.1.conv2.weight not match
+model parameter: layer3.1.bn2.weight not match
+model parameter: layer3.1.bn2.bias not match
+model parameter: layer3.1.bn2.running_mean not match
+model parameter: layer3.1.bn2.running_var not match
+model parameter: layer3.1.bn2.num_batches_tracked not match
+model parameter: layer3.1.conv3.weight not match
+model parameter: layer3.1.bn3.weight not match
+model parameter: layer3.1.bn3.bias not match
+model parameter: layer3.1.bn3.running_mean not match
+model parameter: layer3.1.bn3.running_var not match
+model parameter: layer3.1.bn3.num_batches_tracked not match
+model parameter: layer3.2.conv1.weight not match
+model parameter: layer3.2.bn1.weight not match
+model parameter: layer3.2.bn1.bias not match
+model parameter: layer3.2.bn1.running_mean not match
+model parameter: layer3.2.bn1.running_var not match
+model parameter: layer3.2.bn1.num_batches_tracked not match
+model parameter: layer3.2.conv2.weight not match
+model parameter: layer3.2.bn2.weight not match
+model parameter: layer3.2.bn2.bias not match
+model parameter: layer3.2.bn2.running_mean not match
+model parameter: layer3.2.bn2.running_var not match
+model parameter: layer3.2.bn2.num_batches_tracked not match
+model parameter: layer3.2.conv3.weight not match
+model parameter: layer3.2.bn3.weight not match
+model parameter: layer3.2.bn3.bias not match
+model parameter: layer3.2.bn3.running_mean not match
+model parameter: layer3.2.bn3.running_var not match
+model parameter: layer3.2.bn3.num_batches_tracked not match
+model parameter: layer3.3.conv1.weight not match
+model parameter: layer3.3.bn1.weight not match
+model parameter: layer3.3.bn1.bias not match
+model parameter: layer3.3.bn1.running_mean not match
+model parameter: layer3.3.bn1.running_var not match
+model parameter: layer3.3.bn1.num_batches_tracked not match
+model parameter: layer3.3.conv2.weight not match
+model parameter: layer3.3.bn2.weight not match
+model parameter: layer3.3.bn2.bias not match
+model parameter: layer3.3.bn2.running_mean not match
+model parameter: layer3.3.bn2.running_var not match
+model parameter: layer3.3.bn2.num_batches_tracked not match
+model parameter: layer3.3.conv3.weight not match
+model parameter: layer3.3.bn3.weight not match
+model parameter: layer3.3.bn3.bias not match
+model parameter: layer3.3.bn3.running_mean not match
+model parameter: layer3.3.bn3.running_var not match
+model parameter: layer3.3.bn3.num_batches_tracked not match
+model parameter: layer3.4.conv1.weight not match
+model parameter: layer3.4.bn1.weight not match
+model parameter: layer3.4.bn1.bias not match
+model parameter: layer3.4.bn1.running_mean not match
+model parameter: layer3.4.bn1.running_var not match
+model parameter: layer3.4.bn1.num_batches_tracked not match
+model parameter: layer3.4.conv2.weight not match
+model parameter: layer3.4.bn2.weight not match
+model parameter: layer3.4.bn2.bias not match
+model parameter: layer3.4.bn2.running_mean not match
+model parameter: layer3.4.bn2.running_var not match
+model parameter: layer3.4.bn2.num_batches_tracked not match
+model parameter: layer3.4.conv3.weight not match
+model parameter: layer3.4.bn3.weight not match
+model parameter: layer3.4.bn3.bias not match
+model parameter: layer3.4.bn3.running_mean not match
+model parameter: layer3.4.bn3.running_var not match
+model parameter: layer3.4.bn3.num_batches_tracked not match
+model parameter: layer3.5.conv1.weight not match
+model parameter: layer3.5.bn1.weight not match
+model parameter: layer3.5.bn1.bias not match
+model parameter: layer3.5.bn1.running_mean not match
+model parameter: layer3.5.bn1.running_var not match
+model parameter: layer3.5.bn1.num_batches_tracked not match
+model parameter: layer3.5.conv2.weight not match
+model parameter: layer3.5.bn2.weight not match
+model parameter: layer3.5.bn2.bias not match
+model parameter: layer3.5.bn2.running_mean not match
+model parameter: layer3.5.bn2.running_var not match
+model parameter: layer3.5.bn2.num_batches_tracked not match
+model parameter: layer3.5.conv3.weight not match
+model parameter: layer3.5.bn3.weight not match
+model parameter: layer3.5.bn3.bias not match
+model parameter: layer3.5.bn3.running_mean not match
+model parameter: layer3.5.bn3.running_var not match
+model parameter: layer3.5.bn3.num_batches_tracked not match
+model parameter: layer4.0.conv1.weight not match
+model parameter: layer4.0.bn1.weight not match
+model parameter: layer4.0.bn1.bias not match
+model parameter: layer4.0.bn1.running_mean not match
+model parameter: layer4.0.bn1.running_var not match
+model parameter: layer4.0.bn1.num_batches_tracked not match
+model parameter: layer4.0.conv2.weight not match
+model parameter: layer4.0.bn2.weight not match
+model parameter: layer4.0.bn2.bias not match
+model parameter: layer4.0.bn2.running_mean not match
+model parameter: layer4.0.bn2.running_var not match
+model parameter: layer4.0.bn2.num_batches_tracked not match
+model parameter: layer4.0.conv3.weight not match
+model parameter: layer4.0.bn3.weight not match
+model parameter: layer4.0.bn3.bias not match
+model parameter: layer4.0.bn3.running_mean not match
+model parameter: layer4.0.bn3.running_var not match
+model parameter: layer4.0.bn3.num_batches_tracked not match
+model parameter: layer4.0.downsample.0.weight not match
+model parameter: layer4.0.downsample.1.weight not match
+model parameter: layer4.0.downsample.1.bias not match
+model parameter: layer4.0.downsample.1.running_mean not match
+model parameter: layer4.0.downsample.1.running_var not match
+model parameter: layer4.0.downsample.1.num_batches_tracked not match
+model parameter: layer4.1.conv1.weight not match
+model parameter: layer4.1.bn1.weight not match
+model parameter: layer4.1.bn1.bias not match
+model parameter: layer4.1.bn1.running_mean not match
+model parameter: layer4.1.bn1.running_var not match
+model parameter: layer4.1.bn1.num_batches_tracked not match
+model parameter: layer4.1.conv2.weight not match
+model parameter: layer4.1.bn2.weight not match
+model parameter: layer4.1.bn2.bias not match
+model parameter: layer4.1.bn2.running_mean not match
+model parameter: layer4.1.bn2.running_var not match
+model parameter: layer4.1.bn2.num_batches_tracked not match
+model parameter: layer4.1.conv3.weight not match
+model parameter: layer4.1.bn3.weight not match
+model parameter: layer4.1.bn3.bias not match
+model parameter: layer4.1.bn3.running_mean not match
+model parameter: layer4.1.bn3.running_var not match
+model parameter: layer4.1.bn3.num_batches_tracked not match
+model parameter: layer4.2.conv1.weight not match
+model parameter: layer4.2.bn1.weight not match
+model parameter: layer4.2.bn1.bias not match
+model parameter: layer4.2.bn1.running_mean not match
+model parameter: layer4.2.bn1.running_var not match
+model parameter: layer4.2.bn1.num_batches_tracked not match
+model parameter: layer4.2.conv2.weight not match
+model parameter: layer4.2.bn2.weight not match
+model parameter: layer4.2.bn2.bias not match
+model parameter: layer4.2.bn2.running_mean not match
+model parameter: layer4.2.bn2.running_var not match
+model parameter: layer4.2.bn2.num_batches_tracked not match
+model parameter: layer4.2.conv3.weight not match
+model parameter: layer4.2.bn3.weight not match
+model parameter: layer4.2.bn3.bias not match
+model parameter: layer4.2.bn3.running_mean not match
+model parameter: layer4.2.bn3.running_var not match
+model parameter: layer4.2.bn3.num_batches_tracked not match
+model parameter: fc.weight not match
+model parameter: fc.bias not match
+Loading pretrained model for finetuning from ../logs/pretrain/deit_base/office-home/Clipart_2_Real_World_resnet50_clean/transformer_best_model.pth
+Per class acc
+2022-04-11 18:52:48,822 reid_baseline.test INFO: Enter inferencing
+Using 4 GPUs for inference
+M1 per class acc: tensor([0.6471, 0.8148, 0.8846, 0.8667, 0.3594, 0.6552, 0.5303, 0.3582, 0.6364,
+        0.8060, 0.8333, 0.7018, 0.9200, 0.4941, 0.4407, 0.6988, 0.8269, 0.1059,
+        0.6184, 1.0000, 0.2985, 0.9138, 0.5714, 0.3548, 0.8293, 0.9500, 0.8333,
+        0.7231, 0.4648, 0.3913, 0.9205, 0.3971, 0.8586, 0.7674, 0.2075, 0.5441,
+        0.4688, 0.6515, 0.6167, 0.9024, 0.8000, 0.7059, 0.5432, 0.9808, 0.5062,
+        0.3023, 0.5000, 0.8750, 0.9853, 0.8767, 1.0000, 0.5256, 0.5741, 0.8586,
+        0.1692, 0.8961, 0.6792, 0.7671, 0.7500, 0.6190, 0.9322, 0.7831, 0.5625,
+        0.4933, 0.1304])
+M2 per class acc: tensor([0.6863, 0.8025, 0.6795, 0.7000, 0.4531, 0.5862, 0.5000, 0.4328, 0.3506,
+        0.7164, 0.7083, 0.4561, 0.8800, 0.3294, 0.5593, 0.3976, 0.6346, 0.0471,
+        0.4605, 0.9596, 0.1493, 0.8966, 0.4898, 0.2097, 0.8049, 0.8833, 0.7500,
+        0.6769, 0.5352, 0.3696, 0.8977, 0.3529, 0.6566, 0.7209, 0.3019, 0.4412,
+        0.4688, 0.7424, 0.5000, 0.9024, 0.6000, 0.8824, 0.5309, 0.9231, 0.6049,
+        0.0233, 0.2750, 0.7396, 0.9412, 0.8767, 0.9733, 0.5769, 0.3704, 0.7879,
+        0.0923, 0.8182, 0.5472, 0.7397, 0.5000, 0.8095, 0.8305, 0.8072, 0.4844,
+        0.3467, 0.0435])
+Per class numbers: tensor([51., 81., 78., 60., 64., 58., 66., 67., 77., 67., 72., 57., 75., 85.,
+        59., 83., 52., 85., 76., 99., 67., 58., 49., 62., 82., 60., 60., 65.,
+        71., 46., 88., 68., 99., 86., 53., 68., 64., 66., 60., 41., 30., 51.,
+        81., 52., 81., 43., 80., 96., 68., 73., 75., 78., 54., 99., 65., 77.,
+        53., 73., 36., 63., 59., 83., 64., 75., 23.])
+2022-04-11 18:55:03,713 reid_baseline.test INFO: normal accuracy 0.669267844847372 1.6487427949905396 
+2022-04-11 18:55:03,713 reid_baseline.test INFO: Classify Domain Adapatation Validation Results - In the source trained model
+2022-04-11 18:55:03,713 reid_baseline.test INFO: Accuracy: 66.9%
